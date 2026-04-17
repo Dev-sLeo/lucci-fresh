@@ -1,0 +1,59 @@
+.splide {
+  margin-top: 3rem;
+
+  @media(min-width: $media-query-desktop) {
+    max-width: 1416px;
+  }
+
+  .splide__track {
+    max-width: 1217px;
+    margin: 0 auto;
+  }
+
+  .splide__controls {
+    margin-top: 1.75rem;
+
+    @media(min-width: $media-query-desktop) {
+      margin-top: 6.438rem;
+    }
+
+    .splide__arrow {
+      background-color: transparent;
+      width: auto;
+      height: auto;
+      top: inherit;
+      bottom: -2.531rem;
+      transform: translateY(inherit);
+
+      @media(min-width: $media-query-desktop) {
+        top: calc(50% - 3.188rem);
+        bottom: inherit;
+        transform: translateY(-50%);
+      }
+
+      svg {
+        width: auto;
+        height: auto;
+      }
+    }
+  }
+
+  .my-slider-progress {
+    background: map-get($color-cinza, 100);
+    max-width: 1217px;
+    width: 67%;
+    height: 1px;
+    margin: 0 auto;
+
+    @media(min-width: $media-query-desktop) {
+      width: 100%;
+    }
+  }
+
+  .my-slider-progress-bar {
+    background: $color-verde;
+    height: 2px;
+    transition: width 400ms ease;
+    width: 0;
+  }
+}

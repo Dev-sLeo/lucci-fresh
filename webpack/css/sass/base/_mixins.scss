@@ -1,0 +1,140 @@
+// Color Related
+@function cvl($color, $variant) {
+  @if $variant == 1 { @return lighten($color, 5%); }
+  @else if $variant == 2 { @return lighten($color, 12%); }
+  @else if $variant == 3 { @return lighten($color, 25%); }
+  @else if $variant == 4 { @return lighten($color, 42%); }
+}
+
+@function cvd($color, $variant) {
+  @if $variant == 1 { @return darken($color, 5%); }
+  @else if $variant == 2 { @return darken($color, 12%); }
+  @else if $variant == 3 { @return darken($color, 25%); }
+  @else if $variant == 4 { @return darken($color, 42%); }
+}
+
+@function cvt($color, $transparency) {
+    @return transparentize($color, $transparency * 0.1);
+}
+
+@mixin delayAnimation($initDelay, $addDelay, $n) {
+  @for $i from 0 to $n {
+    @if $i < 5 {
+        &:nth-child(#{$i}) {
+         transition-delay: ($initDelay+$i*$addDelay)+s
+        }
+    } @else {
+        &:nth-child(#{$i}) {
+         transition-delay: ($initDelay+($i - 3)*$addDelay)+s
+        }
+    }
+
+  }
+}
+
+@mixin delayAnimationHD($initDelay, $addDelay, $n) {
+  @for $i from 0 to $n {
+    @if $i < 6 {
+        &:nth-child(#{$i}) {
+         transition-delay: ($initDelay+$i*$addDelay)+s
+        }
+    } @else {
+        &:nth-child(#{$i}) {
+         transition-delay: ($initDelay+($i - 4)*$addDelay)+s
+        }
+    }
+  }
+}
+
+@mixin delayAnimationReverse($initDelay, $addDelay, $n) {
+  @for $i from $n to 0 {
+      @if $i < 5 {
+          &:nth-child(#{$i}) {
+           transition-delay: ($initDelay+$i*$addDelay)+s
+          }
+      } @else {
+          &:nth-child(#{$i}) {
+           transition-delay: ($initDelay+($i - 3)*$addDelay)+s
+          }
+      }
+  }
+}
+
+@mixin delayAnimationReverseHD($initDelay, $addDelay, $n) {
+  @for $i from $n to 0 {
+      @if $i < 6 {
+          &:nth-child(#{$i}) {
+           transition-delay: ($initDelay+$i*$addDelay)+s
+          }
+      } @else {
+          &:nth-child(#{$i}) {
+           transition-delay: ($initDelay+($i - 4)*$addDelay)+s
+          }
+      }
+  }
+}
+
+@mixin gradient_transparent($color1) {
+    background: cvt($color1, 3); /* Old browsers */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,1e5799+100&amp;0+0,1+60,1+100 */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, $color1 60%, $color1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(60%,$color1), color-stop(100%,$color1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='$color1',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin gradient_transparent2($color1) {
+    background: cvt($color1, 3); /* Old browsers */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,1e5799+100&amp;0+0,1+60,1+100 */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, $color1 60%, $color1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(60%,$color1), color-stop(100%,$color1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,$color1 60%,$color1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='$color1',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin gradient_transparent_horizontal($color1) {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+78 */
+    background: -moz-linear-gradient(left, $color1 0%, rgba(0,0,0,0) 88%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, $color1 0%,rgba(0,0,0,0) 88%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, $color1 0%,rgba(0,0,0,0) 88%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='#00000000',GradientType=1 ); /* IE6-9 */
+}
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+
+    &:after { clear: both; }
+}
+
+@mixin hoverActiveFocus() {
+  &:hover, &:active, &:focus {
+    @content;
+  }
+}
+
+@mixin ctx-button-recolor($bcolor, $tcolor) {
+    border-color: $bcolor;
+    color: $tcolor;
+
+    &:after,
+    &:before {
+        border-color: $bcolor;
+    }
+
+    &:hover {
+        &:after,
+        &:before {
+            background: $bcolor;
+        }
+    }
+}

@@ -1,0 +1,365 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-rendering: optimizeLegibility;
+	font-family: $ff-primary;
+}
+
+button {
+	border: none;
+	box-shadow: none;
+	outline: none;
+	text-rendering: optimizeLegibility;
+	font-family: $ff-primary;
+}
+
+a {
+	text-decoration: none;
+	font-family: $ff-primary;
+}
+
+
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+/* Letter-spacing:
+   - Percentual → em (1% = 0.01em)
+*/
+$ls-0: 0;
+$ls-2: 0.02em;
+$ls-8: 0.08em;
+$ls-10: 0.10em;
+
+/* Fonts (mantém teu padrão) */
+$font-primary: 'Inter', sans-serif !default;
+
+
+/* ==========================================================================
+   TYPOGRAPHY MAP (mobile-first)
+   - base = mobile
+   - desk = desktop
+   ========================================================================== */
+
+$typography: (
+	/* TÍTULOS (mantidos, mas mobile-first) */
+	h1: (family: $font-primary,
+		size: 42px, // mobile (ajuste se quiser)
+		line: 1.1,
+		weight: $fw-medium,
+		ls: $ls-0,
+		case: normal,
+		desk-size: 64px,
+		desk-line: 64px),
+
+	h2: (family: $font-primary,
+		size: 32px,
+		line: 1.2,
+		weight: $fw-medium,
+		ls: $ls-0,
+		case: normal,
+		desk-size: 42px,
+		desk-line: 64px),
+
+	h3: (family: $font-primary, size: 28px, line: 1.3, weight: $fw-medium, ls: $ls-0, case: normal),
+	h4: (family: $font-primary, size: 24px, line: 1.4, weight: $fw-medium, ls: $ls-0, case: normal),
+	h5: (family: $font-primary, size: 20px, line: 1.4, weight: $fw-medium, ls: $ls-0, case: normal),
+	h6: (family: $font-primary, size: 18px, line: 1.4, weight: $fw-semibold, ls: $ls-0, case: normal),
+
+	/* TEXTOS */
+	text-lg: (family: $font-primary, size: 18px, line: 1.5, weight: $fw-semibold, ls: $ls-0, case: normal),
+	text-md: (family: $font-primary, size: 16px, line: 26px, weight: $fw-regular, ls: $ls-2, case: normal),
+	text-sm: (family: $font-primary, size: 14px, line: 22px, weight: $fw-regular, ls: $ls-2, case: normal),
+
+	/* UPPERCASE / HAT */
+	text-hat: (family: $font-primary, size: 16px, line: 1.4, weight: $fw-semibold, ls: $ls-8, case: uppercase),
+
+	/* ==========================================================================
+     NOVOS TOKENS (do Figma) — classes globais
+     ========================================================================== */
+
+	/* Hero banner H1 (Forum) — mobile 40px, desk 56px */
+	hero-h1: (family: font-primary,
+		size: 40px, // MOBILE FIRST
+		line: 1, // 100%
+		weight: 400,
+		ls: $ls-0,
+		case: normal,
+		color: #132728,
+		align: center,
+
+		desk-size: 56px, // DESKTOP
+		desk-line: 1,
+		desk-align: left),
+
+	/* Eyebrow (Uncut Sans) */
+	eyebrow: (family: $font-primary,
+		size: 16px,
+		line: 1, // 100%
+		weight: 600,
+		ls: $ls-10, // 10%
+		case: uppercase,
+		color: #9E9D8F)
+);
+
+/* ==========================================================================
+   MIXIN TIPOGRAFIA (mobile-first + opcional desktop override)
+   ========================================================================== */
+
+@mixin type($token) {
+	$t: map-get($typography, $token);
+
+	/* Se não achar o token, não quebra o build */
+	@if $t ==null {
+		/* opcional: deixar comentário no CSS final */
+		/* .type-error-#{$token} { } */
+	}
+
+	@else {
+		$family: map-get($t, family);
+		$size: map-get($t, size);
+		$line: map-get($t, line);
+		$weight: map-get($t, weight);
+		$ls: map-get($t, ls);
+		$case: map-get($t, case);
+
+		font-family: if($family !=null, $family, $font-primary);
+		font-size: $size;
+		line-height: $line;
+		font-weight: $weight;
+		letter-spacing: $ls;
+
+		@if map-has-key($t, color) {
+			color: map-get($t, color);
+		}
+
+		@if map-has-key($t, align) {
+			text-align: map-get($t, align);
+		}
+
+		@if $case ==uppercase {
+			text-transform: uppercase;
+		}
+
+		@else {
+			text-transform: none;
+		}
+
+		/* Desktop overrides */
+		@if map-has-key($t, desk-size) or map-has-key($t, desk-line) or map-has-key($t, desk-align) {
+			@media (min-width: $media-query-desktop) {
+				@if map-has-key($t, desk-size) {
+					font-size: map-get($t, desk-size);
+				}
+
+				@if map-has-key($t, desk-line) {
+					line-height: map-get($t, desk-line);
+				}
+
+				@if map-has-key($t, desk-align) {
+					text-align: map-get($t, desk-align);
+				}
+			}
+		}
+	}
+}
+
+
+/* ==========================================================================
+   CLASSES GLOBAIS (geradas)
+   ========================================================================== */
+
+/* Títulos */
+.h1 {
+	@include type(h1);
+}
+
+.h2 {
+	@include type(h2);
+}
+
+.h3 {
+	@include type(h3);
+}
+
+.h4 {
+	@include type(h4);
+}
+
+.h5 {
+	@include type(h5);
+}
+
+.h6 {
+	@include type(h6);
+}
+
+/* Textos */
+.text-lg {
+	@include type(text-lg);
+}
+
+.text-md {
+	@include type(text-md);
+}
+
+.text-sm {
+	@include type(text-sm);
+}
+
+.text-hat {
+	@include type(text-hat);
+}
+
+/* NOVAS CLASSES (Figma) */
+.title-hero-h1 {
+	@include type(hero-h1);
+}
+
+.eyebrow {
+	@include type(eyebrow);
+}
+
+/* ==========================================================================
+   AJUSTES: remover "font-style: Medium/SemiBold/Regular" (inválido em CSS)
+   - Mantive suas classes, mas corrigindo style para normal e alinhando tokens
+   ========================================================================== */
+
+.subtitle {
+	display: block;
+	color: #D26348;
+	font-family: Manrope;
+	text-align: center;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 46px;
+
+	/* 328.571% */
+	@media(min-width: $media-query-desktop-low) {
+
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 120%;
+		/* 19.2px */
+	}
+
+}
+
+.title {
+	&__super {
+		color: #0F1D3A;
+		text-align: center;
+		font-family: Poppins;
+		font-size: 36px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 140%;
+		/* 50.4px */
+
+		@media(min-width: $media-query-desktop-low) {
+			font-size: 46px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 120%;
+			text-align: left;
+		}
+	}
+
+	&__normal {
+		color: #0F1D3A;
+		text-align: center;
+		font-family: Poppins;
+		font-size: 28px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 140%;
+		/* 39.2px */
+
+		@media (min-width: $media-query-desktop-low) {
+			text-align: left;
+			font-size: 42px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 140%;
+			/* 58.8px */
+		}
+	}
+
+	&__small {
+		color: #0F1D3A;
+		text-align: center;
+		font-family: Poppins;
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 120%;
+		/* 21.6px */
+
+		@media (min-width: $media-query-desktop) {
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 140%;
+			/* 28px */
+		}
+	}
+}
+
+.text {
+	&__normal {
+		color: #6F7789;
+		text-align: center;
+		font-family: Inter;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 160%;
+		/* 25.6px */
+		letter-spacing: -0.5px;
+
+		@media(min-width: $media-query-desktop) {
+			text-align: left;
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 160%;
+			/* 32px */
+			letter-spacing: -0.5px;
+		}
+	}
+
+	&__small {
+		color: var(--preto-400, #414B6C);
+		text-align: center;
+		font-family: var(--font-family-Font-1, Inter);
+		font-size: var(--font-size-14, 14px);
+		font-style: normal;
+		font-weight: var(--font-weight-400, 400);
+		line-height: var(--opacity-20, 20px);
+		/* 142.857% */
+	}
+}
+
+.link_more {
+	display: flex;
+	gap: .5rem;
+	align-items: center;
+
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 150%;
+	leading-trim: both;
+	text-edge: cap;
+	color: #214247;
+}

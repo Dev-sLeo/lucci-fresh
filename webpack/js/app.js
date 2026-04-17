@@ -1,0 +1,37 @@
+"use strict";
+
+import { gsap } from "gsap";
+import main from "../css/sass/main.scss";
+import inline from "../css/sass/inline.scss";
+
+import headerScrolling from "./scripts/headerScrolling";
+import mobileMenu from "./scripts/mobileMenu";
+import megaMenu from "./scripts/megaMenu";
+import inputSelect from "./scripts/inputSelect";
+import accordion from "./scripts/accordion";
+import gsapAnimations from "./scripts/gsapAnimations";
+import anchorScroll from "./scripts/anchorScroll";
+import testimonials from "./scripts/slider/testimonials";
+import heroSlider from "./scripts/slider/hero";
+import tourListSlider from "./scripts/slider/tour-list";
+import productSlider from "./scripts/slider/product-slider";
+import contactCidades from "./scripts/contactCidades";
+import blogFilter from "./scripts/blogFilter";
+import blogHeroSlider from "./scripts/slider/blog-hero";
+
+window.gsap = gsap;
+
+headerScrolling();
+mobileMenu();
+megaMenu();
+inputSelect();
+accordion();
+gsapAnimations();
+anchorScroll();
+testimonials();
+heroSlider();
+tourListSlider();
+productSlider();
+contactCidades();
+blogFilter();
+blogHeroSlider();

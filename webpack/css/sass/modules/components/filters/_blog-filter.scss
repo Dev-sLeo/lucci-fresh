@@ -1,0 +1,41 @@
+.c-blog-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 12px;
+  flex-wrap: wrap;
+
+  &__tab {
+    flex: 1 0 0;
+    min-width: max-content;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background: #ECF0F8;
+    color: #0F1D3A;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+
+    &:hover {
+      background: darken(#ECF0F8, 5%);
+    }
+
+    &--active {
+      background: #0056FF;
+      color: #fff;
+
+      &:hover {
+        background: darken(#0056FF, 8%);
+      }
+    }
+  }
+}

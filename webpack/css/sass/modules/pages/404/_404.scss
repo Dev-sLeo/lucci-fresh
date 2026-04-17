@@ -1,0 +1,19 @@
+.c-404 {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .c-404__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button {
+    margin: 0 auto;
+  }
+
+}

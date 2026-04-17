@@ -1,0 +1,20 @@
+{
+    "name": "levante/gpi",
+    "authors": [
+        {
+            "name": "Levante",
+            "email": "projetos@levante.cx"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:42i/42i-wp.git"
+        }
+    ],
+    "require": {
+        "tgmpa/tgm-plugin-activation": "~2.5.2",
+        "42ipd/qdi-wp": "*"
+    },
+    "minimum-stability": "dev"
+}

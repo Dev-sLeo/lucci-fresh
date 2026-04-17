@@ -1,0 +1,54 @@
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.c-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 8px;
+
+  &--short {
+    width: 60% !important;
+  }
+}
+
+.c-skeleton-post {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #ECF0F8;
+  border-radius: 16px;
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 385 / 222;
+    border-radius: 12px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__title {
+    height: 24px;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  &__excerpt {
+    height: 16px;
+    width: 100%;
+    border-radius: 6px;
+  }
+}

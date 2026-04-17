@@ -1,0 +1,32 @@
+.o-paginate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .o-paginate__content {
+    display: flex;
+    max-width: max-content;
+    justify-content: center;
+    gap: 1rem;
+    background-color: #E7EEEF;
+    border-radius: 16px;
+    padding: 1rem;
+
+    .c-paginate__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1E57FF;
+      background-color: $white;
+      padding: 12px 1.5rem;
+      @include type(text-md);
+      border-radius: 8px;
+
+      &:hover,
+      &.c-paginate__item--active {
+        background-color: #1E57FF;
+        color: $white;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.u-button {
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  padding: 16px 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: var(--stroke-weight-1, 1px) solid transparent;
+  transition: all .3s ease;
+  max-width: max-content;
+  cursor: pointer;
+}
+
+.u-button__green {
+  background-color: #425d33;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #344a28;
+  }
+}

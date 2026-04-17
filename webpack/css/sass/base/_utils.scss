@@ -1,0 +1,32 @@
+$rem-base: 16px;
+
+@function rem($px, $base: $rem-base) {
+    @if unitless($px) {
+        $px: $px * 1px;
+    }
+
+    @return ($px / $base) * 1rem;
+}
+
+@mixin rem-prop($property, $value, $base: $rem-base) {
+    #{$property}: rem($value, $base);
+}
+
+.u-mask-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+
+    picture,
+    img {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    img {
+        object-fit: cover;
+    }
+}

@@ -1,0 +1,37 @@
+// Here we define the lower and upper bounds for each media size
+$small-range: (36em, 48.500em); // 576px, 767px
+$medium-range: (48.000em, 61.938em); // 768px, 991px
+$large-range: (62.000em, 74.938em); // 992px, 1199px
+$xlarge-range: (75.000em, 87.500em); // 1200px, 1400px
+$xxlarge-range: (87.563em); // 1401px
+
+// Media Queries
+$screen: "only screen" !default;
+
+$landscape: "only screen and (orientation: landscape)" !default;
+$portrait: "only screen and (orientation: portrait)" !default;
+
+// $small-up: $screen !default;
+$small-up: "only screen and (min-width: #{lower-bound((36em, 48.500em))})" !default;
+$small-only: "only screen and (max-width: #{upper-bound((36em, 48.500em))})" !default;
+
+$medium-up: "only screen and (min-width:#{lower-bound($medium-range)})" !default;
+$medium-only: "only screen and (min-width:#{lower-bound($medium-range)}) and (max-width:#{upper-bound($medium-range)})" !default;
+
+$large-up: "only screen and (min-width:#{lower-bound($large-range)})" !default;
+$large-only: "only screen and (min-width:#{lower-bound($large-range)}) and (max-width:#{upper-bound($large-range)})" !default;
+
+$xlarge-up: "only screen and (min-width:#{lower-bound($xlarge-range)})" !default;
+$xlarge-only: "only screen and (min-width:#{lower-bound($xlarge-range)}) and (max-width:#{upper-bound($xlarge-range)})" !default;
+
+$xxlarge-up: "only screen and (min-width:#{lower-bound($xxlarge-range)})" !default;
+$xxlarge-only: "only screen and (min-width:#{lower-bound($xxlarge-range)}) and (max-width:#{upper-bound($xxlarge-range)})" !default;
+
+$retina: (
+  "only screen and (-webkit-min-device-pixel-ratio: 2)",
+  "only screen and (min--moz-device-pixel-ratio: 2)",
+  "only screen and (-o-min-device-pixel-ratio: 2/1)",
+  "only screen and (min-device-pixel-ratio: 2)",
+  "only screen and (min-resolution: 192dpi)",
+  "only screen and (min-resolution: 2dppx)"
+);

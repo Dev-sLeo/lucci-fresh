@@ -1,0 +1,94 @@
+{
+    "footer": {
+        "logo": {
+            "ID": 52,
+            "id": 52,
+            "title": "logo-footer",
+            "filename": "logo-footer.webp",
+            "filesize": 6226,
+            "url": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+            "link": "http:\/\/lucci-fresh.local\/logo-footer\/",
+            "alt": "",
+            "author": "1",
+            "description": "",
+            "caption": "",
+            "name": "logo-footer",
+            "status": "inherit",
+            "uploaded_to": 0,
+            "date": "2026-04-17 22:00:55",
+            "modified": "2026-04-17 22:00:55",
+            "menu_order": 0,
+            "mime_type": "image\/webp",
+            "type": "image",
+            "subtype": "webp",
+            "icon": "http:\/\/lucci-fresh.local\/wp-includes\/images\/media\/default.png",
+            "width": 223,
+            "height": 61,
+            "sizes": {
+                "thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer-150x61.webp",
+                "thumbnail-width": 150,
+                "thumbnail-height": 61,
+                "medium": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "medium-width": 223,
+                "medium-height": 61,
+                "medium_large": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "medium_large-width": 223,
+                "medium_large-height": 61,
+                "large": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "large-width": 223,
+                "large-height": 61,
+                "1536x1536": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "1536x1536-width": 223,
+                "1536x1536-height": 61,
+                "2048x2048": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "2048x2048-width": 223,
+                "2048x2048-height": 61,
+                "post-thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer-162x43.webp",
+                "post-thumbnail-width": 162,
+                "post-thumbnail-height": 43,
+                "logo_mobile": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer-162x43.webp",
+                "logo_mobile-width": 162,
+                "logo_mobile-height": 43,
+                "woocommerce_thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "woocommerce_thumbnail-width": 223,
+                "woocommerce_thumbnail-height": 61,
+                "woocommerce_single": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer.webp",
+                "woocommerce_single-width": 223,
+                "woocommerce_single-height": 61,
+                "woocommerce_gallery_thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/logo-footer-100x61.webp",
+                "woocommerce_gallery_thumbnail-width": 100,
+                "woocommerce_gallery_thumbnail-height": 61
+            }
+        },
+        "endereco": {
+            "text": "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010",
+            "link": "https:\/\/maps.app.goo.gl\/E4tHJHHAyeVHEnUx7"
+        },
+        "redes_sociais": [
+            {
+                "rede": "facebook",
+                "link": ""
+            },
+            {
+                "rede": "instagram",
+                "link": ""
+            },
+            {
+                "rede": "whatsapp",
+                "link": ""
+            }
+        ],
+        "politica_de_privacidade": {
+            "title": "Politica de privacidade",
+            "url": "#",
+            "target": ""
+        },
+        "upsites": "",
+        "copy": "Lucci Fresh- todos os direitos reservados"
+    },
+    "header": {
+        "top": {
+            "text": "REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00"
+        }
+    }
+}

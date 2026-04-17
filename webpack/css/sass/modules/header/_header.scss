@@ -1,0 +1,209 @@
+// ==========================================================================
+// o-header — Lucci Fresh
+// Desktop: Logo | Nav (center) | Search + Account + Cart
+// Mobile:  Logo | Account + Cart + Hamburger
+// ==========================================================================
+
+.o-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: $white;
+  transition: box-shadow 0.3s ease;
+
+  &.is-scrolled {
+    box-shadow: 0 4px 16px rgba(31, 40, 24, 0.1);
+  }
+
+  // -----------------------------------------------------------------------
+  // TOP BAR
+  // -----------------------------------------------------------------------
+  &__top {
+    background-color: #da864d;
+    padding: 10px 16px;
+    text-align: center;
+  }
+
+  &__top-text {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: $white;
+    letter-spacing: 0.28px;
+    line-height: normal;
+
+    @media (min-width: $media-query-desktop-low) {
+      font-size: 14px;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // MAIN BAR
+  // -----------------------------------------------------------------------
+  &__main {
+    .s-container {
+      max-width: 1680px;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    gap: 16px;
+
+    @media (min-width: $media-query-desktop-low) {
+      padding: 22px 0;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // LOGO
+  // -----------------------------------------------------------------------
+  &__logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+
+    img {
+      display: block;
+      height: 39px;
+      width: auto;
+
+      @media (min-width: $media-query-desktop-low) {
+        height: 57px;
+      }
+    }
+
+    &-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: #1e593a;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // NAVIGATION (desktop only)
+  // -----------------------------------------------------------------------
+  &__nav {
+    display: none;
+    flex: 1;
+    justify-content: center;
+
+    @media (min-width: $media-query-desktop-low) {
+      display: flex;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // ACTIONS (right side)
+  // -----------------------------------------------------------------------
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  // Search button — hidden on mobile
+  &__search {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 21px;
+    height: 21px;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+
+    @media (min-width: $media-query-desktop-low) {
+      display: flex;
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    svg {
+      display: block;
+      width: 21px;
+      height: 21px;
+    }
+  }
+
+  // Account + Cart icon buttons
+  &__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 39px;
+    height: 39px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+
+    @media (min-width: $media-query-desktop-low) {
+      width: 49px;
+      height: 49px;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  // Cart count badge
+  &__cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 50px;
+    background-color: #1e593a;
+    color: $white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  // Hamburger — mobile only
+  &__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    @media (min-width: $media-query-desktop-low) {
+      display: none;
+    }
+
+    svg {
+      display: block;
+      width: 30px;
+      height: 23px;
+    }
+  }
+}

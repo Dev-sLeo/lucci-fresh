@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+$ff-path: '../fonts';
+$img-path: '../images';
+@import "vendor/splide";
+@import "vendor/aos";
+@import "base/functions";
+@import "base/media-queries";
+@import "base/settings";
+@import "base/base";
+
+@import "base/mixins",
+"base/var-layout",
+"base/var-typography",
+"base/container",
+"base/typography",
+"base/utils",
+"base/icons",
+"base/wp-editor",
+"base/buttons";
+
+@import './modules/components/pagination/pagination';
+@import './modules/components/pagination/blog-pagination';
+@import './modules/components/filters/select';
+@import './modules/components/filters/blog-filter';
+@import './modules/components/accordion/accordion';
+@import './modules/components/loading/loading';
+@import './modules/components/loading/skeleton';
+@import './modules/global/testimonial';
+
+@import './modules/woocommerce/woocommerce';
+@import './modules/pages/404/404';
+@import './modules/menu/nav';
+@import './modules/menu/nav-mobile';
+@import './modules/header/mobile-menu';
+@import './modules/footer/footer';
