@@ -1,76 +1,74 @@
+// modules/global/_testimonial.scss
+
 .o-testimonials {
-  position: relative;
+  background-color: #70845f;
   overflow: hidden;
+  padding: 80px 0 96px;
+
+  @include mq(desktop-low) {
+    padding: 96px 0 96px;
+  }
+
+  .s-container {
+    position: relative;
+  }
 
   &__header {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: rem(55.5);
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 64px;
+  }
 
-    @media(min-width: $media-query-desktop-low) {
-      flex-direction: row;
-      justify-content: space-between;
-    }
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(20px);
+    font-weight: 400;
+    color: #fff;
+    margin: 0;
+  }
 
-    .o-testimonials__title {
-      color: #23301C;
-      font-family: "Plus Jakarta Sans";
-      font-size: 28px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 140%;
-      /* 39.2px */
-    }
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(36px);
+    font-style: normal;
+    color: #fff;
+    margin: 0;
 
-    .o-testimonials__link {
-      color: #D26348;
-      font-family: "Plus Jakarta Sans";
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 140%;
-      /* 22.4px */
-
-      &:hover {
-        text-decoration: underline;
-      }
+    @include mq(desktop-low) {
+      font-size: rem(48px);
     }
   }
 
-  &__nav {
-    cursor: pointer;
-
-    svg {
-      path {
-        transition: stroke 0.3s ease;
-      }
-    }
-
-    &:hover {
-      svg {
-        path {
-          stroke: #425d33;
-        }
-      }
-    }
+  &__link {
+    display: none;
   }
 
   .swiper {
     overflow: visible;
   }
 
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    height: auto;
+  }
+
   &__pagination {
-    background: #d8d8d8;
+    background: rgba(255, 255, 255, 0.3);
     position: relative;
     height: 3px;
     width: 100%;
-  }
+    border-radius: 600px;
+    flex: 1;
 
-  .swiper-pagination-progressbar-fill {
-    background-color: #FD8426;
+    .swiper-pagination-progressbar-fill {
+      background-color: #fff;
+      border-radius: 600px;
+    }
   }
 
   &__controls {
@@ -81,35 +79,59 @@
     gap: rem(24);
     margin-top: rem(48);
 
-    @media(min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       margin-top: rem(54);
+    }
+  }
+
+  &__nav {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    svg path {
+      stroke: #fff;
     }
   }
 
   &__bottom {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+    align-items: flex-start;
+    gap: 24px;
     margin-top: rem(70);
 
-    @media(min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       flex-direction: row;
+      align-items: center;
       justify-content: space-between;
+    }
+  }
+
+  &__bottom-left {
+    img {
+      height: 54px;
+      width: auto;
+      display: block;
     }
   }
 
   &__bottom-right {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: rem(28);
-
-    @media(min-width: $media-query-desktop-low) {
-      flex-direction: row;
-    }
+    gap: rem(16);
+    flex-wrap: wrap;
   }
 
   &__google {
@@ -119,38 +141,34 @@
   }
 
   &__google-score {
-    color: #23301C;
-    font-family: "Plus Jakarta Sans";
-    font-size: 24px;
-    font-style: normal;
+    font-family: $ff-primary;
+    font-size: rem(24px);
     font-weight: 700;
-    line-height: 160%;
-    /* 38.4px */
+    color: #fff;
     letter-spacing: -0.48px;
+    line-height: 1.6;
   }
 
   &__numbers {
-    color: #23301C;
-    font-family: "Plus Jakarta Sans";
-    font-size: 16px;
-    font-style: normal;
+    font-family: $ff-primary;
+    font-size: rem(16px);
     font-weight: 400;
-    line-height: 160%;
-    /* 25.6px */
+    color: #fff;
     letter-spacing: -0.32px;
+    line-height: 1.6;
   }
 }
 
 .c-testimonial {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 24px;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 40px 24px;
-  background: #f3f6f1;
-  border-radius: 12px;
-  width: 100%;
+  height: 100%;
 
-  @media (min-width: $media-query-desktop-low) {
+  @include mq(desktop-low) {
     flex-direction: row;
     align-items: center;
     gap: 48px;
@@ -164,11 +182,12 @@
     gap: 20px;
     flex-shrink: 0;
 
-    @media (min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       flex-direction: column;
       gap: 32px;
       text-align: center;
       align-items: center;
+      width: 174px;
     }
   }
 
@@ -179,7 +198,7 @@
     overflow: hidden;
     flex-shrink: 0;
 
-    @media (min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       width: 94px;
       height: 94px;
     }
@@ -198,39 +217,35 @@
     flex-direction: column;
     gap: 2px;
 
-    @media (min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       align-items: center;
       text-align: center;
     }
   }
 
   &__name {
-    color: #23301C;
-    text-align: center;
-    font-family: "Plus Jakarta Sans";
-    font-size: 18px;
-    font-style: normal;
+    font-family: $ff-primary;
+    font-size: rem(20px);
     font-weight: 600;
-    line-height: 150%;
-    /* 27px */
-    letter-spacing: -0.36px;
+    color: #1f2818;
+    letter-spacing: -0.4px;
+    line-height: 1.5;
+    margin: 0;
   }
 
   &__role {
-    color: var(--Textos-500, #414B6C);
-    text-align: center;
-    font-family: "Plus Jakarta Sans";
-    font-size: 14px;
-    font-style: normal;
+    font-family: $ff-primary;
+    font-size: rem(14px);
     font-weight: 400;
-    line-height: 160%;
-    /* 22.4px */
+    color: #414b6c;
+    line-height: 1.6;
+    margin: 0;
   }
 
   &__divider {
     display: none;
 
-    @media (min-width: $media-query-desktop-low) {
+    @include mq(desktop-low) {
       display: block;
       width: 1px;
       align-self: stretch;
@@ -242,61 +257,60 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    flex: 1 0 0;
+    gap: 40px;
+    flex: 1;
     min-width: 0;
-
-    @media (min-width: $media-query-desktop-low) {
-      gap: 40px;
-    }
   }
 
   &__top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     width: 100%;
   }
 
   &__quote {
     display: block;
-    font-size: 56px;
-    line-height: 0.5;
-    color: #425d33;
-    font-family: Georgia, "Times New Roman", serif;
+    flex-shrink: 0;
+
+    svg {
+      display: block;
+    }
+  }
+
+  &__rating {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   &__body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-
-    @media (min-width: $media-query-desktop-low) {
-      gap: 20px;
-    }
+    gap: 8px;
   }
 
   &__desc-title {
-    color: #23301C;
-    font-family: "Plus Jakarta Sans";
-    font-size: 22px;
-    font-style: normal;
+    font-family: $ff-primary;
+    font-size: rem(18px);
     font-weight: 600;
-    line-height: 160%;
-    /* 35.2px */
-    letter-spacing: -0.44px;
+    color: #1f2818;
+    margin: 0;
   }
 
   &__text {
     p {
-      color: #23301C;
-      font-family: "Plus Jakarta Sans";
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 160%;
-      /* 25.6px */
-      letter-spacing: -0.32px;
+      font-family: $ff-heading;
+      font-size: rem(24px);
+      color: #1f2818;
+      line-height: 1.2;
+      letter-spacing: -0.64px;
+      margin: 0;
+
+      @include mq(desktop-low) {
+        font-size: rem(32px);
+      }
     }
   }
 }

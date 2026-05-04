@@ -1,0 +1,221 @@
+// modules/pages/_quem-somos.scss
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+.s-qs-hero {
+  background-color: #ffedd0;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 56px;
+
+  @include mq(tablet) {
+    padding-bottom: 72px;
+    min-height: 560px;
+  }
+
+  @include mq(desktop-low) {
+    padding-bottom: 96px;
+    min-height: 660px;
+  }
+
+  &__pattern {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    z-index: 0;
+  }
+
+  // ── Texto (centralizado) ──────────────────────────────────────────────────
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+    padding: 48px 0 40px;
+    position: relative;
+    z-index: 1;
+
+    @include mq(desktop-low) {
+      gap: 24px;
+      padding: 80px 0 60px;
+    }
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: #70845f;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-style: normal;
+    font-size: rem(36px);
+    line-height: 1.2;
+    color: #1f2818;
+    margin: 0;
+
+    @include mq(tablet) {
+      font-size: rem(48px);
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(62px);
+    }
+  }
+
+  &__description {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    line-height: 1.8;
+    color: rgba(31, 40, 24, 0.7);
+    margin: 0;
+    max-width: 560px;
+
+    @include mq(desktop-low) {
+      font-size: rem(22px);
+      max-width: 830px;
+    }
+  }
+
+  // ── Imagem + símbolo ──────────────────────────────────────────────────────
+  &__media {
+    position: relative;
+    z-index: 1;
+    max-width: 815px;
+    margin: 0 auto;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+
+    @include mq(tablet) {
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+    }
+
+    @include mq(desktop-low) {
+      border-radius: 24px;
+      aspect-ratio: 815 / 434;
+    }
+  }
+
+  &__symbol {
+    position: absolute;
+    bottom: -6%;
+    right: -8px;
+    width: 72px;
+
+    @include mq(tablet) {
+      width: 120px;
+      right: -16px;
+    }
+
+    @include mq(desktop-low) {
+      width: 208px;
+      bottom: -10%;
+      right: -48px;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+
+// ── About / História ──────────────────────────────────────────────────────────
+.s-qs-about {
+  background-color: #fff;
+  padding: 64px 0;
+
+  @include mq(desktop-low) {
+    padding: 96px 0;
+  }
+
+  &__texto {
+    max-width: 760px;
+    margin: 0 auto 48px;
+
+    @include mq(desktop-low) {
+      margin-bottom: 64px;
+    }
+
+    // Estilos para o conteúdo do WYSIWYG
+    p {
+      font-family: $ff-primary;
+      font-size: rem(18px);
+      font-weight: 400;
+      line-height: 1.8;
+      color: #1f2818;
+      margin: 0 0 24px;
+
+      @include mq(desktop-low) {
+        font-size: rem(20px);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__quote {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-top: 48px;
+    border-top: 1px solid #e8edfe;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+
+    @include mq(desktop-low) {
+      padding-top: 64px;
+    }
+  }
+
+  &__quote-mark {
+    display: flex;
+    justify-content: center;
+
+    svg {
+      display: block;
+    }
+  }
+
+  &__quote-text {
+    font-family: $ff-heading;
+    font-style: normal;
+    font-size: rem(22px);
+    line-height: 1.3;
+    color: #1f2818;
+    margin: 0;
+
+    @include mq(tablet) {
+      font-size: rem(28px);
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(34px);
+    }
+  }
+}

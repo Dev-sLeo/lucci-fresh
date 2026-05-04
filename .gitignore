@@ -13,3 +13,5 @@ vendor
 !webpack/css/sass/vendor/
 *.orig
 .env
+.mcp.json
+.mcp.lock

@@ -1,0 +1,280 @@
+// modules/global/_store.scss
+
+.s-store {
+
+  // ── Top: fundo branco (cabeçalho) ───────────────────────
+  &__top {
+    background: #fff;
+    padding: 60px 0 24px;
+
+    @include mq(desktop-low) {
+      padding: 80px 0 40px;
+    }
+  }
+
+  // ── Gallery wrap: transição branco → laranja ─────────────
+  &__gallery-wrap {
+    background: linear-gradient(180deg, #fff 50%, $color-laranja-cta 50%);
+    padding: 0;
+  }
+
+  // ── Body: fundo laranja com pattern ─────────────────────
+  &__body {
+    background: $color-laranja-cta;
+    position: relative;
+    overflow: hidden;
+    padding: 48px 0 60px;
+
+    @include mq(desktop-low) {
+      padding: 60px 0 80px;
+    }
+
+    .s-container {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // ── Pattern decorativo ──────────────────────────────────
+  &__pattern {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // ── Header ──────────────────────────────────────────────
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: #70845F;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    font-style: normal;
+    line-height: 1.2;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(48px);
+      max-width: 580px;
+      line-height: normal;
+    }
+  }
+
+  // ── Gallery ─────────────────────────────────────────────
+  &__gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+
+    @include mq(tablet) {
+      gap: 16px;
+    }
+  }
+
+  &__gallery-item {
+    border-radius: 7px;
+    overflow: hidden;
+    height: 102px;
+
+    // Proporções Figma: 282 : 362 : 556
+    &:nth-child(1) {
+      flex: 282;
+    }
+
+    &:nth-child(2) {
+      flex: 362;
+    }
+
+    &:nth-child(3) {
+      flex: 556;
+    }
+
+    @include mq(tablet) {
+      border-radius: 16px;
+      height: 220px;
+    }
+
+    @include mq(desktop-low) {
+      border-radius: 24px;
+      height: 370px;
+    }
+  }
+
+  &__gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  // ── Info: descrição ──────────────────────────────────────
+  &__info {
+    margin-bottom: 32px;
+
+    @include mq(desktop-low) {
+      margin-bottom: 60px;
+    }
+  }
+
+  &__description {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 500;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+      line-height: 1.8;
+      max-width: 871px;
+    }
+  }
+
+  // ── Maps grid ────────────────────────────────────────────
+  &__maps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @include mq(desktop-low) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+// ── Map card component ───────────────────────────────────────
+.c-map-card {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+
+  &__image-wrap {
+    display: block;
+    width: 100%;
+    height: 207px;
+
+    @include mq(desktop-low) {
+      height: 344px;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__address {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 32px;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    @include mq(desktop-low) {
+      padding: 36px;
+      gap: 36px;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+    }
+  }
+
+  &__pin {
+    background: $color-laranja-cta;
+    border-radius: 600px;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg,
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__address-text {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: 1.6;
+    color: rgba(31, 40, 24, 0.8);
+    margin: 0;
+    align-self: center;
+
+    @include mq(desktop-low) {
+      font-size: rem(16px);
+    }
+  }
+}
+
+.home {
+
+  .s-store__eyebrow,
+  .s-store__title {
+    color: #fff;
+  }
+
+  .s-store__header {
+    @include mq(desktop-low) {
+      align-items: flex-start;
+    }
+  }
+
+  .s-store__gallery-wrap,
+  .s-store__top {
+    background: #da864d;
+  }
+
+  @media (min-width: 1024px) {
+    .s-store__description {
+      max-width: none;
+    }
+  }
+}

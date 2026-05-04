@@ -1,0 +1,71 @@
+// modules/pages/single-product/_benefits.scss
+
+.s-sp-benefits {
+  background-color: #fff;
+  padding: 40px 0;
+
+  @include mq(desktop-low) {
+    padding: 56px 0;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @include mq(tablet) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 16px;
+    background-color: #ffedd0;
+    border-radius: 12px;
+    text-align: center;
+
+    @include mq(desktop-low) {
+      padding: 32px 24px;
+      gap: 16px;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__label {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    font-weight: 500;
+    line-height: 1.4;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(15px);
+    }
+  }
+}

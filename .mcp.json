@@ -2,7 +2,7 @@
   "mcpServers": {
     "figma": {
       "command": "npx",
-      "args": ["-y", "@figma/mcp"],
+      "args": ["-y", "figma-developer-mcp", "--stdio"],
       "env": {
         "FIGMA_API_KEY": "figd_ndkT-qO2gezRtbOw7g6qbenbKFpez9CzQurKviaV"
       }

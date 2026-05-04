@@ -1,22 +1,24 @@
 <?php
 global $tpl_engine;
-$block = get_field('depoimentos');
+$block = get_field('depoimentos', 'tema');
 
-$title               = $block['titulo'] ?? '';
-$veja_todos          = $block['veja_todos'] ?? '';
-$cards               = $block['cards'] ?? [];
-$numeros_avaliacoes  = $block['numeros_de_avaliacoes'] ?? '';
-$google_rating       = $block['estrelas_google'] ?? '';
+$eyebrow            = $block['eyebrow'] ?? '';
+$title              = $block['title'] ?? '';
+$cards              = $block['cards'] ?? [];
+$numeros_avaliacoes = $block['numeros_de_avaliacoes'] ?? '';
+$google_rating      = $block['estrelas'] ?? '';
 ?>
 
 <section class="o-testimonials single-section">
   <div class="s-container">
 
     <div class="o-testimonials__header">
+      <?php if ($eyebrow) : ?>
+        <p class="o-testimonials__eyebrow"><?= esc_html($eyebrow) ?></p>
+      <?php endif; ?>
       <h2 class="o-testimonials__title" data-animate="fade-down" data-animate-delay="0.1">
-        <?= $block['titulo']; ?>
+        <?= esc_html($title) ?>
       </h2>
-      <a href="<?= $block['veja_todos']; ?>" class="o-testimonials__link" data-animate="fade-up" data-animate-delay="0.2">Ver todos</a>
     </div>
 
     <?php if (!empty($cards)) : ?>
@@ -93,7 +95,7 @@ $google_rating       = $block['estrelas_google'] ?? '';
     <div class="o-testimonials__bottom" data-animate="fade-up" data-animate-delay="0.25">
       <div class="o-testimonials__bottom-left">
         <div class="o-home-testimonials__logo">
-          <img src="<?= get_stylesheet_directory_uri() ?>/public/image/logo-tripadvisor.webp" alt="Tripadvisor Logo">
+          <img src="<?= get_stylesheet_directory_uri() ?>/public/image/google-stars.webp" alt="Google Logo">
         </div>
       </div>
       <div class="o-testimonials__bottom-right">

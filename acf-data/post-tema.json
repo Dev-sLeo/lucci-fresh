@@ -1,4 +1,78 @@
 {
+    "depoimentos": {
+        "eyebrow": "Depoimentos",
+        "title": "O que nossos clientes dizem.",
+        "cards": [
+            {
+                "foto": {
+                    "ID": 135,
+                    "id": 135,
+                    "title": "filipe-coelho",
+                    "filename": "filipe-coelho.webp",
+                    "filesize": 17418,
+                    "url": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                    "link": "http:\/\/lucci-fresh.local\/filipe-coelho\/",
+                    "alt": "",
+                    "author": "1",
+                    "description": "",
+                    "caption": "",
+                    "name": "filipe-coelho",
+                    "status": "inherit",
+                    "uploaded_to": 0,
+                    "date": "2026-04-18 17:26:20",
+                    "modified": "2026-04-18 17:26:20",
+                    "menu_order": 0,
+                    "mime_type": "image\/webp",
+                    "type": "image",
+                    "subtype": "webp",
+                    "icon": "http:\/\/lucci-fresh.local\/wp-includes\/images\/media\/default.png",
+                    "width": 95,
+                    "height": 95,
+                    "sizes": {
+                        "thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "thumbnail-width": 95,
+                        "thumbnail-height": 95,
+                        "medium": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "medium-width": 95,
+                        "medium-height": 95,
+                        "medium_large": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "medium_large-width": 95,
+                        "medium_large-height": 95,
+                        "large": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "large-width": 95,
+                        "large-height": 95,
+                        "1536x1536": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "1536x1536-width": 95,
+                        "1536x1536-height": 95,
+                        "2048x2048": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "2048x2048-width": 95,
+                        "2048x2048-height": 95,
+                        "post-thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho-95x43.webp",
+                        "post-thumbnail-width": 95,
+                        "post-thumbnail-height": 43,
+                        "logo_mobile": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho-95x43.webp",
+                        "logo_mobile-width": 95,
+                        "logo_mobile-height": 43,
+                        "woocommerce_thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "woocommerce_thumbnail-width": 95,
+                        "woocommerce_thumbnail-height": 95,
+                        "woocommerce_single": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "woocommerce_single-width": 95,
+                        "woocommerce_single-height": 95,
+                        "woocommerce_gallery_thumbnail": "http:\/\/lucci-fresh.local\/wp-content\/uploads\/2026\/04\/filipe-coelho.webp",
+                        "woocommerce_gallery_thumbnail-width": 95,
+                        "woocommerce_gallery_thumbnail-height": 95
+                    }
+                },
+                "nome": "Filipe Coelho",
+                "descricao_nome": "4 meses atrás",
+                "estrelas": "5",
+                "descricao": "Muito gostosas as marmitas, super prático para o dia a dia"
+            }
+        ],
+        "estrelas": "5",
+        "numeros_de_avaliacoes": "de 5 com base em 363 avaliações"
+    },
     "footer": {
         "logo": {
             "ID": 52,
@@ -83,7 +157,7 @@
             "url": "#",
             "target": ""
         },
-        "upsites": "",
+        "upsites": "https:\/\/upsites.digital\/?origin=lucci-fresh",
         "copy": "Lucci Fresh- todos os direitos reservados"
     },
     "header": {

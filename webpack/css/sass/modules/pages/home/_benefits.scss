@@ -1,0 +1,92 @@
+// modules/components/_benefits.scss
+
+.s-benefits {
+  padding: 80px 0;
+  overflow: hidden;
+
+  @include mq(desktop-low) {
+    padding: 96px 0;
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    font-style: normal;
+    color: $color-preto;
+    margin: 0 0 36px;
+
+    @include mq(desktop-low) {
+      font-size: rem(40px);
+    }
+  }
+
+  // Mobile: Swiper slider
+  &__slider {
+
+    overflow: visible;
+
+    // Desktop: disable Swiper layout, use grid
+    @include mq(tablet) {
+      overflow: hidden;
+    }
+  }
+
+  &__list {
+
+    // Desktop: override Swiper flex → grid
+    @include mq(tablet) {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      transform: none !important;
+      flex-direction: unset;
+    }
+
+    @include mq(desktop-low) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .swiper-slide {
+      height: auto;
+
+      @include mq(tablet) {
+        width: auto !important;
+        height: auto;
+      }
+    }
+  }
+
+  &__scrollbar {
+    margin-top: 24px;
+
+    @include mq(tablet) {
+      display: none;
+    }
+
+    .swiper-scrollbar-drag {
+      background: #da864d;
+    }
+  }
+}
+
+.c-benefit-card {
+  background-color: #70845f;
+  border-radius: 16px;
+  padding: 24px;
+  padding-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  height: 100%;
+
+
+  &__text {
+    font-family: $ff-primary;
+    font-size: rem(18px);
+    font-weight: 500;
+    line-height: normal;
+    color: #fff;
+    margin: 0;
+  }
+}

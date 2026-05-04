@@ -148,7 +148,6 @@ ul.products,
   &__image-wrap {
     display: block;
     position: relative;
-    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: map-get($color-verde, 50);
   }
@@ -192,7 +191,7 @@ ul.products,
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 20px;
+    padding: 20px 0;
     flex: 1;
   }
 
@@ -252,9 +251,6 @@ ul.products,
 // -----------------------------------------------------------------------------
 // Página de produto individual
 // -----------------------------------------------------------------------------
-.p-single-product {
-  padding: 60px 0;
-}
 
 .woocommerce-product-gallery {
   border-radius: $wc-radius;
@@ -495,6 +491,41 @@ ul.products,
     margin-bottom: 32px;
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+
+    .coupon {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      label {
+        display: none;
+      }
+
+      input {
+        border: 1.5px solid map-get($color-verde, 100);
+        border-radius: 600px;
+        padding: 14px 20px;
+        font-size: 15px;
+        font-family: $ff-primary;
+        color: $wc-text;
+        min-width: 220px;
+        transition: border-color 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: map-get($color-verde, 500);
+        }
+      }
+    }
+  }
+
   &__table {
     width: 100%;
     border-collapse: collapse;
@@ -560,16 +591,27 @@ ul.products,
       .coupon {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
 
+        label {
+          display: none;
+        }
+
         input {
-          border: 1px solid $wc-border;
-          border-radius: $wc-radius-sm;
-          padding: 10px 14px;
-          font-size: 14px;
+          border: 1.5px solid map-get($color-verde, 100);
+          border-radius: 600px;
+          padding: 14px 20px;
+          font-size: 15px;
           font-family: $ff-primary;
-          width: 200px;
+          color: $wc-text;
+          min-width: 220px;
+          transition: border-color 0.2s;
+
+          &:focus {
+            outline: none;
+            border-color: map-get($color-verde, 500);
+          }
         }
       }
     }
@@ -625,21 +667,26 @@ ul.products,
     margin-top: 24px;
 
     .checkout-button {
-      display: block;
+      display: flex;
       width: 100%;
+      max-width: 100%;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      background: $wc-primary;
+      background: #DA864D;
       color: #fff;
-      padding: 14px 20px;
-      border-radius: $wc-radius-sm;
+      padding: 16px 32px;
+      border-radius: 600px;
       font-family: $ff-primary;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       text-decoration: none;
-      transition: background 0.2s;
+      border: 1px solid transparent;
+      transition: background 0.3s ease;
+      cursor: pointer;
 
       &:hover {
-        background: $wc-primary-dark;
+        background: #b76a3b;
       }
     }
   }
@@ -715,36 +762,20 @@ ul.products,
     select,
     textarea {
       width: 100%;
-      border: 1px solid $wc-border;
-      border-radius: $wc-radius-sm;
-      padding: 12px 16px;
+      border: 1.5px solid map-get($color-verde, 100);
+      border-radius: 12px;
+      padding: 14px 18px;
       font-size: 15px;
       font-family: $ff-primary;
       color: $wc-text;
       background: #fff;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
 
       &:focus {
         outline: none;
-        border-color: $wc-primary;
-      }
-
-      &.input-text.woocommerce-invalid {
-        border-color: #EF4444;
-      }
-    }
-
-    &.form-row-wide {
-      width: 100%;
-    }
-
-    &.form-row-first,
-    &.form-row-last {
-      float: left;
-      width: calc(50% - 8px);
-
-      &.form-row-last {
-        float: right;
+        border-color: map-get($color-verde, 500);
+        box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
       }
     }
   }
@@ -808,20 +839,24 @@ ul.products,
   }
 
   #place_order {
+    display: flex;
     width: 100%;
-    background: $wc-primary;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: #DA864D;
     color: #fff;
-    padding: 16px;
-    border: none;
-    border-radius: $wc-radius-sm;
+    padding: 16px 32px;
+    border: 1px solid transparent;
+    border-radius: 600px;
     font-family: $ff-primary;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.3s ease;
 
     &:hover {
-      background: $wc-primary-dark;
+      background: #b76a3b;
     }
   }
 }
@@ -831,17 +866,24 @@ ul.products,
 // -----------------------------------------------------------------------------
 .p-my-account {
   padding: 60px 0;
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 48px;
-  align-items: start;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 
   .s-container {
-    display: contents;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: start;
+
+    @include mq(desktop-low) {
+      grid-template-columns: 240px 1fr;
+      gap: 48px;
+    }
+  }
+
+  // Reset dos floats padrão do WooCommerce
+  .woocommerce-MyAccount-navigation,
+  .woocommerce-MyAccount-content {
+    float: none !important;
+    width: auto !important;
   }
 
   &__nav {
@@ -858,12 +900,12 @@ ul.products,
       display: block;
       padding: 14px 20px;
       font-family: $ff-primary;
-      font-size: 14px;
+      font-size: rem(14px);
       font-weight: 500;
       color: $wc-muted;
       text-decoration: none;
       border-bottom: 1px solid $wc-border;
-      transition: all 0.2s;
+      transition: color 0.2s, padding-left 0.2s;
 
       &:hover {
         color: $wc-primary;
@@ -871,11 +913,13 @@ ul.products,
       }
     }
 
-    li.is-active a {
+    li.is-active a,
+    li.woocommerce-MyAccount-navigation-link.is-active a {
       color: $wc-primary;
       font-weight: 600;
       background: #fff;
       border-left: 3px solid $wc-primary;
+      padding-left: 17px;
     }
 
     li:last-child a {
@@ -885,17 +929,96 @@ ul.products,
 
   &__content {
     h2 {
-      font-family: $ff-primary;
-      font-size: 22px;
-      font-weight: 600;
-      color: $wc-text;
-      margin-bottom: 20px;
+      font-family: $ff-heading;
+      font-size: rem(24px);
+      font-weight: 400;
+      color: $color-preto;
+      margin-bottom: 24px;
     }
 
+    p {
+      font-family: $ff-primary;
+      font-size: rem(16px);
+      color: $wc-muted;
+      line-height: 1.6;
+    }
+
+    // Formulários de perfil / endereço
+    .woocommerce-EditAccountForm,
+    .woocommerce-address-fields {
+      fieldset {
+        border: none;
+        padding: 0;
+        margin: 0 0 24px;
+
+        legend {
+          font-family: $ff-primary;
+          font-size: rem(12px);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: $wc-muted;
+          margin-bottom: 16px;
+        }
+      }
+
+      .form-row {
+        margin-bottom: 16px;
+
+        label {
+          display: block;
+          font-family: $ff-primary;
+          font-size: rem(13px);
+          font-weight: 500;
+          color: $wc-text;
+          margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 12px 16px;
+          border: 1.5px solid map-get($color-verde, 100);
+          border-radius: 12px;
+          font-family: $ff-primary;
+          font-size: rem(15px);
+          color: $color-preto;
+          background: #fff;
+          outline: none;
+          transition: border-color 0.2s;
+
+          &:focus {
+            border-color: map-get($color-verde, 500);
+            box-shadow: 0 0 0 3px rgba(map-get($color-verde, 500), 0.12);
+          }
+        }
+      }
+
+      .woocommerce-Button,
+      button[type="submit"] {
+        background: $color-laranja-cta;
+        color: #fff;
+        border: none;
+        border-radius: 600px;
+        padding: 14px 32px;
+        font-family: $ff-primary;
+        font-size: rem(16px);
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: darken($color-laranja-cta, 8%);
+        }
+      }
+    }
+
+    // Tabela de pedidos
     .woocommerce-orders-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: rem(14px);
       font-family: $ff-primary;
 
       th,
@@ -908,11 +1031,35 @@ ul.products,
       th {
         background: map-get($color-verde, 50);
         font-weight: 600;
-        font-size: 12px;
+        font-size: rem(12px);
         text-transform: uppercase;
         letter-spacing: 0.5px;
         color: $wc-text;
       }
+
+      .button {
+        background: $color-laranja-cta;
+        color: #fff;
+        border-radius: 600px;
+        padding: 8px 20px;
+        font-size: rem(13px);
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s;
+
+        &:hover {
+          background: darken($color-laranja-cta, 8%);
+        }
+      }
+    }
+
+    // Detalhes do pedido
+    .woocommerce-order-details,
+    .woocommerce-customer-details {
+      background: map-get($color-verde, 50);
+      border-radius: $wc-radius;
+      padding: 24px 28px;
+      margin-bottom: 24px;
     }
   }
 }
@@ -954,5 +1101,290 @@ ul.products,
         }
       }
     }
+  }
+}
+
+// =============================================================================
+// WooCommerce Blocks — Cart & Checkout
+// =============================================================================
+
+// Layout do bloco de carrinho
+.wp-block-woocommerce-cart,
+.wc-block-cart {
+  font-family: $ff-primary;
+
+  // Cabeçalho da tabela de itens
+  .wc-block-cart-items__header {
+    th {
+      font-family: $ff-primary;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: $wc-text;
+      padding-bottom: 12px;
+      border-bottom: 2px solid $wc-border;
+    }
+  }
+
+  // Item individual
+  .wc-block-cart-item {
+    &__image img {
+      border-radius: $wc-radius-sm;
+    }
+
+    &__product-name {
+      font-family: $ff-primary;
+      font-size: 15px;
+      font-weight: 600;
+      color: $wc-text;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+          color: $wc-primary;
+        }
+      }
+    }
+
+    &__individual-price,
+    &__total-price {
+      font-family: $ff-primary;
+      font-weight: 600;
+      color: $wc-text;
+    }
+  }
+
+  // Stepper de quantidade
+  .wc-block-components-quantity-selector {
+    border: 1.5px solid map-get($color-verde, 100);
+    border-radius: 600px;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+
+    &__button {
+      background: transparent;
+      border: none;
+      padding: 8px 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: $wc-text;
+      cursor: pointer;
+      transition: background 0.2s;
+      line-height: 1;
+
+      &:hover {
+        background: map-get($color-verde, 50);
+      }
+    }
+
+    &__input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      border-left: 1px solid map-get($color-verde, 100);
+      border-right: 1px solid map-get($color-verde, 100);
+      font-family: $ff-primary;
+      font-size: 15px;
+      font-weight: 600;
+      color: $wc-text;
+      padding: 8px 4px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  // Botão remover item
+  .wc-block-cart-item__remove-link {
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $wc-muted;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #EF4444;
+    }
+  }
+}
+
+// Totais (sidebar do bloco de carrinho)
+.wc-block-components-totals-wrapper,
+.wp-block-woocommerce-cart-order-summary-block {
+  background: map-get($color-verde, 50);
+  border-radius: $wc-radius;
+  padding: 28px;
+  font-family: $ff-primary;
+
+  .wc-block-components-totals-item {
+    font-family: $ff-primary;
+    font-size: 15px;
+    border-color: $wc-border;
+
+    &__label,
+    &__value {
+      color: $wc-text;
+    }
+
+    &--total {
+      font-weight: 700;
+      font-size: 18px;
+    }
+  }
+}
+
+// Bloco cupom
+.wc-block-components-totals-coupon {
+  .wc-block-components-totals-coupon__form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    border: 1.5px solid map-get($color-verde, 100);
+    border-radius: 600px;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-family: $ff-primary;
+    color: $wc-text;
+    background: #fff;
+    transition: border-color 0.2s;
+    min-width: 160px;
+
+    &:focus {
+      outline: none;
+      border-color: map-get($color-verde, 500);
+      box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+    }
+  }
+}
+
+// Botão "Continuar para finalização" e outros botões de bloco
+.wc-block-cart__submit-container {
+  margin-top: 20px;
+}
+
+.wc-block-cart__submit-button,
+.wc-block-components-checkout-place-order-button,
+.wp-block-woocommerce-proceed-to-checkout-block a,
+.wc-block-components-button:not(.wc-block-components-totals-coupon__button) {
+  display: flex !important;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  background: #DA864D !important;
+  color: #fff !important;
+  padding: 16px 32px !important;
+  border-radius: 600px !important;
+  border: 1px solid transparent !important;
+  font-family: $ff-primary !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background: #b76a3b !important;
+    color: #fff !important;
+  }
+
+  &:focus {
+    outline: 2px solid #DA864D;
+    outline-offset: 3px;
+  }
+}
+
+// Botão de cupom — estilo secundário (verde)
+.wc-block-components-totals-coupon__button {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+  color: map-get($color-verde, 500) !important;
+  border: 1.5px solid map-get($color-verde, 500) !important;
+  border-radius: 600px !important;
+  padding: 12px 22px !important;
+  font-family: $ff-primary !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.2s !important;
+
+  &:hover {
+    background: map-get($color-verde, 500) !important;
+    color: #fff !important;
+  }
+}
+
+// Inputs do bloco de checkout
+.wc-block-components-text-input,
+.wc-block-components-country-input,
+.wc-block-components-state-input,
+.wp-block-woocommerce-checkout-billing-address-block,
+.wp-block-woocommerce-checkout-shipping-address-block {
+
+  input,
+  select {
+    border: 1.5px solid map-get($color-verde, 100) !important;
+    border-radius: 12px !important;
+    padding: 14px 18px !important;
+    font-family: $ff-primary !important;
+    font-size: 15px !important;
+    color: $wc-text !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+
+    &:focus {
+      outline: none !important;
+      border-color: map-get($color-verde, 500) !important;
+      box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1) !important;
+    }
+  }
+
+  .wc-block-components-text-input.is-active,
+  &.is-active {
+    border-color: map-get($color-verde, 500) !important;
+  }
+}
+
+// Label flutuante do bloco (estilo padrão WC Blocks)
+.wc-block-components-text-input label,
+.wc-block-components-country-input label,
+.wc-block-components-state-input label {
+  font-family: $ff-primary;
+  font-size: 13px;
+  color: $wc-muted;
+}
+
+// Bloco de checkout — layout
+.wp-block-woocommerce-checkout {
+  font-family: $ff-primary;
+
+  .wc-block-checkout__main {
+    // coluna dos dados do cliente
+  }
+
+  .wc-block-checkout__sidebar {
+    background: map-get($color-verde, 50);
+    border-radius: $wc-radius;
+    padding: 28px;
+  }
+
+  // Título das seções
+  .wc-block-components-checkout-step__title {
+    font-family: $ff-heading;
+    font-size: 20px;
+    color: $wc-text;
   }
 }

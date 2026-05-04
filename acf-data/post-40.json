@@ -1,0 +1,26 @@
+{
+    "hero": {
+        "eyebrow": "Fale Conosco",
+        "title": "Simply dummy text of the printing and typesetting",
+        "description": "Lorem Ipsum has been the industry's standard dummy text ever."
+    },
+    "content": {
+        "eyebrow": "Contato",
+        "title": "Simply dummy text of the printing and typesetting",
+        "telefone": {
+            "text": "11 96075-2237",
+            "url": ""
+        },
+        "email": {
+            "text": "luccifresh.saudavel@gmail.com",
+            "url": ""
+        },
+        "endereco": {
+            "text": "Rua Américo Vespucci 646, Vila Prudente- 03135-010",
+            "url": ""
+        },
+        "horario": "Segunda à sexta das 10h às 18h30 Sábado das 10h às 15h",
+        "title_form": "Preencha o formulário abaixo",
+        "form": "[contact-form-7 id=\"5\"]"
+    }
+}

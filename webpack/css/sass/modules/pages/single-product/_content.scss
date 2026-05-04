@@ -1,0 +1,144 @@
+// modules/pages/single-product/_content.scss
+
+.s-sp-content {
+  padding: 56px 0;
+
+  @include mq(desktop-low) {
+    padding: 80px 0;
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    border-bottom: 1px solid rgba(112, 132, 95, 0.20);
+
+    @include mq(desktop-low) {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      padding-bottom: rem(141);
+    }
+  }
+
+  // ── Coluna de texto ───────────────────────────────────────────────────────
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    @include mq(desktop-low) {
+      gap: 48px;
+    }
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__subtitle {
+    font-family: $ff-heading;
+    font-size: rem(22px);
+    line-height: normal;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(28px);
+    }
+  }
+
+  &__body {
+    font-family: $ff-primary;
+    font-size: rem(15px);
+    line-height: 1.75;
+    color: rgba(#1f2818, 0.75);
+
+    p {
+      margin: 0 0 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(16px);
+    }
+  }
+
+  // ── Tabela Nutricional ────────────────────────────────────────────────────
+
+  &__nutrition {
+    border: 1px solid rgba(#70845f, 0.3);
+    border-radius: 24px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    @include mq(desktop-low) {
+      padding: 48px;
+    }
+  }
+
+  &__nutrition-title {
+    font-family: $ff-heading;
+    font-size: rem(22px);
+    line-height: normal;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(24px);
+    }
+  }
+
+  &__table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    gap: 16px;
+    border-radius: 8px;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid rgba(#70845f, 0.2);
+    margin: 0;
+  }
+
+  &__nutriente {
+    font-family: $ff-primary;
+    font-size: rem(15px);
+    font-weight: 400;
+    line-height: normal;
+    color: $color-preto;
+
+    @include mq(desktop-low) {
+      font-size: rem(16px);
+    }
+  }
+
+  &__valor {
+    font-family: $ff-primary;
+    font-size: rem(15px);
+    font-weight: 500;
+    line-height: normal;
+    color: #70845f;
+    white-space: nowrap;
+
+    @include mq(desktop-low) {
+      font-size: rem(16px);
+    }
+  }
+}

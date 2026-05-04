@@ -1,0 +1,129 @@
+// modules/components/_product-grid.scss
+
+.s-product-grid {
+  padding: 80px 0;
+  overflow: hidden;
+
+  @include mq(desktop-low) {
+    padding: 96px 0;
+    overflow: visible;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin-bottom: 32px;
+
+    @include mq(desktop-low) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    @include mq(desktop-low) {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    font-style: normal;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(40px);
+    }
+  }
+
+  &__divider {
+    display: none;
+
+    @include mq(desktop-low) {
+      display: block;
+      width: 1px;
+      height: 36px;
+      background: $color-preto;
+      align-self: center;
+      flex-shrink: 0;
+    }
+  }
+
+  &__subtitle {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: $color-preto;
+    margin: 0;
+  }
+
+  // Botão desktop: visível apenas em desktop (dentro do header)
+  &__btn-desktop {
+    display: none;
+    flex-shrink: 0;
+
+    @include mq(desktop-low) {
+      display: inline-flex;
+    }
+  }
+
+  // Swiper — mobile: slider horizontal / desktop: grid 3 colunas
+  .swiper {
+    overflow: visible;
+
+    @include mq(desktop-low) {
+      overflow: visible;
+    }
+  }
+
+  .swiper-wrapper {
+    align-items: stretch;
+
+    @include mq(desktop-low) {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      transform: none !important;
+    }
+  }
+
+  .swiper-slide {
+    height: auto;
+    width: 280px;
+
+    @include mq(tablet) {
+      width: 340px;
+    }
+
+    @include mq(desktop-low) {
+      width: auto !important;
+    }
+  }
+
+  // Botão mobile: visível apenas no mobile (abaixo do slider)
+  &__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    @include mq(desktop-low) {
+      display: none;
+    }
+  }
+}

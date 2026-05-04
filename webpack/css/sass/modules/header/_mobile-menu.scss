@@ -1,202 +1,170 @@
+// ==========================================================================
+// menu-mobile — Lucci Fresh
+// Full-screen overlay: bg #FFEDD0, logo + X top, nav centered, social bottom
+// ==========================================================================
+
 .menu-mobile {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100dvh;
-  background-color: $white;
-
+  background-color: #ffedd0;
   z-index: -999;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 
   display: flex;
   flex-direction: column;
 
   &.active {
-    z-index: 999;
+    z-index: 1000;
     visibility: visible;
     opacity: 1;
   }
 
-  // -------------------------
-  // HEADER FIXO
-  // -------------------------
-  .menu-mobile__header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-
-    z-index: 10;
+  // -----------------------------------------------------------------------
+  // HEADER: logo + close
+  // -----------------------------------------------------------------------
+  &__header {
+    flex-shrink: 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 49px 25px 0;
+  }
 
-    padding: rem(33.9) rem(24);
-    background-color: $white;
+  &__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 
-    .logo svg {
-      height: 30.922px;
+    img {
+      display: block;
+      height: 39px;
       width: auto;
-    }
-
-    .close-icon {
-      cursor: pointer;
     }
   }
 
+  &__logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: #1e593a;
+  }
 
-  // -------------------------
-  // ÁREA ROLÁVEL
-  // -------------------------
-  .menu-container {
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    svg {
+      display: block;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // NAV: centered list of links
+  // -----------------------------------------------------------------------
+  &__nav {
     flex: 1;
-    min-height: 0;
-
-    padding: rem(158) 1.5rem 2rem;
-
     overflow-y: auto;
-    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-
+    padding: 24px 24px 24px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: flex-start;
+    min-height: 0; // critical: lets flex child shrink and scroll
 
-    .c-main-menu__dropdown {
-      display: none;
-
-      &.is-open {
-        display: block;
-        margin-top: 1rem;
-        margin-bottom: rem(28);
-      }
-    }
-
-    .button-container {
-      margin-top: rem(64);
+    .c-main-menu__list {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      gap: rem(8);
-
-      .button {
-        max-width: none;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        gap: 1.5rem;
-
-        svg {
-          path {
-            stroke: #0056FF;
-          }
-        }
-      }
-    }
-
-    .c-main-menu__item-head {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      cursor: pointer;
+      gap: clamp(14px, 3.5vh, 28px);
+      list-style: none;
+      margin: auto;
+      padding: 0;
+      width: 100%;
     }
 
     .c-main-menu__link {
-      color: #4E4E4E;
-      font-family: Inter;
+      font-family: 'Manrope', sans-serif;
       font-size: 18px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 160%;
-      /* 28.8px */
-      letter-spacing: -0.5px;
+      font-weight: 500;
+      color: rgba(31, 40, 24, 0.7);
+      text-decoration: none;
+      line-height: normal;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: rgba(31, 40, 24, 1);
+      }
     }
 
     .current_page_item .c-main-menu__link,
     .current-menu-item .c-main-menu__link,
     .current_page_ancestor .c-main-menu__link,
     .current-menu-parent .c-main-menu__link {
-      color: #0056FF;
+      color: #1e593a;
+      font-weight: 600;
     }
 
+    // Sub-menus hidden on mobile (depth=2 handled by walker)
+    .c-main-menu__dropdown {
+      display: none;
 
-    .c-main-menu__list {
+      &.is-open {
+        display: block;
+        margin-top: 12px;
+      }
+    }
+
+    .c-main-menu__item-head {
       display: flex;
-      flex-direction: column;
-      gap: rem(28);
-    }
-
-    .c-mega__list {
-      display: flex;
-      flex-direction: column;
-      gap: rem(8);
-    }
-
-    .c-mega__list-item {
-      border-radius: 16px;
-      background: var(--Blue-02, #ECF0F8);
-      padding: rem(24);
-      display: flex;
-      flex-direction: column;
-      flex: 1 0 0;
-    }
-
-    .c-mega__card-title {
-      color: #0F1D3A;
-      font-family: Poppins;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 26px;
-      /* 144.444% */
-      margin-bottom: rem(8);
-    }
-
-    .c-mega__card-desc {
-      color: #6F7789;
-      font-family: Inter;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 160%;
-      /* 25.6px */
-      letter-spacing: -0.032px;
-      margin-bottom: rem(16);
-    }
-
-    .c-mega__card-link {
-      width: max-content;
-      display: flex;
-      justify-content: flex-start;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      color: #0056FF;
-      leading-trim: both;
-      text-edge: cap;
-      font-family: Inter;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 150%;
-      /* 328.571% */
-
-      &:hover {
-        text-decoration: underline;
-      }
-
-      svg {
-        width: 5px;
-        height: 8px;
-        flex: 5px 0 0;
-        margin-top: 2.9px;
-      }
+      cursor: pointer;
     }
-
   }
 
+  // -----------------------------------------------------------------------
+  // SOCIAL ICONS: row centered at bottom
+  // -----------------------------------------------------------------------
+  &__social {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: clamp(16px, 3vh, 32px) 24px clamp(24px, 4vh, 48px);
+  }
 
+  &__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 49px;
+    height: 49px;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
 }

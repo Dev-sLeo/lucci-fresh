@@ -1,23 +1,14 @@
 $white: #FFFFFF;
 $body-color: #FFFFFF;
 $color-laranja: #FF7201;
+$color-laranja-cta: #DA864D;
 
 $color-beje: (
   200: #FEEFD4,
   300: #F3EADD
 );
 
-$color-preto: (
-  100: #D3D3D3,
-  200: #A7A7A7,
-  300: #7A7A7A,
-  400: #4E4E4E,
-  500: #222222,
-  600: #1B1B1B,
-  700: #141414,
-  800: #0E0E0E,
-  900: #070707
-);
+$color-preto: #1F2818;
 
 $color-verde: (
   50: #F2F6F4,
@@ -32,4 +23,5 @@ $color-verde: (
   900: #06120C
 );
 
-$ff-primary: "Poppins", sans-serif;
+$ff-primary: "Manrope", sans-serif;
+$ff-heading: "DM Serif Display", serif;

@@ -9,8 +9,8 @@ export default function () {
 
     if (!menu || !hamburguer) return;
 
-    const close = menu.querySelector(".close-icon");
-    const mobileButton = menu.querySelector(".menu-mobile .button");
+    const close = menu.querySelector(".js-mobile-menu-close, .close-icon");
+    const mobileButton = null;
 
     const closeAllPanels = () => {
         const opened = menu.querySelectorAll(".is-open");
@@ -29,6 +29,8 @@ export default function () {
 
     const setMenuOpen = (open) => {
         menu.classList.toggle("active", open);
+        menu.setAttribute("aria-hidden", open ? "false" : "true");
+        hamburguer.setAttribute("aria-expanded", open ? "true" : "false");
         body.style.overflow = open ? "hidden" : "auto";
         if (!open) closeAllPanels();
     };

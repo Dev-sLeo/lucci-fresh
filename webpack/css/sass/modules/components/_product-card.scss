@@ -1,0 +1,116 @@
+// modules/components/_product-card.scss
+// Shared product card used in featured-products and product-grid sections
+
+.c-product-card {
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  height: 100%;
+
+  &__image-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  &__image-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    height: 200px;
+
+    @include mq(desktop-low) {
+      height: 232px;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+
+    .c-product-card:hover & {
+      transform: scale(1.04);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1;
+    align-items: flex-end;
+    padding: rem(20) 0;
+  }
+
+  &__info {
+    width: 100%;
+  }
+
+  &__name {
+    font-family: $ff-heading;
+    font-size: rem(20px);
+    font-style: normal;
+    color: #000;
+    text-decoration: none;
+    display: block;
+    line-height: normal;
+
+    @include mq(desktop-low) {
+      font-size: rem(22px);
+    }
+
+    &:hover {
+      color: $color-laranja-cta;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  &__price {
+    padding: 16px 20px;
+    background-color: #ffedd0;
+    border-radius: 600px;
+    color: #1F2818;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  &__cta {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid $color-laranja-cta;
+    background-color: #DA864D;
+    border-radius: 600px;
+    padding: 16px 20px;
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 500;
+    color: $white;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: transparent;
+      color: $color-laranja-cta;
+    }
+  }
+}

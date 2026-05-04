@@ -1,0 +1,241 @@
+// ==========================================================================
+// s-category-slider — Lucci Fresh
+// Figma node 23:127 — card 388×483px, label branca, arrow ↗
+// Header row: eyebrow + heading (left) | prev + progress + next (right)
+// ==========================================================================
+
+.s-category-slider {
+  padding: 64px 0 72px;
+
+  @include mq(desktop-low) {
+    padding: 80px 0 96px;
+  }
+
+  // -----------------------------------------------------------------------
+  // Header row — heading block + navigation controls
+  // -----------------------------------------------------------------------
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 40px;
+
+    @include mq(desktop-low) {
+      margin-bottom: 48px;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Heading block — eyebrow + title stacked
+  // -----------------------------------------------------------------------
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: #70845f;
+    margin: 0;
+    line-height: normal;
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    font-weight: 400;
+    color: $color-preto;
+    line-height: 1.15;
+    margin: 0;
+
+    @include mq(tablet) {
+      font-size: rem(40px);
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(40px);
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Navigation — prev + progress bar + next (desktop only)
+  // -----------------------------------------------------------------------
+  &__nav {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+
+    @include mq(tablet) {
+      display: flex;
+    }
+  }
+
+  &__prev,
+  &__next {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: $color-preto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  &__progress {
+    width: 160px;
+    height: 3px;
+    border-radius: 600px;
+    background: rgba($color-preto, 0.15);
+    position: relative; // override Swiper's position:absolute injected via swiper/css/scrollbar
+    top: auto;
+    left: auto;
+    bottom: auto;
+    overflow: hidden;
+
+    @include mq(tablet) {
+      width: 200px;
+    }
+
+    @include mq(desktop-low) {
+      width: 232px;
+    }
+
+    .swiper-scrollbar-drag {
+      background: $color-laranja-cta;
+      border-radius: 600px;
+      height: 100%;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Swiper wrapper — overflow visible to show peek of next slide
+  // -----------------------------------------------------------------------
+  &__wrapper {
+    overflow: hidden;
+    padding-left: calc((100vw - 100%) / 2);
+
+    @include mq(desktop-low) {
+      padding-left: calc((100vw - #{$container-desktop}) / 2);
+    }
+
+    .swiper {
+      overflow: visible;
+    }
+  }
+}
+
+// ==========================================================================
+// c-category-card
+// ==========================================================================
+.c-category-card {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 380px;
+  border-radius: rem(16);
+  overflow: hidden;
+  text-decoration: none;
+
+  @media (min-width: $media-query-desktop-low) {
+    height: 483px;
+  }
+
+  // Full-bleed image
+  &__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+
+    &--placeholder {
+      background-color: #c8d5c0;
+    }
+  }
+
+  // Subtle zoom on hover
+  &:hover .c-category-card__image {
+    transform: scale(1.04);
+  }
+
+  // Label bar — bottom of card
+  &__label {
+    position: absolute;
+    bottom: 16px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+
+  &__name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000;
+    line-height: normal;
+    white-space: nowrap;
+
+    @media (min-width: $media-query-desktop-low) {
+      font-size: 22px;
+    }
+  }
+
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #000000;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // Arrow slide in on hover
+  &:hover &__arrow {
+    color: $color-laranja-cta;
+  }
+}

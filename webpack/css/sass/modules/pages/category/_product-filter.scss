@@ -1,0 +1,162 @@
+// modules/pages/category/_product-filter.scss
+
+.s-cat-products {
+  padding: 48px 0 64px;
+
+  @include mq(desktop-low) {
+    padding: 72px 0 96px;
+  }
+
+  // ── Cabeçalho ─────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+
+    @include mq(tablet) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    @include mq(desktop-low) {
+      margin-bottom: 48px;
+    }
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    line-height: normal;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(48px);
+    }
+  }
+
+  &__count {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    font-weight: 400;
+    color: #414b6c;
+  }
+
+  // ── Filtros por subcategoria ───────────────────────────────────────────────
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__filter-btn {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    font-weight: 600;
+    line-height: normal;
+    color: $color-preto;
+    background-color: transparent;
+    border: 1.5px solid #e8edfe;
+    border-radius: 600px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+
+    &:hover,
+    &--active {
+      background-color: map-get($color-verde, 500);
+      border-color: map-get($color-verde, 500);
+      color: #fff;
+    }
+  }
+
+  // ── Grid de produtos ───────────────────────────────────────────────────────
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    @include mq(desktop-low) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #414b6c;
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    padding: 40px 0;
+  }
+
+  // ── Paginação ──────────────────────────────────────────────────────────────
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    @include mq(desktop-low) {
+      margin-top: 64px;
+    }
+  }
+}
+
+// ── Skeleton de produto ─────────────────────────────────────────────────────
+
+.c-skeleton-product {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f5f5f5;
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 0;
+  }
+
+  &__body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__name {
+    height: 20px;
+    border-radius: 4px;
+    width: 75%;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  &__price {
+    height: 28px;
+    width: 80px;
+    border-radius: 4px;
+  }
+
+  &__btn {
+    height: 40px;
+    flex: 1;
+    border-radius: 600px;
+  }
+}

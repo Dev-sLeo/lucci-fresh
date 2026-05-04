@@ -1,5 +1,5 @@
 .u-button {
-  font-family: "Plus Jakarta Sans";
+  font-family: Manrope;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -9,18 +9,36 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 600px;
   border: var(--stroke-weight-1, 1px) solid transparent;
   transition: all .3s ease;
   max-width: max-content;
   cursor: pointer;
-}
 
-.u-button__green {
-  background-color: #425d33;
-  color: #ffffff;
+  &__white {
+    background-color: #ffffff;
+    color: #425d33;
 
-  &:hover {
-    background-color: #344a28;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+
+  &__green {
+    background-color: #425d33;
+    color: #ffffff;
+
+    &:hover {
+      background-color: #344a28;
+    }
+  }
+
+  &__wood {
+    background-color: #DA864D;
+    color: #ffffff;
+
+    &:hover {
+      background-color: #b76a3b;
+    }
   }
 }

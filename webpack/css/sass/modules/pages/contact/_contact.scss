@@ -1,0 +1,314 @@
+// modules/pages/contact/_contact.scss
+
+.s-ct-contact {
+  padding: 56px 0;
+
+  @include mq(desktop-low) {
+    padding: 96px 0;
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+
+    @include mq(desktop-low) {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+  }
+
+  // ── Coluna de informações ──────────────────────────────────────────────────
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    @include mq(desktop-low) {
+      gap: 56px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: #70845f;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(32px);
+    line-height: normal;
+    color: $color-preto;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(40px);
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(#1e593a, 0.15);
+    list-style: none;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+
+    svg path {
+      stroke: #da864d;
+    }
+  }
+
+  &__item-text {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    line-height: 1.8;
+    color: rgba(#1f2818, 0.7);
+    margin: 0;
+    text-decoration: none;
+
+    &:is(a):hover {
+      color: #1f2818;
+      text-decoration: underline;
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(18px);
+    }
+  }
+
+  // ── Coluna do formulário (container branco) ───────────────────────────────
+
+  &__form-wrap {
+    background: #fff;
+    border: 1px solid rgba(#1e593a, 0.3);
+    border-radius: 16px;
+    padding: 32px 24px;
+
+    @include mq(tablet) {
+      padding: 48px 40px;
+    }
+
+    @include mq(desktop-low) {
+      padding: 64px 60px;
+    }
+  }
+
+  &__form-title {
+    font-family: $ff-heading;
+    font-size: rem(22px);
+    line-height: normal;
+    color: $color-preto;
+    margin: 0 0 32px;
+
+    @include mq(desktop-low) {
+      font-size: rem(24px);
+    }
+  }
+
+  // ── CF7 ───────────────────────────────────────────────────────────────────
+
+  &__cf7 {
+
+    .u-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .wpcf7-form-control-wrap,
+    p {
+      display: block;
+      margin: 0;
+    }
+
+    .wpcf7-form>p {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input:not([type='submit']),
+    textarea,
+    select {
+      width: 100%;
+      padding: 16px 18px;
+      border: 1px solid rgba(#70845f, 0.3);
+      border-radius: 8px;
+      background: #fff;
+      font-family: $ff-primary;
+      font-size: rem(16px);
+      line-height: 1.625;
+      color: rgba(#1f2818, 0.7);
+      outline: none;
+      transition: border-color 0.2s ease;
+      appearance: none;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: rgba(#1f2818, 0.5);
+      }
+
+      &:focus {
+        border-color: rgba(#70845f, 0.7);
+      }
+    }
+
+    textarea {
+      min-height: 126px;
+      resize: vertical;
+    }
+
+    input[type='submit'] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 32px;
+      border: none;
+      border-radius: 600px;
+      background-color: #da864d;
+      font-family: $ff-primary;
+      font-weight: 600;
+      font-size: rem(18px);
+      line-height: normal;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #c4753e;
+      }
+    }
+
+    .wpcf7-not-valid-tip {
+      font-family: $ff-primary;
+      font-size: rem(13px);
+      color: #c0392b;
+      margin-top: 4px;
+    }
+
+    .wpcf7-response-output {
+      font-family: $ff-primary;
+      font-size: rem(14px);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: rgba(#1e593a, 0.08);
+      color: #1e593a;
+      margin: 0;
+
+      &.wpcf7-validation-errors,
+      &.wpcf7-spam-blocked {
+        background-color: rgba(#c0392b, 0.08);
+        color: #c0392b;
+      }
+    }
+  }
+
+  // ── Formulário de fallback ────────────────────────────────────────────────
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__field {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid rgba(#70845f, 0.3);
+    border-radius: 8px;
+    background: #fff;
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    line-height: 1.625;
+    color: rgba(#1f2818, 0.7);
+    outline: none;
+    transition: border-color 0.2s ease;
+    appearance: none;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: rgba(#1f2818, 0.5);
+    }
+
+    &:focus {
+      border-color: rgba(#70845f, 0.7);
+    }
+
+    @at-root textarea#{&} {
+      min-height: 126px;
+      resize: vertical;
+      align-items: flex-start;
+    }
+  }
+
+  &__feedback {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    line-height: 1.6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: rgba(#1e593a, 0.08);
+    color: #1e593a;
+
+    &.is-error {
+      background-color: rgba(#c0392b, 0.08);
+      color: #c0392b;
+    }
+  }
+
+  &__submit {
+    align-self: flex-start;
+    padding: 20px 32px;
+    font-size: rem(18px);
+    border-radius: 600px;
+  }
+}

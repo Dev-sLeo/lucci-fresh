@@ -1,0 +1,111 @@
+// modules/global/_about.scss
+
+.s-about {
+  background-color: #ffedd0;
+  padding: 80px 0;
+  overflow: hidden;
+
+  @include mq(desktop-low) {
+    padding: 0;
+    min-height: 800px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    @include mq(desktop-low) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  &__content {
+    flex: 0 0 auto;
+
+    @include mq(desktop-low) {
+      max-width: 594px;
+    }
+  }
+
+  &__text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    align-items: flex-start;
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(20px);
+    font-weight: 400;
+    color: #70845f;
+    margin: 0;
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(36px);
+    font-style: normal;
+    color: $color-preto;
+    margin: 0;
+    line-height: normal;
+
+    @include mq(desktop-low) {
+      font-size: rem(48px);
+    }
+  }
+
+  &__description {
+    font-family: $ff-primary;
+    font-size: rem(18px);
+    font-weight: 400;
+    line-height: 1.8;
+    color: rgba(31, 40, 24, 0.7);
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+    }
+  }
+
+  &__btn {
+    padding: 16px 20px;
+    font-size: rem(18px);
+
+    @include mq(desktop-low) {
+      padding: 24px 20px;
+      font-size: rem(20px);
+    }
+  }
+
+  &__media {
+    flex: 0 0 auto;
+    position: relative;
+
+    @include mq(desktop-low) {
+      flex: 0 0 486px;
+      max-width: 486px;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 24px;
+    display: block;
+
+    @include mq(desktop-low) {
+      max-height: 532px;
+    }
+  }
+}

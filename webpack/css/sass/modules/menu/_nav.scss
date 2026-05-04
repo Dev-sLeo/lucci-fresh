@@ -1,75 +1,139 @@
-.c-main-menu__list {
-  &#menu-principal {
+// ==========================================================================
+// Desktop nav — Lucci Fresh
+// Figma node 4:466 — Manrope Medium 16px #1f2818, gap 40px
+// ==========================================================================
+
+.o-header__nav {
+
+  .c-main-menu__list {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: rem(40);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .c-main-menu__item {
+    position: relative;
+    z-index: 9;
+  }
+
+  .c-main-menu__item-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .c-main-menu__link {
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1f2818;
+    text-decoration: none;
+    line-height: normal;
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: rem(6);
+
+    // animated underline
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      border-radius: 8px;
+      background-color: #1e593a;
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+  }
+
+  .c-main-menu__item:hover .c-main-menu__link::after {
+    width: 100%;
+    left: 0;
+  }
+
+  // Active / current page
+  .current_page_item>.c-main-menu__item-head>.c-main-menu__link,
+  .current-menu-item>.c-main-menu__item-head>.c-main-menu__link,
+  .current_page_ancestor>.c-main-menu__item-head>.c-main-menu__link,
+  .current-menu-parent>.c-main-menu__item-head>.c-main-menu__link {
+    color: #1e593a;
+    font-weight: 600;
+
+    &::after {
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  // Dropdown toggle chevron button
+  .c-main-menu__toggle {
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
 
-    @media (min-width: $media-query-desktop-low) {
-      flex-direction: row;
-      gap: rem(36);
+  // Dropdown wrapper — starts at top:0 so the transparent area above the menu keeps hover alive
+  .c-main-menu__dropdown {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 100;
+  }
+
+  .menu-item-has-children:hover .c-main-menu__dropdown,
+  .menu-item-has-children:focus-within .c-main-menu__dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  // Sub-menu dropdown
+  .sub-menu {
+    min-width: 220px;
+    background: #1f2818;
+    border-radius: 12px;
+    padding: 8px 0;
+    list-style: none;
+    margin: 0;
+    margin-top: 2.5rem;
+  }
+
+  .sub-menu .menu-item a {
+    display: block;
+    padding: 14px 24px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $color-laranja-cta;
     }
+  }
 
-    .menu-item {
-      .c-main-menu__link {
-        color: #23301C;
-        font-family: "Plus Jakarta Sans";
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-
-        /* 22.4px */
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: rem(12);
-
-        svg {
-          width: 20px;
-          height: 20px;
-          aspect-ratio: 1/1;
-        }
-
-        /* Linha animada */
-        &::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -12px;
-          left: 50%;
-          width: 0%;
-          height: 2px;
-          border-radius: 8px;
-          background-color: #425D33;
-          transition: width .3s ease, left .3s ease;
-        }
-      }
-
-      &:hover .c-main-menu__link::after {
-        width: 100%;
-        left: 0;
-      }
-
-      /* Página atual */
-      &.current_page_item .c-main-menu__link,
-      &.current-menu-item .c-main-menu__link,
-      &.current_page_ancestor .c-main-menu__link,
-      &.current-menu-parent .c-main-menu__link {
-        color: #425D33;
-        font-weight: bolder;
-      }
-
-      &.current_page_item .c-main-menu__link::after,
-      &.current-menu-item .c-main-menu__link::after,
-      &.current_page_ancestor .c-main-menu__link::after,
-      &.current-menu-parent .c-main-menu__link::after {
-        width: 100%;
-        left: 0;
-      }
-    }
+  // Rotate chevron when parent is hovered
+  .menu-item-has-children:hover .c-main-menu__toggle,
+  .menu-item-has-children:focus-within .c-main-menu__toggle {
+    transform: rotate(180deg);
   }
 }

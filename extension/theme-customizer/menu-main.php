@@ -42,8 +42,8 @@ class Main_Menu_Walker extends Walker_Nav_Menu
 			}
 
 			if ($has_children) {
-				$svg_chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="8" viewBox="0 0 13 8" fill="none"><path d="M0.999998 0.999998L6.11778 6.11778L11.2356 0.999998" stroke="#0056FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-				$output .= "<button class='c-main-menu__toggle' type='button'>{$svg_chevron}</button>";
+				$svg_chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none"><g clip-path="url(#clip0_4_27924)"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#DA864D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_4_27924"><rect width="18" height="18" fill="white"/></clipPath></defs></svg>';
+				$output .= "<button class='c-main-menu__toggle' type='button' aria-label='Submenu'>{$svg_chevron}</button>";
 			}
 
 			$output .= "</div>";
@@ -60,12 +60,18 @@ class Main_Menu_Walker extends Walker_Nav_Menu
 
 	public function start_lvl(&$output, $depth = 0, $args = [])
 	{
+		if ($depth === 0) {
+			$output .= "<div class='c-main-menu__dropdown'>";
+		}
 		$output .= "<ul class='sub-menu'>";
 	}
 
 	public function end_lvl(&$output, $depth = 0, $args = [])
 	{
 		$output .= "</ul>";
+		if ($depth === 0) {
+			$output .= "</div>";
+		}
 	}
 
 	public function end_el(&$output, $item, $depth = 0, $args = [])

@@ -1,0 +1,247 @@
+// modules/pages/single-product/_hero.scss
+
+.s-sp-hero {
+  background-color: #70845f;
+  overflow: hidden;
+  position: relative;
+
+  // ── Pattern ───────────────────────────────────────────────────────────────
+
+  &__pattern {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 0 56px;
+    position: relative;
+    z-index: 1;
+
+    @include mq(desktop-low) {
+      grid-template-columns: 46.9250210615% 41.112047177759%;
+      gap: 64px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 56px 0 80px;
+    }
+  }
+
+  // ── Galeria (Swiper) ───────────────────────────────────────────────────────
+
+  &__gallery-wrap {
+    order: -1;
+
+    @include mq(desktop-low) {
+      order: 0;
+    }
+  }
+
+  &__gallery {
+    overflow: hidden;
+    border-radius: 16px;
+
+    .swiper-slide {
+      height: auto;
+    }
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  &__gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  &__prev,
+  &__next {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(#fff, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  &__progress {
+    flex: 1;
+    height: 3px;
+    border-radius: 600px;
+    background: rgba(#fff, 0.3);
+    position: relative;
+    overflow: hidden;
+
+    .swiper-scrollbar-drag {
+      background: #fff;
+      border-radius: 600px;
+      height: 100%;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  // ── Conteúdo ──────────────────────────────────────────────────────────────
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @include mq(desktop-low) {
+      gap: 24px;
+    }
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(14px);
+    font-weight: 400;
+    color: rgba(#fff, 0.75);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    @include mq(desktop-low) {
+      font-size: rem(16px);
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-size: rem(36px);
+    line-height: 1.15;
+    color: #fff;
+    margin: 0;
+
+    @include mq(tablet) {
+      font-size: rem(48px);
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(56px);
+    }
+  }
+
+  &__description {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    line-height: 1.7;
+    color: rgba(#fff, 0.8);
+    margin: 0;
+
+    p {
+      margin: 0;
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(18px);
+    }
+  }
+
+  &__cta-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__price-btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    line-height: 1.2;
+  }
+
+  &__price-prefix {
+    font-family: $ff-primary;
+    font-size: rem(12px);
+    font-weight: 400;
+    color: rgba(#1f2818, 0.6);
+    white-space: nowrap;
+
+    // WooCommerce price output
+    &+.woocommerce-Price-amount,
+    &~.price {
+      font-family: $ff-primary;
+      font-weight: 700;
+      color: $color-preto;
+      line-height: 1;
+    }
+  }
+
+  // WooCommerce price inside white button
+  &__price-btn {
+
+    .woocommerce-Price-amount,
+    .price {
+      font-family: $ff-primary;
+      font-size: rem(18px);
+      font-weight: 700;
+      color: $color-preto;
+      line-height: 1;
+    }
+
+    del {
+      opacity: 0.55;
+
+      .woocommerce-Price-amount {
+        font-size: rem(14px);
+        font-weight: 400;
+      }
+    }
+  }
+
+  &__discount-note {
+    font-family: $ff-primary;
+    font-size: rem(13px);
+    font-weight: 400;
+    color: rgba(#fff, 0.7);
+    margin: 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &__cta {
+    padding: 20px 32px;
+    font-size: rem(18px);
+  }
+}
