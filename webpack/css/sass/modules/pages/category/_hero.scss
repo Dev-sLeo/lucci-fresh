@@ -212,4 +212,41 @@
       font-size: rem(22px);
     }
   }
+
+  // ── Imagem marmita (desktop / mobile) ─────────────────────────────────────
+
+  &__image-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__image {
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    // Mobile: mostra só a versão mobile
+    &--desktop {
+      display: none;
+    }
+
+    &--mobile {
+      display: block;
+    }
+
+    @include mq(desktop-low) {
+
+      // Desktop: mostra só a versão desktop
+      &--desktop {
+        display: block;
+      }
+
+      &--mobile {
+        display: none;
+      }
+    }
+  }
 }
