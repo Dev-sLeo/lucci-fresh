@@ -7,7 +7,7 @@ $terms = get_terms([
   'hide_empty' => true,
   'orderby'    => 'menu_order',
   'order'      => 'ASC',
-  'not_in'    => [get_term_by('slug', 'sem-categoria', 'product_cat')->term_id],
+  'exclude'    => [get_term_by('slug', 'sem-categoria', 'product_cat')->term_id ?? 0],
 ]);
 
 if (is_wp_error($terms) || empty($terms)) return;

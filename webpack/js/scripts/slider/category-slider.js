@@ -1,5 +1,5 @@
 import Swiper from "swiper";
-import { Navigation, Scrollbar } from "swiper/modules";
+import { Navigation, Scrollbar, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
@@ -9,7 +9,7 @@ export default function categorySlider() {
     if (!el) return;
 
     new Swiper(el, {
-        modules: [Navigation, Scrollbar],
+        modules: [Navigation, Scrollbar, Autoplay],
         slidesPerView: 1.2,
         spaceBetween: 16,
         grabCursor: true,
