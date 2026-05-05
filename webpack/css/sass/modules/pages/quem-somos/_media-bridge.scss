@@ -1,0 +1,28 @@
+// modules/pages/quem-somos/_media-bridge.scss
+//
+// Elemento com height:0 entre o hero e o about.
+// A imagem usa transform: translateY(-50%) para ficar
+// centralizada na linha divisória entre as duas seções.
+
+.s-qs-media-bridge {
+  position: relative;
+  z-index: 10;
+  height: 0;
+  overflow: visible;
+
+  .s-container {
+    overflow: visible;
+    height: 0;
+  }
+
+  .s-qs-hero__media {
+    max-width: 900px;
+    margin: 0 auto;
+    transform: translateY(-50%);
+    overflow: visible;
+  }
+
+  .s-qs-hero__image {
+    aspect-ratio: 815 / 434;
+  }
+}

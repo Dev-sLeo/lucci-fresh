@@ -1,0 +1,104 @@
+// modules/pages/quem-somos/_hero.scss
+
+.s-qs-hero {
+  background-color: #ffedd0;
+  position: relative;
+  padding-bottom: 100px;
+
+  @include mq(tablet) {
+    padding-bottom: 180px;
+    min-height: 560px;
+  }
+
+  @include mq(desktop-low) {
+    padding-bottom: 260px;
+    min-height: 660px;
+  }
+
+  &__pattern {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    z-index: 0;
+  }
+
+  // ── Texto (centralizado) ──────────────────────────────────────────────────
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+    padding: 48px 0 40px;
+    position: relative;
+    z-index: 1;
+
+    @include mq(desktop-low) {
+      gap: 24px;
+      padding: 80px 0 60px;
+    }
+  }
+
+  &__eyebrow {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    color: #70845f;
+    margin: 0;
+
+    @include mq(desktop-low) {
+      font-size: rem(20px);
+    }
+  }
+
+  &__title {
+    font-family: $ff-heading;
+    font-style: normal;
+    font-size: rem(36px);
+    line-height: 1.2;
+    color: #1f2818;
+    margin: 0;
+
+    @include mq(tablet) {
+      font-size: rem(48px);
+    }
+
+    @include mq(desktop-low) {
+      font-size: rem(62px);
+    }
+  }
+
+  &__description {
+    font-family: $ff-primary;
+    font-size: rem(16px);
+    font-weight: 400;
+    line-height: 1.8;
+    color: rgba(31, 40, 24, 0.7);
+    margin: 0;
+    max-width: 560px;
+
+    @include mq(desktop-low) {
+      font-size: rem(22px);
+      max-width: 830px;
+    }
+  }
+
+  // ── Imagem (posicionada via .s-qs-media-bridge) ───────────────────────────
+  &__media {
+    position: absolute;
+    left: 50%;
+    bottom: -30%;
+    transform: translateX(-50%);
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+}

@@ -35,22 +35,26 @@ $citacao    = $desc_block['citacao'] ?? '';
         <?php endif; ?>
       </div>
 
-      <?php if ($hero_img) : ?>
-        <div class="s-qs-hero__media">
-          <img
-            class="s-qs-hero__image"
-            src="<?= esc_url($hero_img['url']) ?>"
-            alt="<?= esc_attr($hero_img['alt'] ?? $hero_titulo) ?>"
-            width="<?= esc_attr($hero_img['width'] ?? '') ?>"
-            height="<?= esc_attr($hero_img['height'] ?? '') ?>"
-            loading="eager">
-        </div>
-      <?php endif; ?>
-
     </div>
   </div>
 
 </section><!-- /.s-qs-hero -->
+
+<?php if ($hero_img) : ?>
+  <div class="s-qs-media-bridge">
+    <div class="s-container">
+      <div class="s-qs-hero__media">
+        <img
+          class="s-qs-hero__image"
+          src="<?= esc_url($hero_img['url']) ?>"
+          alt="<?= esc_attr($hero_img['alt'] ?? $hero_titulo) ?>"
+          width="<?= esc_attr($hero_img['width'] ?? '') ?>"
+          height="<?= esc_attr($hero_img['height'] ?? '') ?>"
+          loading="eager">
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
 
 <!-- ═══════════════════════════════════════════════════════════ HISTÓRIA -->
 <?php if ($texto || $citacao) : ?>
