@@ -8,6 +8,10 @@ $titulo         = $block['title']        ?? __('Conheça nossa loja física', 'l
 $descricao      = $block['description']  ?? '';
 $galeria        = $block['galeria']      ?? [];
 $mapas          = $block['mapa']         ?? [];
+
+$entrega        = $block['entrega']      ?? [];
+$entrega_titulo = $entrega['title']      ?? __('Formas de Entrega', 'lucci-fresh');
+$entrega_cards  = $entrega['cards']      ?? [];
 ?>
 <section class="s-store">
 
@@ -89,6 +93,34 @@ $mapas          = $block['mapa']         ?? [];
               <?php endif; ?>
             </div>
           <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <?php if (!empty($entrega_cards)) : ?>
+        <!-- Entrega: formas de entrega -->
+        <div class="s-store__delivery">
+          <h3 class="s-store__delivery-title"><?= esc_html($entrega_titulo) ?></h3>
+          <div class="s-store__delivery-grid">
+            <?php foreach ($entrega_cards as $card) :
+              $card_icon = $card['icon'] ?? null;
+              $card_text = $card['text'] ?? '';
+              if (!$card_text) continue;
+            ?>
+              <div class="c-delivery-card">
+                <?php if ($card_icon) : ?>
+                  <div class="c-delivery-card__icon">
+                    <img
+                      src="<?= esc_url($card_icon['url']) ?>"
+                      alt="<?= esc_attr($card_icon['alt'] ?? '') ?>"
+                      width="52"
+                      height="52"
+                      loading="lazy">
+                  </div>
+                <?php endif; ?>
+                <p class="c-delivery-card__text"><?= esc_html($card_text) ?></p>
+              </div>
+            <?php endforeach; ?>
+          </div>
         </div>
       <?php endif; ?>
 
