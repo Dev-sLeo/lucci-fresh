@@ -2,7 +2,7 @@
 // includes/partials/template/pages/single-product/_content.html.php
 defined('ABSPATH') || exit;
 
-$descricao   = get_field('descricao')   ?: '';
+$descricao   = get_the_content()   ?: '';
 $ingredientes = get_field('ingredientes') ?: '';
 $tabela      = get_field('tabela_nutricional') ?: [];
 
@@ -42,6 +42,9 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
       <?php if (!empty($tabela)) : ?>
         <div class="s-sp-content__nutrition">
           <h2 class="s-sp-content__nutrition-title"><?= esc_html__('Tabela nutricional', 'lucci-fresh') ?></h2>
+          <?php if (get_field('description_table')) : ?>
+            <p class="s-sp-content__nutrition-description"><?= get_field('description_table') ?></p>
+          <?php endif; ?>
           <div class="s-sp-content__table">
             <?php
             $row_count = 0;
@@ -61,6 +64,9 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
               $row_count++;
             endforeach; ?>
           </div>
+          <?php if (get_field('description_after_table')) : ?>
+            <p class="s-sp-content__nutrition-description"><?= get_field('description_after_table') ?></p>
+          <?php endif; ?>
         </div>
       <?php endif; ?>
 

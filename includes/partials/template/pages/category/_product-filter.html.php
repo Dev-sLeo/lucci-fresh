@@ -43,6 +43,7 @@ $nonce = wp_create_nonce('category_products_nonce');
     <div class="s-cat-products__header">
       <div class="s-cat-products__heading">
         <h2 class="s-cat-products__title"><?= esc_html($category_name) ?></h2>
+        <span class="s-cat-products__bar"></span>
         <span class="s-cat-products__count">
           <?= esc_html(sprintf(_n('%d opção', '%d opções', $total_products, 'lucci-fresh'), $total_products)) ?>
         </span>

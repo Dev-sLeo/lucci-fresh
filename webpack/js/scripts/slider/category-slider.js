@@ -13,6 +13,10 @@ export default function categorySlider() {
         slidesPerView: 1.2,
         spaceBetween: 16,
         grabCursor: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
         navigation: {
             prevEl: ".js-category-prev",
             nextEl: ".js-category-next",

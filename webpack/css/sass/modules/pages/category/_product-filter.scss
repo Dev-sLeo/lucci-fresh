@@ -28,8 +28,14 @@
 
   &__heading {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  &__bar {
+    height: 36px;
+    width: 1px;
+    background: rgba(31, 40, 24, 0.30);
   }
 
   &__title {
@@ -85,7 +91,7 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 100%;
     gap: 16px;
 
     @include mq(desktop-low) {

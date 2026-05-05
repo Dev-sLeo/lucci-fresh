@@ -4,9 +4,10 @@ global $tpl_engine;
 
 $terms = get_terms([
   'taxonomy'   => 'product_cat',
-  'hide_empty' => false,
+  'hide_empty' => true,
   'orderby'    => 'menu_order',
   'order'      => 'ASC',
+  'not_in'    => [get_term_by('slug', 'sem-categoria', 'product_cat')->term_id],
 ]);
 
 if (is_wp_error($terms) || empty($terms)) return;

@@ -253,7 +253,6 @@
             "label": "Sem conservantes"
         }
     ],
-    "descricao": "<p>A linha que veio pra te ajudar a alcançar os objetivos, com uma porção maior de 430g, oferecendo mais energia e saciedade! Nossas almôndegas de frango bem temperadinhas e macias, envolvidas em um molho de tomate saboroso, servidas com arroz integral com ervilha, feijão carioca e legumes no ponto certo. Almôndega de frango: 125g (5 unidades) \/ Molho vermelho: 70g \/ Arroz integral com ervilha: 60g \/ Mix de legumes: 95g \/ Feijão carioca: 80g<\/p>\n",
     "ingredientes": "<p>Almôndega de frango, arroz, feijão e legumes:cenoura , peito de frango, tomate, brócolis, cebola, aveia em flocos, feijão carioca, arroz integral, ervilha, gema de ovo pasteurizada, azeite , alho, sal, cebolinha, mostarda amarela, orégano, páprica defumada, salsinha, pimenta do reino, noz moscada, louro em pó.<\/p>\n",
     "tabela_nutricional": [
         {
@@ -288,5 +287,7 @@
             "nutriente": "Sódio",
             "valor": "475 mg"
         }
-    ]
+    ],
+    "description_table": "aaaaaaaaaaaaaaaaaaaa",
+    "description_after_table": "sssssssssss"
 }

@@ -1,0 +1,279 @@
+{
+    "key": "group_single_product",
+    "title": "Single Product",
+    "fields": [
+        {
+            "key": "field_69ebb_tab01",
+            "label": "Benefícios",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_69ebb_beneficios",
+            "label": "Benefícios",
+            "name": "beneficios",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Adicione até 6 benefícios do produto (ícone + texto).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "min": 0,
+            "max": 6,
+            "button_label": "Adicionar benefício",
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_69ebb_beneficios_icone",
+                    "label": "Ícone",
+                    "name": "icone",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Upload do ícone SVG ou PNG (preferencialmente 48×48px).",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "preview_size": "thumbnail",
+                    "min_width": "",
+                    "min_height": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "mime_types": "svg,png,jpg,jpeg,webp",
+                    "library": "all",
+                    "min_size": 0,
+                    "max_size": 0,
+                    "parent_repeater": "field_69ebb_beneficios"
+                },
+                {
+                    "key": "field_69ebb_beneficios_label",
+                    "label": "Texto",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Ex: Refeição com 190g",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "70",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Ex: 129 kcal",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_69ebb_beneficios"
+                }
+            ]
+        },
+        {
+            "key": "field_69ebb_tab02",
+            "label": "Conteúdo",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_69ebb_ingredientes",
+            "label": "Ingredientes",
+            "name": "ingredientes",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Lista de ingredientes do produto.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_69ebb_tab03",
+            "label": "Tabela Nutricional",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_69fa305e4b818",
+            "label": "Description Table",
+            "name": "description_table",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_69ebb_tabela",
+            "label": "Tabela Nutricional",
+            "name": "tabela_nutricional",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Adicione os nutrientes e seus valores por porção.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "min": 0,
+            "max": 20,
+            "button_label": "Adicionar nutriente",
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_69ebb_tabela_nutriente",
+                    "label": "Nutriente",
+                    "name": "nutriente",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "Ex: Proteínas",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "parent_repeater": "field_69ebb_tabela"
+                },
+                {
+                    "key": "field_69ebb_tabela_valor",
+                    "label": "Valor",
+                    "name": "valor",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "Ex: 8,2 g",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "parent_repeater": "field_69ebb_tabela"
+                }
+            ]
+        },
+        {
+            "key": "field_69fa309ffde15",
+            "label": "Description after table",
+            "name": "description_after_table",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1778004143
+}

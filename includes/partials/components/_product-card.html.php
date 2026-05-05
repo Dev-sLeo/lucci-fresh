@@ -50,6 +50,7 @@ if (has_post_thumbnail($product->get_id())) {
       <a href="<?= esc_url($permalink) ?>" class="c-product-card__name">
         <?= esc_html($name) ?>
       </a>
+      <p class="c-product-card__description"><?= esc_html($product->get_short_description()) ?></p>
     </div>
 
     <div class="c-product-card__actions">

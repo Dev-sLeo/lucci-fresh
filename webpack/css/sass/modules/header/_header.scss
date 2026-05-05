@@ -13,8 +13,15 @@
   background-color: $white;
   transition: box-shadow 0.3s ease;
 
-  &.is-scrolled {
+  &.active {
     box-shadow: 0 4px 16px rgba(31, 40, 24, 0.1);
+
+    .o-header__top {
+      visibility: hidden;
+      opacity: 0;
+      height: 0;
+      padding: 0;
+    }
   }
 
   // -----------------------------------------------------------------------
@@ -22,8 +29,21 @@
   // -----------------------------------------------------------------------
   &__top {
     background-color: #da864d;
+    height: max-content;
     padding: 10px 16px;
     text-align: center;
+    visibility: visible;
+    overflow: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, height 0.3s ease, padding 0.3s ease;
+  }
+
+  &.scrolled-up {
+    .o-header__top {
+      visibility: visible;
+      opacity: 1;
+      height: max-content;
+      padding: 10px 16px;
+    }
   }
 
   &__top-text {
