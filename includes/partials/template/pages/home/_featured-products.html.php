@@ -38,14 +38,14 @@ if (!$products->have_posts()) {
         <h2 class="s-featured-products__title"><?= esc_html($titulo) ?></h2>
         <div class="s-featured-products__nav">
           <button class="s-featured-products__prev js-featured-prev" aria-label="<?= esc_attr__('Anterior', 'lucci-fresh') ?>">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+              <path d="M4.75 8.75L0.75 4.75L4.75 0.75" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
           <div class="s-featured-products__progress js-featured-progress"></div>
           <button class="s-featured-products__next js-featured-next" aria-label="<?= esc_attr__('Próximo', 'lucci-fresh') ?>">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+              <path d="M0.75 8.75L4.75 4.75L0.75 0.75" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
         </div>

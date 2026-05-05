@@ -78,13 +78,15 @@ $google_rating      = $block['estrelas'] ?? '';
         </div>
 
         <div class="o-testimonials__controls">
-          <button class="o-testimonials__nav o-testimonials__nav--prev" type="button" aria-label="<?php echo esc_attr__('Anterior', 'textdomain'); ?>"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
-              <path d="M4.75 8.75L0.75 4.75L4.75 0.75" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <button class="o-testimonials__nav o-testimonials__nav--prev" type="button" aria-label="<?php echo esc_attr__('Anterior', 'textdomain'); ?>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M14 16L10 12L14 8" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
           <div class="swiper-pagination o-testimonials__pagination"></div>
-          <button class="o-testimonials__nav o-testimonials__nav--next" type="button" aria-label="<?php echo esc_attr__('Próximo', 'textdomain'); ?>"><svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
-              <path d="M0.75 8.75L4.75 4.75L0.75 0.75" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <button class="o-testimonials__nav o-testimonials__nav--next" type="button" aria-label="<?php echo esc_attr__('Próximo', 'textdomain'); ?>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M10 16L14 12L10 8" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
         </div>

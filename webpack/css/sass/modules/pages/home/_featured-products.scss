@@ -9,8 +9,6 @@
     padding: 96px 0;
   }
 
-  &__container {}
-
   &__header {
     display: flex;
     align-items: center;
@@ -78,7 +76,7 @@
     width: 232px;
     height: 3px;
     border-radius: 600px;
-    background: rgba($color-preto, 0.15);
+    background: rgba(131, 152, 114, 0.30);
     position: relative;
     top: auto;
     left: auto;
@@ -86,7 +84,7 @@
     overflow: hidden;
 
     .swiper-scrollbar-drag {
-      background: $color-preto;
+      background: #FD8426;
       border-radius: 600px;
       height: 100%;
       cursor: grab;

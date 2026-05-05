@@ -58,7 +58,7 @@
   }
 
   &__pagination {
-    background: rgba(255, 255, 255, 0.3);
+    background: #839872;
     position: relative;
     height: 3px;
     width: 100%;
@@ -66,7 +66,7 @@
     flex: 1;
 
     .swiper-pagination-progressbar-fill {
-      background-color: #fff;
+      background-color: #FD8426;
       border-radius: 600px;
     }
   }
@@ -99,9 +99,6 @@
       opacity: 0.7;
     }
 
-    svg path {
-      stroke: #fff;
-    }
   }
 
   &__bottom {
