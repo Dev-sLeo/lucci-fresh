@@ -305,5 +305,11 @@
         }
     ],
     "description_table": "aaaaaaaaaaaaaaaaaaaa",
-    "description_after_table": "sssssssssss"
+    "description_after_table": "sssssssssss",
+    "tabela_nutricional_titulos": {
+        "nutriente": "",
+        "valor": "100g",
+        "valor_2": "350g",
+        "valor_3": "%VD*"
+    }
 }

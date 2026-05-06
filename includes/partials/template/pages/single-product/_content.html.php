@@ -5,6 +5,7 @@ defined('ABSPATH') || exit;
 $descricao   = get_the_content()   ?: '';
 $ingredientes = get_field('ingredientes') ?: '';
 $tabela      = get_field('tabela_nutricional') ?: [];
+$titulos     = get_field('tabela_nutricional_titulos') ?: [];
 
 // Verifica se há conteúdo para renderizar
 if (!$descricao && !$ingredientes && empty($tabela)) return;
@@ -50,6 +51,29 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
             // Detecta se alguma linha tem valor_2 ou valor_3
             $has_col2 = !empty(array_filter($tabela, fn($r) => !empty($r['valor_2'])));
             $has_col3 = !empty(array_filter($tabela, fn($r) => !empty($r['valor_3'])));
+            $is_multi = $has_col2 || $has_col3;
+
+            // Cabeçalho
+            if (!empty($titulos) && $is_multi) :
+              $th_nutriente = $titulos['nutriente'] ?? '';
+              $th_valor     = $titulos['valor']     ?? '';
+              $th_valor_2   = $titulos['valor_2']   ?? '';
+              $th_valor_3   = $titulos['valor_3']   ?? '';
+            ?>
+              <div class="s-sp-content__row s-sp-content__row--header s-sp-content__row--multi">
+                <span class="s-sp-content__nutriente"><?= esc_html($th_nutriente) ?></span>
+                <span class="s-sp-content__valor"><?= esc_html($th_valor) ?></span>
+                <?php if ($has_col2) : ?>
+                  <span class="s-sp-content__valor"><?= esc_html($th_valor_2) ?></span>
+                <?php endif; ?>
+                <?php if ($has_col3) : ?>
+                  <span class="s-sp-content__valor"><?= esc_html($th_valor_3) ?></span>
+                <?php endif; ?>
+              </div>
+              <hr class="s-sp-content__divider" aria-hidden="true">
+            <?php endif; ?>
+
+            <?php
             $row_count = 0;
             foreach ($tabela as $row) :
               $nutriente = $row['nutriente'] ?? '';
@@ -61,7 +85,7 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
               <?php if ($row_count > 0) : ?>
                 <hr class="s-sp-content__divider" aria-hidden="true">
               <?php endif; ?>
-              <div class="s-sp-content__row<?= ($has_col2 || $has_col3) ? ' s-sp-content__row--multi' : '' ?>">
+              <div class="s-sp-content__row<?= $is_multi ? ' s-sp-content__row--multi' : '' ?>">
                 <span class="s-sp-content__nutriente"><?= esc_html($nutriente) ?></span>
                 <span class="s-sp-content__valor"><?= esc_html($valor) ?></span>
                 <?php if ($has_col2) : ?>

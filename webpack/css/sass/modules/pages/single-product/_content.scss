@@ -121,6 +121,14 @@
     gap: 16px;
     border-radius: 8px;
 
+    &--header {
+
+      .s-sp-content__nutriente,
+      .s-sp-content__valor {
+        font-weight: 700;
+      }
+    }
+
     &--multi {
       .s-sp-content__nutriente {
         flex: 1;
@@ -129,7 +137,7 @@
       .s-sp-content__valor {
         flex: 0 0 auto;
         min-width: 80px;
-        text-align: right;
+        text-align: center;
       }
     }
   }
