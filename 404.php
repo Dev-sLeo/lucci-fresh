@@ -10,7 +10,7 @@ get_header();
 					<h1 class="title__super">404</h1>
 					<h2 class="title__normal">Página não encontrada</h2>
 					<p class="text__normal">A página que você procurava não está disponível. Sentimos muito pelo inconveniente.</p>
-					<a href="<?= site_url() ?>" class="button button__blue"><span class="o-btn-default__span">Voltar para home</span></a>
+					<a href="<?= site_url() ?>" class="u-button u-button__wood"><span class="o-btn-default__span">Voltar para home</span></a>
 				</div>
 			</div>
 		</section>
