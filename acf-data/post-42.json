@@ -257,35 +257,51 @@
     "tabela_nutricional": [
         {
             "nutriente": "Valor energético",
-            "valor": "126 kcal"
+            "valor": "126 kcal",
+            "valor_2": "15 g",
+            "valor_3": ""
         },
         {
             "nutriente": "Carboidratos",
-            "valor": "15 g"
+            "valor": "15 g",
+            "valor_2": "",
+            "valor_3": "15 g"
         },
         {
             "nutriente": "Proteínas",
-            "valor": "8.2 g"
+            "valor": "8.2 g",
+            "valor_2": "15 g",
+            "valor_3": ""
         },
         {
             "nutriente": "Gorduras totais",
-            "valor": "3.8 g"
+            "valor": "3.8 g",
+            "valor_2": "",
+            "valor_3": "15 g"
         },
         {
             "nutriente": "Gorduras saturadas",
-            "valor": "0.8 g"
+            "valor": "0.8 g",
+            "valor_2": "15 g",
+            "valor_3": ""
         },
         {
             "nutriente": "Gorduras trans",
-            "valor": "0 g"
+            "valor": "0 g",
+            "valor_2": "",
+            "valor_3": "15 g"
         },
         {
             "nutriente": "Fibra alimentar",
-            "valor": "3.3 g"
+            "valor": "3.3 g",
+            "valor_2": "15 g",
+            "valor_3": ""
         },
         {
             "nutriente": "Sódio",
-            "valor": "475 mg"
+            "valor": "475 mg",
+            "valor_2": "",
+            "valor_3": "15 g"
         }
     ],
     "description_table": "aaaaaaaaaaaaaaaaaaaa",

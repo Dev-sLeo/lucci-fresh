@@ -120,6 +120,18 @@
     padding: 28px;
     gap: 16px;
     border-radius: 8px;
+
+    &--multi {
+      .s-sp-content__nutriente {
+        flex: 1;
+      }
+
+      .s-sp-content__valor {
+        flex: 0 0 auto;
+        min-width: 80px;
+        text-align: right;
+      }
+    }
   }
 
   &__divider {

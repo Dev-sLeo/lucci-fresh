@@ -47,18 +47,29 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
           <?php endif; ?>
           <div class="s-sp-content__table">
             <?php
+            // Detecta se alguma linha tem valor_2 ou valor_3
+            $has_col2 = !empty(array_filter($tabela, fn($r) => !empty($r['valor_2'])));
+            $has_col3 = !empty(array_filter($tabela, fn($r) => !empty($r['valor_3'])));
             $row_count = 0;
             foreach ($tabela as $row) :
               $nutriente = $row['nutriente'] ?? '';
               $valor     = $row['valor']     ?? '';
+              $valor_2   = $row['valor_2']   ?? '';
+              $valor_3   = $row['valor_3']   ?? '';
               if (!$nutriente) continue;
             ?>
               <?php if ($row_count > 0) : ?>
                 <hr class="s-sp-content__divider" aria-hidden="true">
               <?php endif; ?>
-              <div class="s-sp-content__row">
+              <div class="s-sp-content__row<?= ($has_col2 || $has_col3) ? ' s-sp-content__row--multi' : '' ?>">
                 <span class="s-sp-content__nutriente"><?= esc_html($nutriente) ?></span>
                 <span class="s-sp-content__valor"><?= esc_html($valor) ?></span>
+                <?php if ($has_col2) : ?>
+                  <span class="s-sp-content__valor"><?= esc_html($valor_2) ?></span>
+                <?php endif; ?>
+                <?php if ($has_col3) : ?>
+                  <span class="s-sp-content__valor"><?= esc_html($valor_3) ?></span>
+                <?php endif; ?>
               </div>
             <?php
               $row_count++;

@@ -198,15 +198,16 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "60",
+                        "width": "70",
                         "class": "",
                         "id": ""
                     },
                     "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 1,
                     "placeholder": "Ex: Proteínas",
                     "prepend": "",
                     "append": "",
-                    "maxlength": "",
                     "parent_repeater": "field_69ebb_tabela"
                 },
                 {
@@ -219,15 +220,60 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "40",
+                        "width": "10",
                         "class": "",
                         "id": ""
                     },
                     "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 1,
                     "placeholder": "Ex: 8,2 g",
                     "prepend": "",
                     "append": "",
+                    "parent_repeater": "field_69ebb_tabela"
+                },
+                {
+                    "key": "field_69fb9672baec1",
+                    "label": "Valor 2",
+                    "name": "valor_2",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "10",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
                     "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_69ebb_tabela"
+                },
+                {
+                    "key": "field_69fb9677baec2",
+                    "label": "Valor 3",
+                    "name": "valor_3",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "10",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
                     "parent_repeater": "field_69ebb_tabela"
                 }
             ]
@@ -275,5 +321,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778004143
+    "modified": 1778095786
 }
