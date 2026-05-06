@@ -30,26 +30,6 @@
       background-position: right center;
     }
 
-    // Gradiente overlay: garante legibilidade do texto
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right,
-          rgba(#1f2818, 0.65) 0%,
-          rgba(#1f2818, 0.35) 60%,
-          rgba(#1f2818, 0.1) 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    // Mobile: overlay mais uniforme (texto centralizado)
-    @media (max-width: 1023px) {
-      &::after {
-        background: rgba(#1f2818, 0.5);
-      }
-    }
-
     // Texto alinhado à esquerda no desktop, centralizado no mobile
     .s-cat-hero__inner {
       align-items: center;
