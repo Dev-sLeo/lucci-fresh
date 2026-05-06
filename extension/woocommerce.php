@@ -167,6 +167,13 @@ add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
 // Scripts & Estilos
 // -----------------------------------------------------------------------------
 
+// Remove o link "Ver carrinho" exibido após adicionar produto
+add_filter('woocommerce_loop_add_to_cart_args', function ($args) {
+    $args['class'] = str_replace('ajax_add_to_cart', 'ajax_add_to_cart no-view-cart', $args['class'] ?? '');
+    return $args;
+});
+add_filter('woocommerce_add_to_cart_added_to_cart_notification', '__return_false');
+
 add_action('wp_enqueue_scripts', function () {
     // Mantém os estilos do WC descarregados — o tema gerencia o CSS via SASS
     // Para habilitar os estilos padrão, remova estas linhas:

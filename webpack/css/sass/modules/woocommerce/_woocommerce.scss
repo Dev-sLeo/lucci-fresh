@@ -1064,6 +1064,11 @@ ul.products,
   }
 }
 
+// Oculta o link "Ver carrinho" injetado pelo WC após adicionar produto
+a.added_to_cart {
+  display: none !important;
+}
+
 // Paginação WooCommerce
 .woocommerce-pagination {
   margin-top: 48px;
