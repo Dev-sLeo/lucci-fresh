@@ -7,6 +7,7 @@ $terms = get_terms([
   'hide_empty' => true,
   'orderby'    => 'menu_order',
   'order'      => 'ASC',
+  'parent'     => 0,
   'exclude'    => [get_term_by('slug', 'sem-categoria', 'product_cat')->term_id ?? 0],
 ]);
 

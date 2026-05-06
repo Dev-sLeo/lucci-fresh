@@ -1275,7 +1275,7 @@ ul.products,
 .wc-block-cart__submit-button,
 .wc-block-components-checkout-place-order-button,
 .wp-block-woocommerce-proceed-to-checkout-block a,
-.wc-block-components-button:not(.wc-block-components-totals-coupon__button) {
+.wc-block-components-button:not(.wc-block-components-totals-coupon__button):not(.wc-block-components-totals-coupon__toggle) {
   display: flex !important;
   width: 100%;
   max-width: 100%;
@@ -1306,44 +1306,76 @@ ul.products,
   }
 }
 
-// Botão de cupom — estilo secundário (verde)
+// Botão cupom — aplicar (wood) e toggle (link)
 .wc-block-components-totals-coupon__button {
-  display: flex !important;
+  display: inline-flex !important;
   justify-content: center;
   align-items: center;
-  background: transparent !important;
-  color: map-get($color-verde, 500) !important;
-  border: 1.5px solid map-get($color-verde, 500) !important;
+  background: #DA864D !important;
+  color: #fff !important;
+  border: 1px solid transparent !important;
   border-radius: 600px !important;
-  padding: 12px 22px !important;
+  padding: 12px 24px !important;
   font-family: $ff-primary !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   cursor: pointer;
-  transition: all 0.2s !important;
+  transition: background 0.2s !important;
+  box-shadow: none !important;
 
   &:hover {
-    background: map-get($color-verde, 500) !important;
+    background: #b76a3b !important;
     color: #fff !important;
   }
 }
 
-// Inputs do bloco de checkout
+// Toggle "Adicionar cupom" — estilo link
+.wc-block-components-totals-coupon__toggle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: map-get($color-verde, 500) !important;
+  font-family: $ff-primary !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  padding: 1rem 0 !important;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: space-between;
+
+  &:hover {
+    color: map-get($color-verde, 700) !important;
+  }
+
+  svg {
+    display: none !important;
+  }
+}
+
+// Inputs do bloco de checkout — floating label WC Blocks
 .wc-block-components-text-input,
 .wc-block-components-country-input,
-.wc-block-components-state-input,
-.wp-block-woocommerce-checkout-billing-address-block,
-.wp-block-woocommerce-checkout-shipping-address-block {
+.wc-block-components-state-input {
+  position: relative;
 
   input,
-  select {
+  select,
+  .components-select-control__input {
+    width: 100% !important;
     border: 1.5px solid map-get($color-verde, 100) !important;
     border-radius: 12px !important;
-    padding: 14px 18px !important;
+    padding: 22px 18px 10px !important;
     font-family: $ff-primary !important;
     font-size: 15px !important;
     color: $wc-text !important;
+    background: #fff !important;
     transition: border-color 0.2s, box-shadow 0.2s !important;
+    box-sizing: border-box !important;
 
     &:focus {
       outline: none !important;
@@ -1352,19 +1384,26 @@ ul.products,
     }
   }
 
-  .wc-block-components-text-input.is-active,
-  &.is-active {
-    border-color: map-get($color-verde, 500) !important;
+  label {
+    font-family: $ff-primary !important;
+    font-size: 12px !important;
+    color: $wc-muted !important;
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    pointer-events: none;
+    transition: all 0.15s ease;
+    z-index: 1;
   }
-}
 
-// Label flutuante do bloco (estilo padrão WC Blocks)
-.wc-block-components-text-input label,
-.wc-block-components-country-input label,
-.wc-block-components-state-input label {
-  font-family: $ff-primary;
-  font-size: 13px;
-  color: $wc-muted;
+  &.is-active {
+
+    input,
+    select {
+      border-color: map-get($color-verde, 500) !important;
+      box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1) !important;
+    }
+  }
 }
 
 // Bloco de checkout — layout
@@ -1376,9 +1415,16 @@ ul.products,
   }
 
   .wc-block-checkout__sidebar {
-    background: map-get($color-verde, 50);
+    background: #fff;
     border-radius: $wc-radius;
     padding: 28px;
+
+    // Sidebar totals wrapper — também branco
+    .wc-block-components-totals-wrapper {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
   }
 
   // Título das seções

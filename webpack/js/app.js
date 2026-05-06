@@ -26,6 +26,7 @@ import blogHeroSlider from "./scripts/slider/blog-hero";
 import contactForm from "./scripts/contactForm";
 import singleProduct from "./scripts/single-product";
 import categoryFilter from "./scripts/categoryFilter";
+import cartSidebar from "./scripts/cartSidebar";
 
 window.gsap = gsap;
 
@@ -51,3 +52,4 @@ blogHeroSlider();
 contactForm();
 singleProduct();
 categoryFilter();
+cartSidebar();

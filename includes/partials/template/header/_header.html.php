@@ -67,14 +67,12 @@ $cart_count  = (function_exists('WC') && WC()->cart)    ? WC()->cart->get_cart_c
           </a>
 
           <!-- Carrinho -->
-          <a href="<?= esc_url($cart_url) ?>" class="o-header__icon-btn o-header__icon-btn--cart" aria-label="<?= esc_attr__('Carrinho', 'lucci-fresh') ?>">
+          <button type="button" class="o-header__icon-btn o-header__icon-btn--cart js-cart-open" aria-label="<?= esc_attr__('Abrir carrinho', 'lucci-fresh') ?>" aria-controls="cart-sidebar" aria-expanded="false">
             <?php $tpl_engine->svg('icons/carrinho') ?>
-            <?php if ($cart_count > 0) : ?>
-              <span class="o-header__cart-count" aria-label="<?= esc_attr(sprintf(__('%d itens no carrinho', 'lucci-fresh'), $cart_count)) ?>">
-                <?= esc_html($cart_count) ?>
-              </span>
-            <?php endif; ?>
-          </a>
+            <span class="o-header__cart-count<?= $cart_count > 0 ? '' : ' is-hidden' ?>" aria-label="<?= esc_attr(sprintf(__('%d itens no carrinho', 'lucci-fresh'), $cart_count)) ?>">
+              <?= esc_html($cart_count) ?>
+            </span>
+          </button>
 
           <!-- Hamburger (mobile) -->
           <button class="o-header__hamburger js-mobile-menu-open" type="button" aria-label="<?= esc_attr__('Abrir menu', 'lucci-fresh') ?>" aria-expanded="false" aria-controls="mobile-menu">
@@ -113,3 +111,5 @@ $cart_count  = (function_exists('WC') && WC()->cart)    ? WC()->cart->get_cart_c
   </div>
 
 </header><!-- /.o-header -->
+
+<?php $tpl_engine->partial('components/cart-sidebar') ?>

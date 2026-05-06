@@ -1,5 +1,5 @@
 import Swiper from "swiper";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -12,9 +12,14 @@ export default function () {
     const nextEl = root.querySelector(".o-testimonials__nav--next");
 
     const slider = new Swiper(root, {
-        modules: [Pagination, Navigation],
+        modules: [Pagination, Navigation, Autoplay],
         slidesPerView: 1,
         spaceBetween: 14,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
         pagination: {
             el: paginationEl,
             type: "progressbar",

@@ -21,7 +21,7 @@ if (!$descricao && !$ingredientes && empty($tabela)) return;
             <div class="s-sp-content__block">
               <h2 class="s-sp-content__subtitle"><?= esc_html__('Descrição', 'lucci-fresh') ?></h2>
               <div class="s-sp-content__body">
-                <?= wp_kses_post($descricao) ?>
+                <?= the_content() ?>
               </div>
             </div>
           <?php endif; ?>

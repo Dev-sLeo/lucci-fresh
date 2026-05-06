@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WooCommerce - Hooks, filtros e customizações do tema Arterra
  */
@@ -147,11 +148,17 @@ add_filter('woocommerce_email_footer_text', function () {
 
 // Garante que os fragmentos AJAX do carrinho estejam habilitados
 add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
+    if (!function_exists('WC') || !WC()->cart) return $fragments;
+
+    // Atualiza o badge de quantidade no header
+    $count = WC()->cart->get_cart_contents_count();
+    $fragments['.o-header__cart-count'] =
+        '<span class="o-header__cart-count' . ($count > 0 ? '' : ' is-hidden') . '">' . esc_html($count) . '</span>';
+
+    // Atualiza o conteúdo dinâmico do cart sidebar
     ob_start();
-    ?>
-    <span class="c-cart-count"><?= WC()->cart->get_cart_contents_count(); ?></span>
-    <?php
-    $fragments['.c-cart-count'] = ob_get_clean();
+    include PATHS_PARTIALS . '/components/_cart-sidebar-content.html.php';
+    $fragments['#cart-sidebar-content'] = ob_get_clean();
 
     return $fragments;
 });
@@ -167,6 +174,23 @@ add_action('wp_enqueue_scripts', function () {
     // wp_dequeue_style('woocommerce-layout');
     // wp_dequeue_style('woocommerce-smallscreen');
 }, 99);
+
+// -----------------------------------------------------------------------------
+// Traduções de strings do WooCommerce Blocks
+// -----------------------------------------------------------------------------
+
+add_filter('gettext', function ($translated, $text, $domain) {
+    if ($domain !== 'woo-gutenberg-products-block' && $domain !== 'woocommerce-blocks') {
+        return $translated;
+    }
+    $map = [
+        'Add a coupon'  => 'Adicionar cupom',
+        'Add coupons'   => 'Adicionar cupom',
+        'Add coupon'    => 'Adicionar cupom',
+        'Apply coupon'  => 'Aplicar',
+    ];
+    return $map[$text] ?? $translated;
+}, 10, 3);
 
 // -----------------------------------------------------------------------------
 // Busca de produtos
