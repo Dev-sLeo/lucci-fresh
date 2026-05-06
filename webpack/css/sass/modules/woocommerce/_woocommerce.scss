@@ -1069,6 +1069,19 @@ a.added_to_cart {
   display: none !important;
 }
 
+// Feedback visual no botão após adicionar ao carrinho
+.ajax_add_to_cart.is-added {
+  background: map-get($color-verde, 500) !important;
+  color: #fff !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
 // Paginação WooCommerce
 .woocommerce-pagination {
   margin-top: 48px;

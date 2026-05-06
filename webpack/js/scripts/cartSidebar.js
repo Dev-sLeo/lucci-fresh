@@ -145,7 +145,45 @@ export default function cartSidebar() {
 
     // ── Abre o sidebar quando um produto é adicionado via AJAX (WooCommerce) ──
 
-    document.body.addEventListener("added_to_cart", () => {
-        open();
-    });
+    let lastAddBtn = null;
+
+    // Captura qual botão foi clicado antes do AJAX do WC
+    document.body.addEventListener(
+        "click",
+        (e) => {
+            const btn = e.target.closest(".ajax_add_to_cart");
+            if (btn) lastAddBtn = btn;
+        },
+        true,
+    );
+
+    function showAddedFeedback(btn) {
+        if (!btn) return;
+        const original = btn.textContent.trim();
+        btn.textContent = "Adicionado!";
+        btn.classList.add("is-added");
+        btn.setAttribute("disabled", "true");
+        setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove("is-added");
+            btn.removeAttribute("disabled");
+            lastAddBtn = null;
+        }, 2000);
+    }
+
+    // added_to_cart é disparado via jQuery pelo WC — precisa de jQuery.on()
+    function bindAddedToCart() {
+        if (typeof jQuery === "undefined") {
+            setTimeout(bindAddedToCart, 200);
+            return;
+        }
+        jQuery(document.body).on(
+            "added_to_cart",
+            function (_e, _fragments, _cartHash, $btn) {
+                const btn = ($btn && $btn[0]) || lastAddBtn;
+                showAddedFeedback(btn);
+            },
+        );
+    }
+    bindAddedToCart();
 }
