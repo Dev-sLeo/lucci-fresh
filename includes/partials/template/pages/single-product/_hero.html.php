@@ -81,9 +81,9 @@ $has_gallery  = count($image_ids) > 1;
           </a>
         </div>
 
-        <p class="s-sp-hero__discount-note">
+        <!--<p class="s-sp-hero__discount-note">
           <?= esc_html__('Confira nossa tabela de desconto', 'lucci-fresh') ?>
-        </p>
+        </p> -->
       </div>
 
     </div>

@@ -45,10 +45,30 @@ export default function cartSidebar() {
     }
 
     function applyFragments(fragments) {
-        if (!fragments || typeof jQuery === "undefined") return;
-        jQuery.each(fragments, (selector, html) => {
-            jQuery(selector).replaceWith(html);
-        });
+        if (!fragments) return;
+        if (typeof jQuery !== "undefined") {
+            jQuery.each(fragments, (selector, html) => {
+                jQuery(selector).replaceWith(html);
+            });
+        } else {
+            Object.entries(fragments).forEach(([selector, html]) => {
+                const el = document.querySelector(selector);
+                if (el) {
+                    const tmp = document.createElement("div");
+                    tmp.innerHTML = html;
+                    el.replaceWith(tmp.firstElementChild || tmp);
+                }
+            });
+        }
+    }
+
+    function getAjaxUrl() {
+        return (
+            window.wc_cart_params?.ajax_url ||
+            window.usAjax?.ajaxurl ||
+            window.phpVars?.ajaxUrl ||
+            "/wp-admin/admin-ajax.php"
+        );
     }
 
     // ── AJAX: remover item ────────────────────────────────────────────────────
@@ -60,7 +80,7 @@ export default function cartSidebar() {
         formData.append("nonce", getNonce());
         formData.append("cart_item_key", cartItemKey);
 
-        fetch(window.wc_cart_params?.ajax_url || window.ajaxurl, {
+        fetch(getAjaxUrl(), {
             method: "POST",
             credentials: "same-origin",
             body: formData,
@@ -83,7 +103,7 @@ export default function cartSidebar() {
         formData.append("cart_item_key", cartItemKey);
         formData.append("qty", qty);
 
-        fetch(window.wc_cart_params?.ajax_url || window.ajaxurl, {
+        fetch(getAjaxUrl(), {
             method: "POST",
             credentials: "same-origin",
             body: formData,

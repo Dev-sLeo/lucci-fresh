@@ -235,6 +235,10 @@
     font-weight: 700;
     line-height: 18px;
     text-align: center;
+
+    &.is-hidden {
+      display: none;
+    }
   }
 
   // Hamburger — mobile only
