@@ -9,8 +9,8 @@ $term_slug      = $queried_object->slug ?? '';
 $hero           = get_field('hero', 'product_cat_' . $term_id) ?: [];
 
 // ACF fields from taxonomy term
-$titulo    = $hero['titulo']    ?? __('Desconto progressivo', 'lucci-fresh');
-$descricao = $hero['descricao'] ?? __('Quanto mais você leva, maior o desconto', 'lucci-fresh');
+$titulo    = $hero['title']    ?? __('Desconto progressivo', 'lucci-fresh');
+$descricao = $hero['description'] ?? __('Quanto mais você leva, maior o desconto', 'lucci-fresh');
 $tabela    = $hero['tabela']    ?? [];
 
 // Imagens hero
