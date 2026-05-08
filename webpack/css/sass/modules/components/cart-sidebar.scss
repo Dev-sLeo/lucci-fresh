@@ -94,21 +94,32 @@
   // ── Banner de desconto ────────────────────────────────────────────────────
   &__discount {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 24px;
-    background: #f0f5ee;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    background: map-get($color-beje, 200);
+    border-radius: 8px;
+    margin: 16px 16px 0;
     flex-shrink: 0;
 
     &[aria-hidden="true"] {
       display: none;
     }
 
+    // Linha superior: ícone + texto
+    &-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
     &-icon {
       display: flex;
       align-items: center;
-      color: map-get($color-verde, 500);
+      justify-content: center;
+      color: #70845F;
       flex-shrink: 0;
+      margin-top: 1px;
     }
 
     &-body {
@@ -118,48 +129,53 @@
 
     &-label {
       font-family: $ff-primary;
-      font-size: rem(13px);
-      font-weight: 600;
+      font-size: rem(14px);
+      font-weight: 700;
       color: $color-preto;
       margin: 0;
+      line-height: 1.3;
     }
 
     &-hint {
       font-family: $ff-primary;
       font-size: rem(12px);
       font-weight: 400;
-      color: rgba($color-preto, 0.6);
-      margin: 2px 0 0;
+      color: rgba($color-preto, 0.7);
+      margin: 3px 0 0;
+      line-height: 1.5;
     }
 
-    &-progress {
+    // Linha inferior: fração + barras de progresso
+    &-bottom {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      flex-shrink: 0;
+      align-items: center;
+      gap: 10px;
     }
 
     &-fraction {
       font-family: $ff-primary;
       font-size: rem(12px);
-      font-weight: 600;
-      color: map-get($color-verde, 500);
+      font-weight: 700;
+      color: $color-preto;
+      flex-shrink: 0;
     }
 
-    &-bar {
-      width: 56px;
-      height: 4px;
-      background: rgba(#1e593a, 0.2);
-      border-radius: 100px;
-      overflow: hidden;
+    &-bars {
+      display: flex;
+      gap: 5px;
+      flex: 1;
     }
 
-    &-fill {
-      height: 100%;
-      background: map-get($color-verde, 500);
+    &-bar-seg {
+      flex: 1;
+      height: 5px;
+      background: rgba(#1e593a, 0.18);
       border-radius: 100px;
-      transition: width 0.4s ease;
+      transition: background-color 0.3s ease;
+
+      &.is-filled {
+        background: map-get($color-verde, 500);
+      }
     }
   }
 

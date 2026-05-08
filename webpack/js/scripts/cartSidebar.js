@@ -182,6 +182,8 @@ export default function cartSidebar() {
             function (_e, _fragments, _cartHash, $btn) {
                 const btn = ($btn && $btn[0]) || lastAddBtn;
                 showAddedFeedback(btn);
+                // Abre o sidebar sempre que um item é adicionado
+                open();
             },
         );
     }
