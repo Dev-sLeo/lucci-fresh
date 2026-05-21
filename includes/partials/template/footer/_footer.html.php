@@ -10,6 +10,7 @@ $addr_text       = $endereco['text']                  ?? '';
 $addr_link       = $endereco['link']                  ?? '';
 $redes_sociais   = $footer['redes_sociais']           ?? [];
 $privacy_policy  = $footer['politica_de_privacidade'] ?? [];
+$term_use  = $footer['termos_de_uso'] ?? [];
 $upsites         = $footer['upsites']                 ?? '';
 $copy_text       = $footer['copy']                    ?? '';
 
@@ -107,12 +108,20 @@ $footer_nav = wp_nav_menu([
             &nbsp;/&nbsp;<?= esc_html__('Criação de Sites por', 'lucci-fresh') ?> <a href="<?= esc_url($upsites) ?>" target="_blank" rel="noopener noreferrer">Upsites</a>
           <?php endif; ?>
         </p>
-        <?php if (!empty($privacy_policy['url'])) : ?>
-          <a href="<?= esc_url($privacy_policy['url']) ?>" class="o-footer__privacy"
-            <?= !empty($privacy_policy['target']) ? 'target="' . esc_attr($privacy_policy['target']) . '" rel="noopener noreferrer"' : '' ?>>
-            <?= esc_html($privacy_policy['title'] ?: __('Política de privacidade', 'lucci-fresh')) ?>
-          </a>
-        <?php endif; ?>
+        <div class="o-footer__copy-inner-right">
+          <?php if (!empty($term_use['url'])) : ?>
+            <a href="<?= esc_url($term_use['url']) ?>" class="o-footer__privacy"
+              <?= !empty($term_use['target']) ? 'target="' . esc_attr($term_use['target']) . '" rel="noopener noreferrer"' : '' ?>>
+              <?= esc_html($term_use['title'] ?: __('Termos de uso', 'lucci-fresh')) ?>
+            </a>
+          <?php endif; ?>
+          <?php if (!empty($privacy_policy['url'])) : ?>
+            <a href="<?= esc_url($privacy_policy['url']) ?>" class="o-footer__privacy"
+              <?= !empty($privacy_policy['target']) ? 'target="' . esc_attr($privacy_policy['target']) . '" rel="noopener noreferrer"' : '' ?>>
+              <?= esc_html($privacy_policy['title'] ?: __('Política de privacidade', 'lucci-fresh')) ?>
+            </a>
+          <?php endif; ?>
+        </div>
       </div><!-- /.o-footer__copy-inner -->
     </div><!-- /.s-container -->
   </div><!-- /.o-footer__copy-bar -->

@@ -1,12 +1,5 @@
-// modules/components/_benefits.scss
-
 .s-benefits {
-  padding: 80px 0;
   overflow: hidden;
-
-  @include mq(desktop-low) {
-    padding: 96px 0;
-  }
 
   &__title {
     font-family: $ff-heading;

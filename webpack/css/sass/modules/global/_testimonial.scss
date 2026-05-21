@@ -47,6 +47,12 @@
 
   .swiper {
     overflow: visible;
+
+    @include mq(desktop-low) {
+      max-width: 873px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   .swiper-wrapper {
@@ -305,9 +311,6 @@
       letter-spacing: -0.64px;
       margin: 0;
 
-      @include mq(desktop-low) {
-        font-size: rem(32px);
-      }
     }
   }
 }

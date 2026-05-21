@@ -42,6 +42,7 @@ if ($has_bg) {
   $bg_style = implode('; ', $parts);
 }
 ?>
+<?php if ($is_marmita) : ?>
 <section class="s-cat-hero<?= $has_bg ? ' s-cat-hero--has-bg' : '' ?>" <?= $bg_style ? ' style="' . esc_attr($bg_style) . '"' : '' ?>>
 
   <?php if (!$has_bg) : ?>
@@ -56,7 +57,7 @@ if ($has_bg) {
       <h1 class="s-cat-hero__title"><?= esc_html($titulo) ?></h1>
       <p class="s-cat-hero__description"><?= esc_html($descricao) ?></p>
 
-      <?php if ($is_marmita && ($img_desktop || $img_mobile)) : ?>
+      <?php if ($img_desktop || $img_mobile) : ?>
         <div class="s-cat-hero__image-wrap">
           <?php if ($img_desktop) : ?>
             <div class="s-cat-hero__image s-cat-hero__image--desktop">
@@ -95,3 +96,4 @@ if ($has_bg) {
     </div>
   </div>
 </section><!-- /.s-cat-hero -->
+<?php endif; ?>

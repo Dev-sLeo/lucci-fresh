@@ -1,11 +1,10 @@
 // modules/components/_product-grid.scss
 
 .s-product-grid {
-  padding: 80px 0;
+  padding: 0 0 5rem;
   overflow: hidden;
 
   @include mq(desktop-low) {
-    padding: 96px 0;
     overflow: visible;
   }
 

@@ -9,7 +9,7 @@
   @include mq(desktop-low) {
     display: flex;
     align-items: center;
-    min-height: 620px;
+    min-height: 520px;
 
     >.s-container {
       width: 100%;
@@ -72,7 +72,7 @@
     z-index: 1;
 
     @include mq(desktop-low) {
-      padding: 72px 0 80px;
+      padding: 2rem 0 3rem;
       gap: 40px;
     }
   }

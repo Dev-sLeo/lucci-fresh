@@ -7,14 +7,15 @@ export default function () {
     const root = document.querySelector(".o-testimonials__list.swiper");
     if (!root) return;
 
-    const paginationEl = root.querySelector(".o-testimonials__pagination");
-    const prevEl = root.querySelector(".o-testimonials__nav--prev");
-    const nextEl = root.querySelector(".o-testimonials__nav--next");
+    const paginationEl = document.querySelector(".o-testimonials__pagination");
+    const prevEl = document.querySelector(".o-testimonials__nav--prev");
+    const nextEl = document.querySelector(".o-testimonials__nav--next");
 
     const slider = new Swiper(root, {
         modules: [Pagination, Navigation, Autoplay],
         slidesPerView: 1,
         spaceBetween: 14,
+        loop: true,
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,

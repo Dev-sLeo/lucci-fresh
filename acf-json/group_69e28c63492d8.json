@@ -286,6 +286,23 @@
                     "allow_in_bindings": 0
                 },
                 {
+                    "key": "field_6a0f4aa3ccbbd",
+                    "label": "Termos de uso",
+                    "name": "termos_de_uso",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0
+                },
+                {
                     "key": "field_69e2abcbe1680",
                     "label": "Upsites",
                     "name": "upsites",
@@ -611,5 +628,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1776533229
+    "modified": 1779387102
 }
