@@ -45,7 +45,7 @@
     display: none;
   }
 
-  &__list-wrapper {
+  &__list {
     @include mq(desktop-low) {
       max-width: 873px;
       margin-left: auto;

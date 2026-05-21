@@ -40,7 +40,7 @@ $google_rating      = $block['estrelas'] ?? '';
                   <div class="c-testimonial__details">
                     <?php if ($photo) : ?>
                       <div class="c-testimonial__avatar">
-                        <?= wp_get_attachment_image($photo['ID'], 'thumbnail', false, ['loading' => 'lazy']) ?>
+                        <?= wp_get_attachment_image($photo['ID'], 'thumbnail', false, ['loading' => 'eager']) ?>
                       </div>
                     <?php endif; ?>
                     <div class="c-testimonial__meta">

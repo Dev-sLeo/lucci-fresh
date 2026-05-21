@@ -15,7 +15,6 @@ export default function () {
         modules: [Pagination, Navigation, Autoplay],
         slidesPerView: 1,
         spaceBetween: 14,
-        loop: true,
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
