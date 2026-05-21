@@ -45,14 +45,16 @@
     display: none;
   }
 
-  .swiper {
-    overflow: visible;
-
+  &__list-wrapper {
     @include mq(desktop-low) {
       max-width: 873px;
       margin-left: auto;
       margin-right: auto;
     }
+  }
+
+  .swiper {
+    overflow: visible;
   }
 
   .swiper-wrapper {
@@ -175,7 +177,7 @@
     flex-direction: row;
     align-items: center;
     gap: 48px;
-    padding: rem(64);
+    padding: rem(32);
   }
 
   &__details {
@@ -202,8 +204,8 @@
     flex-shrink: 0;
 
     @include mq(desktop-low) {
-      width: 94px;
-      height: 94px;
+      width: 70px;
+      height: 70px;
     }
 
     img {
@@ -228,7 +230,7 @@
 
   &__name {
     font-family: $ff-primary;
-    font-size: rem(20px);
+    font-size: rem(16px);
     font-weight: 600;
     color: #1f2818;
     letter-spacing: -0.4px;
@@ -238,7 +240,7 @@
 
   &__role {
     font-family: $ff-primary;
-    font-size: rem(14px);
+    font-size: rem(12px);
     font-weight: 400;
     color: #414b6c;
     line-height: 1.6;
@@ -305,7 +307,7 @@
   &__text {
     p {
       font-family: $ff-heading;
-      font-size: rem(24px);
+      font-size: rem(18px);
       color: #1f2818;
       line-height: 1.2;
       letter-spacing: -0.64px;
