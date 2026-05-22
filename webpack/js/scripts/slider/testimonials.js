@@ -28,12 +28,6 @@ export default function () {
             prevEl,
             nextEl,
         },
-        breakpoints: {
-            768: {
-                slidesPerView: 1,
-                spaceBetween: 18,
-            },
-        },
     });
 
     return slider;
