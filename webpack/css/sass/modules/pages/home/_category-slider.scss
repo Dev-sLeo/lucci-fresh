@@ -149,6 +149,10 @@
     .swiper {
       overflow: visible;
     }
+
+    .swiper-slide {
+      width: auto;
+    }
   }
 }
 
@@ -159,13 +163,15 @@
   display: block;
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 367px;
+  width: 294px;
   border-radius: rem(16);
   overflow: hidden;
   text-decoration: none;
 
   @media (min-width: $media-query-desktop-low) {
     height: 483px;
+    width: 388px;
   }
 
   // Full-bleed image

@@ -10,7 +10,7 @@ export default function categorySlider() {
 
     new Swiper(el, {
         modules: [Navigation, Scrollbar, Autoplay],
-        slidesPerView: 1.2,
+        slidesPerView: "auto",
         spaceBetween: 16,
         grabCursor: true,
         autoplay: {
@@ -27,16 +27,10 @@ export default function categorySlider() {
         },
         breakpoints: {
             720: {
-                slidesPerView: 2.2,
                 spaceBetween: 20,
             },
             1024: {
-                slidesPerView: 3.1,
-                spaceBetween: 24,
-            },
-            1280: {
-                slidesPerView: 3.5,
-                spaceBetween: 24,
+                spaceBetween: 32,
             },
         },
     });
