@@ -2,83 +2,104 @@
 // includes/partials/template/global/_hero.html.php
 global $tpl_engine;
 
-$block     = get_field('hero');
-$titulo    = $block['title']       ?? __('A melhor mini pizza de São Paulo', 'lucci-fresh');
-$descricao = $block['description'] ?? __('Sabor caseiro, ingredientes selecionados e praticidade para o seu dia a dia. Peça agora e receba qualidade', 'lucci-fresh');
-$btn1      = $block['buttons']['button']   ?? [];
-$btn2      = $block['buttons']['button_2'] ?? [];
-$imagens   = $block['imagens'] ?? [];
+$slides = get_field('hero') ?: [];
 
-$img_produto = $imagens['desktop'] ?? null;
-$img_mobile  = $imagens['mobile']  ?? null;
-$foto_1      = $imagens['foto_1']  ?? null;
-$foto_2      = $imagens['foto_2']  ?? null;
-
-$btn1_url    = $btn1['url']    ?? '#';
-$btn1_texto  = $btn1['title']  ?? __('R$ 15,80', 'lucci-fresh');
-$btn1_target = $btn1['target'] ?? '_self';
-
-$btn2_url    = $btn2['url']    ?? wc_get_page_permalink('shop');
-$btn2_texto  = $btn2['title']  ?? __('Fazer pedido', 'lucci-fresh');
-$btn2_target = $btn2['target'] ?? '_self';
 ?>
 <section class="s-hero">
   <div class="s-hero__pattern" aria-hidden="true">
     <?php $tpl_engine->svg('pattern/pattern-hero') ?>
   </div>
-  <div class="s-hero__inner">
 
-      <div class="s-hero__content">
-        <div class="s-hero__text">
-          <h1 class="s-hero__title"><?= esc_html($titulo) ?></h1>
-          <p class="s-hero__description"><?= esc_html($descricao) ?></p>
-        </div>
-        <div class="s-hero__cta">
-          <a href="<?= esc_url($btn1_url) ?>"
-            class="u-button u-button__white s-hero__btn"
-            target="<?= esc_attr($btn1_target) ?>">
-            <?= esc_html($btn1_texto) ?>
-          </a>
-          <a href="<?= esc_url($btn2_url) ?>"
-            class="u-button u-button__wood s-hero__btn"
-            target="<?= esc_attr($btn2_target) ?>">
-            <?= esc_html($btn2_texto) ?>
-          </a>
-        </div>
-      </div>
+  <div class="s-hero__slider-wrap">
+    <div class="s-hero__slider swiper">
+      <div class="swiper-wrapper">
 
-      <div class="s-hero__media">
-        <div class="s-hero__product">
-          <?php if ($img_produto) : ?>
-            <picture>
-              <?php if ($img_mobile) : ?>
-                <source srcset="<?= esc_url($img_mobile['url']) ?>" media="(max-width: 719px)">
-              <?php endif; ?>
-              <img
-                class="s-hero__image"
-                src="<?= esc_url($img_produto['url']) ?>"
-                alt="<?= esc_attr($img_produto['alt'] ?? $titulo) ?>"
-                width="<?= esc_attr($img_produto['width'] ?? '') ?>"
-                height="<?= esc_attr($img_produto['height'] ?? '') ?>">
-            </picture>
-          <?php endif; ?>
-        </div>
+        <?php foreach ($slides as $slide) :
+          $titulo    = $slide['title']       ?? '';
+          $descricao = $slide['description'] ?? '';
+          $buttons   = $slide['buttons']     ?? [];
+          // O grupo de imagens tem name="" no ACF — sub-fields ficam em $slide['']
+          $imagens  = isset($slide['imagens']) && is_array($slide['imagens']) ? $slide['imagens'] : $slide;
+          $img_desk = $imagens['desktop'] ?? null;
+          $img_mob  = $imagens['mobile']  ?? null;
+        ?>
+          <div class="swiper-slide">
+            <div class="s-hero__inner">
 
-        <?php if ($foto_1 || $foto_2) : ?>
-          <div class="s-hero__photos">
-            <?php if ($foto_1) : ?>
-              <div class="s-hero__photo">
-                <?= wp_get_attachment_image($foto_1['ID'], 'large', false, ['loading' => 'lazy', 'class' => 's-hero__photo-img', 'alt' => esc_attr($foto_1['alt'] ?? '')]) ?>
+              <div class="s-hero__content">
+                <div class="s-hero__text">
+                  <?php if ($titulo) : ?>
+                    <h1 class="s-hero__title"><?= esc_html($titulo) ?></h1>
+                  <?php endif; ?>
+                  <?php if ($descricao) : ?>
+                    <div class="s-hero__description"><?= wp_kses_post($descricao) ?></div>
+                  <?php endif; ?>
+                </div>
+
+                <?php if (!empty($buttons)) : ?>
+                  <div class="s-hero__cta">
+                    <?php foreach ($buttons as $i => $btn_row) :
+                      $btn    = $btn_row['button'] ?? [];
+                      $url    = $btn['url']    ?? '#';
+                      $texto  = $btn['title']  ?? '';
+                      $target = $btn['target'] ?? '_self';
+                      if (!$texto) continue;
+                      $variant = $i === 0 ? 'u-button__white' : 'u-button__wood';
+                    ?>
+                      <a href="<?= esc_url($url) ?>"
+                        class="u-button <?= esc_attr($variant) ?> s-hero__btn"
+                        target="<?= esc_attr($target) ?>">
+                        <?= esc_html($texto) ?>
+                      </a>
+                    <?php endforeach; ?>
+                  </div>
+                <?php endif; ?>
               </div>
-            <?php endif; ?>
-            <?php if ($foto_2) : ?>
-              <div class="s-hero__photo">
-                <?= wp_get_attachment_image($foto_2['ID'], 'large', false, ['loading' => 'lazy', 'class' => 's-hero__photo-img', 'alt' => esc_attr($foto_2['alt'] ?? '')]) ?>
+
+              <div class="s-hero__media">
+                <div class="s-hero__product">
+                  <?php if ($img_desk) : ?>
+                    <picture>
+                      <?php if ($img_mob) : ?>
+                        <source srcset="<?= esc_url($img_mob['url']) ?>" media="(max-width: 719px)">
+                      <?php endif; ?>
+                      <img
+                        class="s-hero__image"
+                        src="<?= esc_url($img_desk['url']) ?>"
+                        alt="<?= esc_attr($img_desk['alt'] ?? $titulo) ?>"
+                        width="<?= esc_attr($img_desk['width'] ?? '') ?>"
+                        height="<?= esc_attr($img_desk['height'] ?? '') ?>">
+                    </picture>
+                  <?php endif; ?>
+                </div>
               </div>
-            <?php endif; ?>
+
+            </div>
           </div>
-        <?php endif; ?>
-      </div>
+        <?php endforeach; ?>
 
-  </div>
+      </div>
+    </div>
+
+    <?php if (count($slides) > 1) : ?>
+      <button class="s-hero__nav s-hero__nav--prev" type="button" aria-label="<?= esc_attr__('Anterior', 'lucci-fresh') ?>">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M14 16L10 12L14 8" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="s-hero__nav s-hero__nav--next" type="button" aria-label="<?= esc_attr__('Próximo', 'lucci-fresh') ?>">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M10 16L14 12L10 8" stroke="#FD8426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    <?php endif; ?>
+
+  </div><!-- /.s-hero__slider-wrap -->
+
+  <?php if (count($slides) > 1) : ?>
+    <div class="s-hero__controls">
+      <div class="s-hero__pagination swiper-pagination"></div>
+    </div>
+  <?php endif; ?>
+
 </section>

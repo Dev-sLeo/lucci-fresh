@@ -215,4 +215,89 @@
     height: 100%;
     object-fit: cover;
   }
+
+  // ── Slider wrapper (posição relativa para as arrows absolutas) ───────────
+  &__slider-wrap {
+    position: relative;
+  }
+
+  // ── Arrows — absolutas nas laterais, centralizadas verticalmente ─────────
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.25);
+    border: none;
+    border-radius: 50%;
+    width: rem(44);
+    height: rem(44);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s ease, opacity 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    &--prev {
+      left: rem(16);
+
+      @include mq(desktop-low) {
+        left: rem(32);
+      }
+    }
+
+    &--next {
+      right: rem(16);
+
+      @include mq(desktop-low) {
+        right: rem(32);
+      }
+    }
+  }
+
+  // ── Controls row — só os bullets, centralizados ───────────────────────────
+  &__controls {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: rem(16) 0 rem(24);
+
+    @include mq(desktop-low) {
+      padding: rem(20) 0 rem(36);
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(6);
+
+    .swiper-pagination-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      opacity: 1;
+      margin: 0;
+      transition: background 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #FD8426;
+      transform: scale(1.25);
+    }
+  }
 }
