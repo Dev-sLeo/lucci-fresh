@@ -9,20 +9,8 @@
     padding: 80px 0;
   }
 
-  // ── Header (título + nav) ─────────────────────────────────────────────────
-
   &__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin-bottom: 36px;
-    flex-wrap: wrap;
-    gap: 16px;
-
-    @include mq(desktop-low) {
-      align-items: flex-end;
-      justify-content: space-between;
-    }
   }
 
   &__title {
@@ -39,30 +27,37 @@
     }
   }
 
-  &__nav {
-    display: none;
-    align-items: center;
-    gap: 16px;
-    flex-shrink: 0;
+  // ── Track — swiper + arrows absolutas nas laterais ────────────────────────
 
-    @include mq(desktop-low) {
-      display: flex;
-    }
+  &__track {
+    position: relative;
   }
 
   &__prev,
   &__next {
+    display: none;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
-    color: $color-preto;
-    display: flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
     transition: opacity 0.2s ease;
+    flex-shrink: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    @include mq(tablet) {
+      display: flex;
+    }
+
+    svg {
+      display: block;
+    }
 
     &:hover {
       opacity: 0.6;
@@ -74,33 +69,20 @@
     }
   }
 
-  &__progress {
-    width: 232px;
-    height: 3px;
-    border-radius: 600px;
-    background: rgba($color-preto, 0.15);
-    position: relative;
-    top: auto;
-    left: auto;
-    bottom: auto;
-    overflow: hidden;
+  &__prev {
+    left: -32px;
 
-    .swiper-scrollbar-drag {
-      background: $color-preto;
-      border-radius: 600px;
-      height: 100%;
-      cursor: grab;
-
-      &:active {
-        cursor: grabbing;
-      }
+    @include mq(desktop-low) {
+      left: -40px;
     }
   }
 
-  // ── Swiper overrides ──────────────────────────────────────────────────────
+  &__next {
+    right: -32px;
 
-  .swiper {
-    overflow: visible;
+    @include mq(desktop-low) {
+      right: -40px;
+    }
   }
 
   .swiper-wrapper {

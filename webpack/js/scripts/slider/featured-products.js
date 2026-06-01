@@ -1,23 +1,19 @@
 // webpack/js/scripts/slider/featured-products.js
 import Swiper from "swiper";
-import { Navigation, Scrollbar } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 export default function featuredProducts() {
     const slider = document.querySelector(".js-featured-products");
     if (!slider) return;
 
     new Swiper(slider, {
-        modules: [Navigation, Scrollbar],
+        modules: [Navigation],
         slidesPerView: 1.2,
         spaceBetween: 16,
         grabCursor: true,
         navigation: {
             prevEl: ".js-featured-prev",
             nextEl: ".js-featured-next",
-        },
-        scrollbar: {
-            el: ".js-featured-progress",
-            draggable: true,
         },
         breakpoints: {
             720: {

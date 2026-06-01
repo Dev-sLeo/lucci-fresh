@@ -28,17 +28,13 @@ export default function singleProduct() {
     if (!relatedEl) return;
 
     new Swiper(relatedEl, {
-        modules: [Navigation, Scrollbar],
+        modules: [Navigation],
         slidesPerView: 1.2,
         spaceBetween: 16,
         grabCursor: true,
         navigation: {
             prevEl: ".js-sp-related-prev",
             nextEl: ".js-sp-related-next",
-        },
-        scrollbar: {
-            el: ".js-sp-related-progress",
-            draggable: true,
         },
         breakpoints: {
             720: {
