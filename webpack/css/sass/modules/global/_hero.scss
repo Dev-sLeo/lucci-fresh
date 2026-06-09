@@ -5,6 +5,12 @@
   position: relative;
   overflow: hidden;
 
+  .swiper-slide {
+    @include mq(desktop-low) {
+      overflow: hidden;
+    }
+  }
+
   // ── Pattern background SVG ─────────────────────────────────────────────────
   &__pattern {
     position: absolute;
@@ -38,7 +44,7 @@
       flex-direction: row;
       align-items: center;
       gap: 0;
-      min-height: 660px;
+      min-height: 550px;
       padding-top: 0;
       padding-bottom: 0;
       padding-left: 0;
@@ -96,7 +102,7 @@
     }
 
     @include mq(desktop-low) {
-      font-size: rem(62px);
+      font-size: rem(56px);
       max-width: 506px;
     }
   }
@@ -219,6 +225,7 @@
   // ── Slider wrapper (posição relativa para as arrows absolutas) ───────────
   &__slider-wrap {
     position: relative;
+    overflow: hidden;
   }
 
   // ── Arrows — absolutas nas laterais, centralizadas verticalmente ─────────

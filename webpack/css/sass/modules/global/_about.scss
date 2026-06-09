@@ -6,8 +6,6 @@
   overflow: hidden;
 
   @include mq(desktop-low) {
-    padding: 0;
-    min-height: 800px;
     display: flex;
     align-items: center;
   }

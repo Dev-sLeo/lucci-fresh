@@ -24,6 +24,12 @@
     }
   }
 
+  .s-container {
+    @include mq(desktop-low) {
+      max-width: 1600px;
+    }
+  }
+
   // -----------------------------------------------------------------------
   // TOP BAR
   // -----------------------------------------------------------------------
@@ -72,7 +78,7 @@
     gap: 16px;
 
     @media (min-width: $media-query-desktop-low) {
-      padding: 22px 0;
+      padding: rem(12) 0;
     }
   }
 
@@ -92,13 +98,13 @@
 
       @media (min-width: $media-query-desktop-low) {
         width: auto;
-        height: 57px;
+        height: rem(50);
       }
     }
 
     &-text {
       font-family: 'DM Serif Display', serif;
-      font-size: 24px;
+      font-size: rem(24);
       color: #1e593a;
     }
   }
@@ -195,8 +201,8 @@
     transition: opacity 0.2s ease;
 
     @media (min-width: $media-query-desktop-low) {
-      width: 49px;
-      height: 49px;
+      width: 40px;
+      height: auto;
     }
 
     svg {

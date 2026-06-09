@@ -145,7 +145,7 @@ $show_disc    = !empty($disc_info['show']);
       </div>
 
       <a href="<?= esc_url($checkout_url) ?>" class="u-button u-button__wood c-cart-sidebar__checkout">
-        <?= esc_html__('Continuar pedido', 'lucci-fresh') ?>
+        <?= esc_html__('Finalizar Pedido', 'lucci-fresh') ?>
       </a>
     </div>
   <?php endif; ?>

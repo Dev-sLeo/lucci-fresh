@@ -32,7 +32,7 @@ $horario = $contato['horario'] ?? 'Segunda à sexta das 10h às 18h30 · Sábado
 
         <div class="s-ct-contact__header">
           <?php if ($eyebrow) : ?>
-            <p class="s-ct-contact__eyebrow"><?= esc_html($eyebrow) ?></p>
+            <h1 class="s-ct-contact__eyebrow"><?= esc_html($eyebrow) ?></h1>
           <?php endif; ?>
           <h2 class="s-ct-contact__title"><?= esc_html($titulo) ?></h2>
         </div>
