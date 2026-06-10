@@ -19,6 +19,10 @@
             "text": "Rua Américo Vespucci 646, Vila Prudente- 03135-010",
             "url": ""
         },
+        "endereco_2": {
+            "text": "R. Orfanato, 761 - Vila Prudente, São Paulo - SP, 03135-010",
+            "url": ""
+        },
         "horario": "Segunda à sexta das 10h às 18h30 Sábado das 10h às 15h",
         "title_form": "Preencha o formulário abaixo",
         "form": "[contact-form-7 id=\"5\"]"

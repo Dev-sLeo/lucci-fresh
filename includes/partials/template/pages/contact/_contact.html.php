@@ -21,6 +21,10 @@ $endereco_f    = $contato['endereco'] ?? [];
 $endereco_text = is_array($endereco_f) ? ($endereco_f['text'] ?? 'Rua Américo Vespucci, 646, Vila Prudente – 03135-010') : $endereco_f;
 $endereco_url  = is_array($endereco_f) ? ($endereco_f['url']  ?? '') : '';
 
+$endereco_2    = $contato['endereco_2'] ?? [];
+$endereco_2_text = is_array($endereco_2) ? ($endereco_2['text'] ?? 'Rua Américo Vespucci, 646, Vila Prudente – 03135-010') : $endereco_2;
+$endereco_2_url  = is_array($endereco_2) ? ($endereco_2['url']  ?? '') : '';
+
 $horario = $contato['horario'] ?? 'Segunda à sexta das 10h às 18h30 · Sábado das 10h às 15h';
 ?>
 <section class="s-ct-contact">
@@ -74,6 +78,19 @@ $horario = $contato['horario'] ?? 'Segunda à sexta das 10h às 18h30 · Sábado
                 <a class="s-ct-contact__item-text" href="<?= esc_url($endereco_url) ?>"><?= esc_html($endereco_text) ?></a>
               <?php else : ?>
                 <p class="s-ct-contact__item-text"><?= esc_html($endereco_text) ?></p>
+              <?php endif; ?>
+            </li>
+          <?php endif; ?>
+
+          <?php if ($endereco_2_text) : ?>
+            <li class="s-ct-contact__item">
+              <span class="s-ct-contact__icon" aria-hidden="true">
+                <?php $tpl_engine->svg('icons/contact/adress') ?>
+              </span>
+              <?php if ($endereco_2_url) : ?>
+                <a class="s-ct-contact__item-text" href="<?= esc_url($endereco_2_url) ?>"><?= esc_html($endereco_2_text) ?></a>
+              <?php else : ?>
+                <p class="s-ct-contact__item-text"><?= esc_html($endereco_2_text) ?></p>
               <?php endif; ?>
             </li>
           <?php endif; ?>

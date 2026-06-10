@@ -27,6 +27,8 @@
   .s-container {
     @include mq(desktop-low) {
       max-width: 1600px;
+      box-sizing: border-box;
+      width: 100%;
     }
   }
 
