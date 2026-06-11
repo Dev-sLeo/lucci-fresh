@@ -696,7 +696,7 @@ ul.products,
 // Checkout
 // -----------------------------------------------------------------------------
 .p-checkout {
-  padding: 60px 0;
+  padding: 32px 0;
 
   &__form {
     width: 100%;
@@ -1260,16 +1260,17 @@ a.added_to_cart {
 .wc-block-components-totals-coupon {
   .wc-block-components-totals-coupon__form {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: flex-end;
     flex-wrap: wrap;
+    margin-top: 12px;
   }
 
   input[type="text"] {
     flex: 1;
     border: 1.5px solid map-get($color-verde, 100);
     border-radius: 600px;
-    padding: 12px 18px;
+    padding: 14px 20px;
     font-size: 15px;
     font-family: $ff-primary;
     color: $wc-text;
@@ -1357,7 +1358,9 @@ a.added_to_cart {
   font-size: 14px !important;
   font-weight: 500 !important;
   cursor: pointer;
-  padding: 1rem 0 !important;
+  padding: 14px 0 !important;
+  margin-bottom: 4px;
+  border-bottom: 1px solid $wc-border !important;
   text-decoration: none;
   transition: color 0.2s;
   display: flex;
@@ -1385,6 +1388,7 @@ a.added_to_cart {
   select,
   .components-select-control__input {
     width: 100% !important;
+    min-height: 54px !important;
     border: 1.5px solid map-get($color-verde, 100) !important;
     border-radius: 12px !important;
     padding: 22px 18px 10px !important;
@@ -1394,6 +1398,12 @@ a.added_to_cart {
     background: #fff !important;
     transition: border-color 0.2s, box-shadow 0.2s !important;
     box-sizing: border-box !important;
+  }
+
+  select,
+  .components-select-control__input {
+    display: flex !important;
+    align-items: center !important;
 
     &:focus {
       outline: none !important;
@@ -1424,6 +1434,10 @@ a.added_to_cart {
   }
 }
 
+.wc-block-components-country-input {
+  margin-top: 12px !important;
+}
+
 // Bloco de checkout — layout
 .wp-block-woocommerce-checkout {
   font-family: $ff-primary;
@@ -1440,7 +1454,6 @@ a.added_to_cart {
     // Sidebar totals wrapper — também branco
     .wc-block-components-totals-wrapper {
       background: transparent;
-      padding: 0;
       border-radius: 0;
     }
   }
