@@ -1,5 +1,3 @@
-// modules/pages/quem-somos/_hero.scss
-
 .s-qs-hero {
   background-color: #ffedd0;
   position: relative;
@@ -90,8 +88,17 @@
   &__media {
     position: absolute;
     left: 50%;
-    bottom: -30%;
     transform: translateX(-50%);
+    padding: 0 1.5rem;
+    width: 100%;
+
+    @include mq(desktop-low) {
+      bottom: -37%;
+      font-size: rem(22px);
+      max-width: 960px;
+      padding: 0;
+    }
+
   }
 
   &__image {
