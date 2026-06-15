@@ -34,6 +34,64 @@
       margin-bottom: 20px;
     }
   }
+
+  .wc-block-components-radio-control__label-group em {
+    display: none;
+  }
+
+  .wc-block-components-radio-control__option--checked-option-highlighted {
+    .read-more-content {
+      font-size: 10px;
+      margin-top: .5rem;
+    }
+  }
+
+  .wc-block-components-text-input label {
+    top: 27px !important;
+  }
+
+  .lknIntegrationRedeForWoocommerceSelectBlocks.lknIntegrationRedeForWoocommerceSelect3dsInstallments label {
+    display: block;
+    font-family: $ff-primary;
+    font-size: 13px;
+    font-weight: 600;
+    color: $wc-text;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .lknIntegrationRedeForWoocommerceSelectBlocks select {
+    width: 100%;
+    border: 1.5px solid map-get($color-verde, 100);
+    border-radius: 12px;
+    padding: 14px 18px !important;
+    font-size: 15px !important;
+    font-family: $ff-primary;
+    color: $wc-text;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: map-get($color-verde, 500);
+      box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+    }
+  }
+
+  .wc-block-components-totals-item__label {
+    font-size: 16px !important;
+  }
+
+  .wc-block-formatted-money-amount.wc-block-components-formatted-money-amount.wc-block-components-totals-footer-item-tax-value,
+  .wc-block-formatted-money-amount.wc-block-components-formatted-money-amount.wc-block-components-totals-item__value {
+    font-size: 14px !important;
+  }
+
+  .wc-block-components-totals-item.wc-block-components-totals-footer-item.rede-processed {
+    margin-bottom: .5rem;
+  }
 }
 
 // Campos de checkout
