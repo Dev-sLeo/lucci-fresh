@@ -1,0 +1,168 @@
+// -----------------------------------------------------------------------------
+// Checkout
+// -----------------------------------------------------------------------------
+.p-checkout {
+  padding: 32px 0;
+
+  &__form {
+    width: 100%;
+  }
+
+  &__cols {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 48px;
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__order-review {
+    background: map-get($color-verde, 50);
+    border-radius: $wc-radius;
+    padding: 32px;
+    position: sticky;
+    top: 100px;
+
+    h3 {
+      font-family: $ff-primary;
+      font-size: 20px;
+      font-weight: 600;
+      color: $wc-text;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// Campos de checkout
+.woocommerce-billing-fields,
+.woocommerce-shipping-fields,
+.woocommerce-additional-fields {
+  h3 {
+    font-family: $ff-primary;
+    font-size: 18px;
+    font-weight: 600;
+    color: $wc-text;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $wc-border;
+  }
+
+  .form-row {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      font-family: $ff-primary;
+      font-size: 13px;
+      font-weight: 600;
+      color: $wc-text;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1.5px solid map-get($color-verde, 100);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-family: $ff-primary;
+      color: $wc-text;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: map-get($color-verde, 500);
+        box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+      }
+    }
+  }
+}
+
+// Revisão do pedido
+#order_review {
+  .shop_table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px 0;
+      font-size: 14px;
+      font-family: $ff-primary;
+      border-bottom: 1px solid $wc-border;
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    .order-total th,
+    .order-total td {
+      font-weight: 700;
+      font-size: 17px;
+      color: $wc-text;
+    }
+  }
+}
+
+#payment {
+  margin-top: 24px;
+
+  ul.payment_methods {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    overflow: hidden;
+
+    li {
+      padding: 14px 16px;
+      border-bottom: 1px solid $wc-border;
+      font-family: $ff-primary;
+      font-size: 14px;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      label {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+  }
+
+  #place_order {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: #DA864D;
+    color: #fff;
+    padding: 16px 32px;
+    border: 1px solid transparent;
+    border-radius: 600px;
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #b76a3b;
+    }
+  }
+}

@@ -170,29 +170,3 @@ add_filter('acf/settings/load_json', function ($paths) {
   $paths[] = get_stylesheet_directory() . '/acf-json';
   return $paths;
 });
-
-add_action('acf/save_post', function ($post_id) {
-
-  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-
-  // options
-  if ($post_id === 'options') {
-    $file = 'options';
-  } else {
-    $file = 'post-' . $post_id;
-  }
-
-  $fields = get_fields($post_id);
-  if (!$fields) return;
-
-  $path = get_stylesheet_directory() . "/acf-data/{$file}.json";
-
-  if (!file_exists(dirname($path))) {
-    mkdir(dirname($path), 0755, true);
-  }
-
-  file_put_contents(
-    $path,
-    json_encode($fields, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-  );
-}, 20);

@@ -200,6 +200,20 @@ add_filter('gettext', function ($translated, $text, $domain) {
 }, 10, 3);
 
 // -----------------------------------------------------------------------------
+// Login com e-mail apenas (sem nome de usuário)
+// -----------------------------------------------------------------------------
+
+add_filter('gettext', function ($translated, $text, $domain) {
+    if ($domain !== 'woocommerce') {
+        return $translated;
+    }
+    $map = [
+        'Username or email address' => 'E-mail',
+    ];
+    return $map[$text] ?? $translated;
+}, 10, 3);
+
+// -----------------------------------------------------------------------------
 // Busca de produtos
 // -----------------------------------------------------------------------------
 
