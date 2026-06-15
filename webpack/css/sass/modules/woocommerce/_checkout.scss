@@ -35,8 +35,14 @@
     }
   }
 
-  .wc-block-components-radio-control__label-group em {
-    display: none;
+
+}
+
+.woocommerce-checkout {
+
+  .wc-block-checkout__pickup-options .wc-block-components-local-pickup-rates-control .wc-block-components-radio-control__label-group em,
+  .wp-block-woocommerce-checkout-pickup-options-block .wc-block-components-local-pickup-rates-control .wc-block-components-radio-control__label-group em {
+    display: none !important;
   }
 
   .wc-block-components-radio-control__option--checked-option-highlighted {
@@ -46,6 +52,7 @@
     }
   }
 
+  .wc-block-components-form .wc-block-components-text-input label,
   .wc-block-components-text-input label {
     top: 27px !important;
   }
