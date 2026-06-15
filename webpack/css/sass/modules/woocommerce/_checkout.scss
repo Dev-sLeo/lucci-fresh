@@ -99,6 +99,29 @@
   .wc-block-components-totals-item.wc-block-components-totals-footer-item.rede-processed {
     margin-bottom: .5rem;
   }
+
+  // Oculta o campo "País" (loja restrita ao Brasil)
+  .wc-block-components-address-form__country {
+    display: none !important;
+  }
+
+  // Endereço | Número na mesma linha (organizado via JS - checkoutLayout.js)
+  .c-checkout-row-2 {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    width: 100%;
+    gap: 0 16px;
+    margin-top: 12px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .wc-block-components-validation-error>p {
+    font-size: 13px;
+  }
 }
 
 // Campos de checkout

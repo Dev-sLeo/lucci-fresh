@@ -81,6 +81,14 @@ add_filter('default_checkout_shipping_country', function () {
     return 'BR';
 });
 
+// Restringe a loja apenas ao Brasil (oculta o seletor de país no Checkout Block)
+add_filter('woocommerce_countries', function ($countries) {
+    return ['BR' => $countries['BR']];
+});
+add_filter('woocommerce_shipping_countries', function ($countries) {
+    return ['BR' => $countries['BR']];
+});
+
 // Campos desnecessários para mercado BR
 add_filter('woocommerce_checkout_fields', function ($fields) {
 
@@ -91,6 +99,50 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     // unset($fields['billing']['billing_state']);
 
     return $fields;
+});
+
+// -----------------------------------------------------------------------------
+// Checkout Blocks (Store API) - campo "Número" e estado fixo SP
+// -----------------------------------------------------------------------------
+
+// Registra o campo adicional "Número" (aparece no Checkout Block, em ambos endereços)
+add_action('woocommerce_init', function () {
+    if (!function_exists('woocommerce_register_additional_checkout_field')) return;
+
+    woocommerce_register_additional_checkout_field([
+        'id'       => 'arterra/address_number',
+        'label'    => __('Número', 'arterra'),
+        'location' => 'address',
+        'type'     => 'text',
+        'required' => true,
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+});
+
+// Salva o "Número" também na linha de endereço (pedidos via Checkout Block)
+add_filter('woocommerce_order_formatted_billing_address', function ($address, $order) {
+    $number = $order->get_meta('arterra/address_number') ?: $order->get_meta('_billing_number');
+    if ($number && !empty($address['address_1'])) {
+        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    return $address;
+}, 10, 2);
+
+add_filter('woocommerce_order_formatted_shipping_address', function ($address, $order) {
+    $number = $order->get_meta('arterra/address_number') ?: $order->get_meta('_shipping_number');
+    if ($number && !empty($address['address_1'])) {
+        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    return $address;
+}, 10, 2);
+
+// Estado fixo (São Paulo): oculta o campo no Checkout Block via locale do país
+// Renomeia "Código postal" para "CEP" no Checkout Block
+add_filter('woocommerce_get_country_locale', function ($locale) {
+    $locale['BR']['state']['required'] = false;
+    $locale['BR']['state']['hidden']   = true;
+    $locale['BR']['postcode']['label'] = __('CEP', 'arterra');
+    return $locale;
 });
 
 // Reordena e renomeia campos de cobrança para PT-BR
@@ -108,6 +160,10 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     if (isset($fields['billing']['billing_address_2'])) {
         $fields['billing']['billing_address_2']['label']       = __('Complemento', 'arterra');
         $fields['billing']['billing_address_2']['placeholder'] = __('Apto, bloco, sala...', 'arterra');
+        $fields['billing']['billing_address_2']['priority']    = 110; // por último
+    }
+    if (isset($fields['shipping']['shipping_address_2'])) {
+        $fields['shipping']['shipping_address_2']['priority'] = 110; // por último
     }
     if (isset($fields['billing']['billing_city'])) {
         $fields['billing']['billing_city']['label'] = __('Cidade', 'arterra');
@@ -117,11 +173,85 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $fields['billing']['billing_postcode']['placeholder'] = '00000-000';
     }
     if (isset($fields['billing']['billing_phone'])) {
-        $fields['billing']['billing_phone']['label']       = __('Telefone / WhatsApp', 'arterra');
+        $fields['billing']['billing_phone']['label']       = __('Celular', 'arterra');
         $fields['billing']['billing_phone']['placeholder'] = '(00) 00000-0000';
+        $fields['billing']['billing_phone']['required']    = true;
+    }
+
+    // Adiciona campo "Número" do endereço
+    $fields['billing']['billing_number'] = [
+        'label'       => __('Número', 'arterra'),
+        'placeholder' => __('Nº', 'arterra'),
+        'required'    => true,
+        'class'       => ['form-row-wide'],
+        'priority'    => 51, // logo após o endereço
+    ];
+
+    if (isset($fields['shipping']['shipping_address_1'])) {
+        $fields['shipping']['shipping_number'] = [
+            'label'       => __('Número', 'arterra'),
+            'placeholder' => __('Nº', 'arterra'),
+            'required'    => true,
+            'class'       => ['form-row-wide'],
+            'priority'    => 51,
+        ];
+    }
+
+    // Estado fixo: São Paulo (entrega somente nesse estado)
+    if (isset($fields['billing']['billing_state'])) {
+        $fields['billing']['billing_state']['type']     = 'hidden';
+        $fields['billing']['billing_state']['default']  = 'SP';
+        $fields['billing']['billing_state']['required'] = false;
+    }
+    if (isset($fields['shipping']['shipping_state'])) {
+        $fields['shipping']['shipping_state']['type']     = 'hidden';
+        $fields['shipping']['shipping_state']['default']  = 'SP';
+        $fields['shipping']['shipping_state']['required'] = false;
     }
 
     return $fields;
+});
+
+// Salva o campo "Número" no pedido
+add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
+    if (!empty($_POST['billing_number'])) {
+        update_post_meta($order_id, '_billing_number', sanitize_text_field(wp_unslash($_POST['billing_number'])));
+    }
+    if (!empty($_POST['shipping_number'])) {
+        update_post_meta($order_id, '_shipping_number', sanitize_text_field(wp_unslash($_POST['shipping_number'])));
+    }
+});
+
+// Exibe o campo "Número" junto ao endereço (admin, emails, detalhes do pedido)
+add_filter('woocommerce_order_formatted_billing_address', function ($address, $order) {
+    $number = $order->get_meta('_billing_number');
+    if ($number) {
+        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    return $address;
+}, 10, 2);
+
+add_filter('woocommerce_order_formatted_shipping_address', function ($address, $order) {
+    $number = $order->get_meta('_shipping_number');
+    if ($number) {
+        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    return $address;
+}, 10, 2);
+
+// Estado fixo: força São Paulo independentemente do envio
+add_filter('default_checkout_billing_state', function () {
+    return 'SP';
+});
+add_filter('default_checkout_shipping_state', function () {
+    return 'SP';
+});
+
+// Garante SP no processamento do pedido, mesmo com campo oculto
+add_filter('woocommerce_checkout_posted_data', function ($data) {
+    $data['billing_state']  = 'SP';
+    $data['shipping_state'] = 'SP';
+    return $data;
 });
 
 // -----------------------------------------------------------------------------
@@ -212,6 +342,35 @@ add_filter('gettext', function ($translated, $text, $domain) {
     ];
     return $map[$text] ?? $translated;
 }, 10, 3);
+
+// -----------------------------------------------------------------------------
+// Campo "Telefone" do Checkout Block -> "Celular" e obrigatório
+// -----------------------------------------------------------------------------
+
+add_filter('gettext', function ($translated, $text, $domain) {
+    if ($domain !== 'woocommerce') {
+        return $translated;
+    }
+    $map = [
+        'Phone (optional)'  => 'Celular',
+        'Phone'             => 'Celular',
+        'Postcode / ZIP'    => 'CEP',
+        'Postcode / ZIP *'  => 'CEP',
+        'ZIP Code'          => 'CEP',
+        'Postcode'          => 'CEP',
+    ];
+    return $map[$text] ?? $translated;
+}, 10, 3);
+
+// Marca o campo de telefone como obrigatório no Checkout Block
+add_filter('woocommerce_get_country_locale', function ($locale) {
+    foreach ($locale as $country => $fields) {
+        if (isset($fields['phone'])) {
+            $locale[$country]['phone']['required'] = true;
+        }
+    }
+    return $locale;
+});
 
 // -----------------------------------------------------------------------------
 // Busca de produtos

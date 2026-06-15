@@ -28,6 +28,7 @@ import contactForm from "./scripts/contactForm";
 import singleProduct from "./scripts/single-product";
 import categoryFilter from "./scripts/categoryFilter";
 import cartSidebar from "./scripts/cartSidebar";
+import checkoutLayout from "./scripts/checkoutLayout";
 
 window.gsap = gsap;
 
@@ -55,3 +56,4 @@ contactForm();
 singleProduct();
 categoryFilter();
 cartSidebar();
+checkoutLayout();
