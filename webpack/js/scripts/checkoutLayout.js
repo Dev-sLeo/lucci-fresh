@@ -32,10 +32,30 @@ export default function checkoutLayout() {
     return billingDone && shippingDone;
   };
 
-  if (run()) return;
+  const lockState = () => {
+    ['billing-state', 'shipping-state'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.value = 'SP';
+      el.setAttribute('disabled', 'disabled');
+      el.closest('.wc-block-components-state-input, .wc-block-components-combobox')
+        ?.querySelectorAll('input, select')
+        .forEach(input => {
+          input.value = 'SP';
+          input.setAttribute('disabled', 'disabled');
+        });
+    });
+  };
+
+  const runAll = () => {
+    run();
+    lockState();
+  };
+
+  runAll();
 
   const observer = new MutationObserver(() => {
-    if (run()) observer.disconnect();
+    runAll();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });

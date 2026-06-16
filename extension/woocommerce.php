@@ -81,13 +81,8 @@ add_filter('default_checkout_shipping_country', function () {
     return 'BR';
 });
 
-// Restringe a loja apenas ao Brasil (oculta o seletor de país no Checkout Block)
-add_filter('woocommerce_countries', function ($countries) {
-    return ['BR' => $countries['BR']];
-});
-add_filter('woocommerce_shipping_countries', function ($countries) {
-    return ['BR' => $countries['BR']];
-});
+// O campo país é ocultado via CSS (.wc-block-components-address-form__country { display:none })
+// NÃO restringimos woocommerce_countries para não quebrar plugins de frete/cálculo de endereço
 
 // Campos desnecessários para mercado BR
 add_filter('woocommerce_checkout_fields', function ($fields) {
@@ -139,8 +134,7 @@ add_filter('woocommerce_order_formatted_shipping_address', function ($address, $
 // Estado fixo (São Paulo): oculta o campo no Checkout Block via locale do país
 // Renomeia "Código postal" para "CEP" no Checkout Block
 add_filter('woocommerce_get_country_locale', function ($locale) {
-    $locale['BR']['state']['required'] = false;
-    $locale['BR']['state']['hidden']   = true;
+    $locale['BR']['state']['required'] = true;
     $locale['BR']['postcode']['label'] = __('CEP', 'arterra');
     return $locale;
 });
@@ -245,6 +239,15 @@ add_filter('default_checkout_billing_state', function () {
 });
 add_filter('default_checkout_shipping_state', function () {
     return 'SP';
+});
+
+// Garante SP no objeto WC_Customer durante o cálculo de frete (Store API / Checkout Block)
+// Sem isso, o campo state oculto nunca é enviado e plugins de frete por distância falham
+add_filter('woocommerce_customer_get_billing_state', function ($state) {
+    return $state ?: 'SP';
+});
+add_filter('woocommerce_customer_get_shipping_state', function ($state) {
+    return $state ?: 'SP';
 });
 
 // Garante SP no processamento do pedido, mesmo com campo oculto
@@ -354,10 +357,6 @@ add_filter('gettext', function ($translated, $text, $domain) {
     $map = [
         'Phone (optional)'  => 'Celular',
         'Phone'             => 'Celular',
-        'Postcode / ZIP'    => 'CEP',
-        'Postcode / ZIP *'  => 'CEP',
-        'ZIP Code'          => 'CEP',
-        'Postcode'          => 'CEP',
     ];
     return $map[$text] ?? $translated;
 }, 10, 3);

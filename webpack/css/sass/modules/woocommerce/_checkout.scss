@@ -105,6 +105,12 @@
     display: none !important;
   }
 
+  // Estado fixo em São Paulo
+  .wc-block-components-address-form__state {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
   // Endereço | Número na mesma linha (organizado via JS - checkoutLayout.js)
   .c-checkout-row-2 {
     grid-column: 1 / -1;
