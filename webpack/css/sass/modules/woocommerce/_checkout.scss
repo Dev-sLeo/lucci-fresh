@@ -134,6 +134,18 @@
     margin-top: .5rem;
   }
 
+  .LknPixForWoocommercePaymentFields {
+    justify-content: flex-start;
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .wc-block-components-totals-discount__coupon-list {
+    display: none !important;
+  }
+
 
 }
 
