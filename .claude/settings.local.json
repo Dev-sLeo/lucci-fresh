@@ -14,7 +14,14 @@
       "mcp__plugin_playwright_playwright__browser_resize",
       "mcp__plugin_playwright_playwright__browser_take_screenshot",
       "Bash(grep -i \"breakpoint\\\\|\\\\$.*:.*px\\\\|mixin mq\")",
-      "mcp__plugin_playwright_playwright__browser_evaluate"
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "Bash(ls \"/c/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins\")",
+      "Read(//c/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins/**)",
+      "Read(//c/Users/leona/Local Sites/lucci-fresh/app/public/**)",
+      "Bash(wp --info)",
+      "Bash(find / -iname \"wp-cli.phar\" 2>/dev/null | head -5; find / -iname \"wp.bat\" 2>/dev/null | head -5)",
+      "Read(//c//**)",
+      "Bash(php -r ' *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\leona\\Local Sites\\lucci-fresh\\app\\public\\wp-content\\themes\\lucci-fresh"

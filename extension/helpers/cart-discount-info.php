@@ -18,6 +18,28 @@ defined('ABSPATH') || exit;
  *
  * @return array
  */
+// Categoria de produto à qual o desconto por quantidade se aplica
+const LUCCI_AWDP_DISCOUNT_CATEGORY = 'marmitas';
+
+/**
+ * Retorna apenas os itens do carrinho cujo produto pertence à categoria informada.
+ *
+ * @return array<string, array> cart_item_key => cart_item
+ */
+function lucci_get_cart_items_in_category(WC_Cart $cart, string $category_slug): array
+{
+  $items = [];
+
+  foreach ($cart->get_cart() as $key => $item) {
+    $product_id = $item['variation_id'] ?: $item['product_id'];
+    if (has_term($category_slug, 'product_cat', $product_id)) {
+      $items[$key] = $item;
+    }
+  }
+
+  return $items;
+}
+
 function lucci_get_awdp_discount_info(): array
 {
   if (!defined('AWDP_POST_TYPE') || !function_exists('WC') || !WC()->cart) {
@@ -26,6 +48,12 @@ function lucci_get_awdp_discount_info(): array
 
   $cart = WC()->cart;
   if ($cart->is_empty()) {
+    return ['show' => false];
+  }
+
+  // Considera somente itens da categoria "Marmitas" para o cálculo do desconto
+  $discount_items = lucci_get_cart_items_in_category($cart, LUCCI_AWDP_DISCOUNT_CATEGORY);
+  if (empty($discount_items)) {
     return ['show' => false];
   }
 
@@ -62,13 +90,13 @@ function lucci_get_awdp_discount_info(): array
     // Ordena por start_range crescente
     usort($quantity_rules, fn($a, $b) => (int) $a['start_range'] - (int) $b['start_range']);
 
-    // Contagem atual de acordo com o tipo da regra
+    // Contagem atual de acordo com o tipo da regra (somente itens de "Marmitas")
     if ($qty_type === 'type_cart') {
       // Número de tipos de produto distintos no carrinho
-      $current_count = count($cart->get_cart());
+      $current_count = count($discount_items);
     } else {
       // Quantidade total de itens no carrinho (padrão)
-      $current_count = (int) $cart->get_cart_contents_count();
+      $current_count = (int) array_sum(wp_list_pluck($discount_items, 'quantity'));
     }
 
     $last_rule    = end($quantity_rules);
@@ -104,7 +132,7 @@ function lucci_get_awdp_discount_info(): array
         'needed'    => $needed,
         'fraction'  => $current_count . '/' . $threshold,
         'pct'       => min(100.0, ($current_count / max(1, $threshold)) * 100),
-        'hint'      => lucci_awdp_build_hint($needed, $dis_type, $dis_value, $cart),
+        'hint'      => lucci_awdp_build_hint($needed, $dis_type, $dis_value, $discount_items, $current_count),
         'hit'       => false,
       ];
     }
@@ -147,15 +175,19 @@ function lucci_get_awdp_discount_info(): array
 /**
  * Monta a mensagem de dica com base no tipo e valor de desconto.
  */
-function lucci_awdp_build_hint(int $needed, string $dis_type, float $dis_value, WC_Cart $cart): string
+function lucci_awdp_build_hint(int $needed, string $dis_type, float $dis_value, array $discount_items, int $current_count): string
 {
   $label = $needed === 1
     ? esc_html__('marmita', 'lucci-fresh')
     : esc_html__('marmitas', 'lucci-fresh');
 
-  if ($dis_type === 'percentage' && !$cart->is_empty() && $cart->get_cart_contents_count() > 0) {
-    // Calcula o preço médio já no carrinho e aplica o desconto
-    $avg_price       = (float) $cart->get_subtotal() / (int) $cart->get_cart_contents_count();
+  if ($dis_type === 'percentage' && !empty($discount_items) && $current_count > 0) {
+    // Calcula o preço médio apenas dos itens de "Marmitas" e aplica o desconto
+    $subtotal = array_sum(array_map(
+      fn($item) => (float) $item['line_subtotal'],
+      $discount_items
+    ));
+    $avg_price        = $subtotal / $current_count;
     $discounted_price = $avg_price * (1 - $dis_value / 100);
 
     return sprintf(
