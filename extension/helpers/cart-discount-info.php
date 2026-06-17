@@ -19,7 +19,7 @@ defined('ABSPATH') || exit;
  * @return array
  */
 // Categoria de produto à qual o desconto por quantidade se aplica
-const LUCCI_AWDP_DISCOUNT_CATEGORY = 'marmitas';
+const LUCCI_AWDP_DISCOUNT_CATEGORY = 'marmita';
 
 /**
  * Retorna apenas os itens do carrinho cujo produto pertence à categoria informada.
