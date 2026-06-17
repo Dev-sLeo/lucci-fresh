@@ -21,7 +21,9 @@
       "Bash(wp --info)",
       "Bash(find / -iname \"wp-cli.phar\" 2>/dev/null | head -5; find / -iname \"wp.bat\" 2>/dev/null | head -5)",
       "Read(//c//**)",
-      "Bash(php -r ' *)"
+      "Bash(php -r ' *)",
+      "Bash(grep -rn 'class.*extends WC_Payment_Gateway\\\\|'\\\\''id'\\\\''\\\\s*=\\\\s*'\\\\''\\\\|$this->id\\\\s*=' '/c/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins/payment-gateway-pix-for-woocommerce')",
+      "Bash(grep -rn '$this->id\\\\s*=\\\\|class.*extends WC_Payment_Gateway' '/c/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins/payment-gateway-pix-for-woocommerce')"
     ],
     "additionalDirectories": [
       "C:\\Users\\leona\\Local Sites\\lucci-fresh\\app\\public\\wp-content\\themes\\lucci-fresh"

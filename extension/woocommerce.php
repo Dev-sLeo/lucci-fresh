@@ -258,6 +258,22 @@ add_filter('woocommerce_checkout_posted_data', function ($data) {
 });
 
 // -----------------------------------------------------------------------------
+// Desconto de 5% para pagamento via Pix
+// -----------------------------------------------------------------------------
+
+add_action('woocommerce_cart_calculate_fees', function ($cart) {
+    if (is_admin() && !defined('DOING_AJAX')) return;
+    if (!$cart || $cart->is_empty()) return;
+
+    $chosen_method = WC()->session ? WC()->session->get('chosen_payment_method') : '';
+    if (!$chosen_method || stripos($chosen_method, 'pix') === false) return;
+
+    $discount = -1 * ($cart->get_subtotal() * 0.05);
+
+    $cart->add_fee(__('Desconto Pix (5%)', 'arterra'), $discount, false);
+});
+
+// -----------------------------------------------------------------------------
 // Emails transacionais
 // -----------------------------------------------------------------------------
 
