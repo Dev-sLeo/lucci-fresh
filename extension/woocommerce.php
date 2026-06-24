@@ -455,3 +455,57 @@ if (!function_exists('arterra_cart_count')) {
         return function_exists('WC') ? WC()->cart->get_cart_contents_count() : 0;
     }
 }
+
+// -----------------------------------------------------------------------------
+// Tabela de preços por quantidade (Advanced Woo Dynamic Pricing) - arredondamento
+// -----------------------------------------------------------------------------
+
+/**
+ * Os percentuais de desconto cadastrados no plugin não formam uma progressão
+ * exata de preços "redondos" (ex.: 19,90 / 19,75 / 19,50). Arredondando ao
+ * centavo, o preço exibido na tabela de quantidade fica a 1-2 centavos do
+ * valor pretendido em alguns degraus. Arredondamos para o múltiplo de 0,05
+ * mais próximo somente durante a renderização dessa tabela (sem afetar
+ * preços do carrinho, checkout ou exibição normal do produto).
+ *
+ * O plugin renderiza a tabela através de uma única action, definida pela
+ * opção "awdp_table_position" (ver class-awdp-front-end.php), sempre com
+ * prioridade 100. Habilitamos o arredondamento só nessa janela (99 a 101).
+ */
+if (!function_exists('arterra_round_awdp_pricing_table_price')) {
+    function arterra_round_awdp_pricing_table_price($price, $original_price = null)
+    {
+        $step = 0.05;
+        return round($price / $step) * $step;
+    }
+}
+
+add_action('plugins_loaded', function () {
+    if (!class_exists('AWDP_Discount')) return;
+
+    $awdp_table_hooks = [
+        'woocommerce_before_single_product',
+        'woocommerce_before_single_product_summary',
+        'woocommerce_single_product_summary',
+        'woocommerce_before_add_to_cart_form',
+        'woocommerce_before_variations_form',
+        'woocommerce_before_add_to_cart_button',
+        'woocommerce_after_add_to_cart_button',
+        'woocommerce_after_variations_form',
+        'woocommerce_after_add_to_cart_form',
+        'woocommerce_product_meta_start',
+        'woocommerce_product_meta_end',
+        'woocommerce_after_single_product_summary',
+        'woocommerce_after_single_product',
+    ];
+
+    foreach ($awdp_table_hooks as $hook) {
+        add_action($hook, function () {
+            add_filter('raw_woocommerce_price', 'arterra_round_awdp_pricing_table_price', 10, 2);
+        }, 99);
+
+        add_action($hook, function () {
+            remove_filter('raw_woocommerce_price', 'arterra_round_awdp_pricing_table_price', 10);
+        }, 101);
+    }
+}, 20);
