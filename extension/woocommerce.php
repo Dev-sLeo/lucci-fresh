@@ -84,6 +84,11 @@ add_filter('default_checkout_shipping_country', function () {
 // O campo país é ocultado via CSS (.wc-block-components-address-form__country { display:none })
 // NÃO restringimos woocommerce_countries para não quebrar plugins de frete/cálculo de endereço
 
+// Não pré-selecionar nenhum método de entrega: o cliente deve escolher ativamente
+add_filter('woocommerce_shipping_chosen_method', function ($default, $rates, $chosen_method) {
+    return $chosen_method ? $default : '';
+}, 10, 3);
+
 // Campos desnecessários para mercado BR
 add_filter('woocommerce_checkout_fields', function ($fields) {
 

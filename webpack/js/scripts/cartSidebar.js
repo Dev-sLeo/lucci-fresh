@@ -132,14 +132,43 @@ export default function cartSidebar() {
             const qtyWrap = qtyBtn.closest(".c-cart-sidebar__qty");
             if (!qtyWrap) return;
             const numEl = qtyWrap.querySelector(".c-cart-sidebar__qty-num");
-            const current = parseInt(numEl?.textContent || "1", 10);
+            const current = parseInt(numEl?.value || "1", 10);
             const action = qtyBtn.dataset.action;
             const newQty =
                 action === "plus" ? current + 1 : Math.max(0, current - 1);
 
             // Otimista: atualiza UI antes da resposta
-            if (numEl) numEl.textContent = newQty;
+            if (numEl) numEl.value = newQty;
             updateQty(qtyWrap.dataset.key, newQty);
+        }
+    });
+
+    // Quantidade via teclado (input numérico)
+    sidebar.addEventListener("change", (e) => {
+        const numEl = e.target.closest(".c-cart-sidebar__qty-num");
+        if (!numEl) return;
+        const qtyWrap = numEl.closest(".c-cart-sidebar__qty");
+        if (!qtyWrap) return;
+
+        const newQty = Math.max(0, parseInt(numEl.value || "0", 10) || 0);
+        numEl.value = newQty;
+        updateQty(qtyWrap.dataset.key, newQty);
+    });
+
+    sidebar.addEventListener("keydown", (e) => {
+        const numEl = e.target.closest(".c-cart-sidebar__qty-num");
+        if (!numEl) return;
+
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            e.preventDefault();
+            const current = parseInt(numEl.value || "0", 10) || 0;
+            const newQty =
+                e.key === "ArrowUp" ? current + 1 : Math.max(0, current - 1);
+            numEl.value = newQty;
+            const qtyWrap = numEl.closest(".c-cart-sidebar__qty");
+            if (qtyWrap) updateQty(qtyWrap.dataset.key, newQty);
+        } else if (e.key === "Enter") {
+            numEl.blur();
         }
     });
 

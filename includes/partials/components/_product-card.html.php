@@ -55,7 +55,6 @@ if (has_post_thumbnail($product->get_id())) {
 
     <div class="c-product-card__actions">
       <span class="c-product-card__price">
-        <span class="c-product-card__price-prefix"><?= esc_html__('A partir de', 'lucci-fresh') ?></span>
         <?= $price_value ?>
       </span>
 

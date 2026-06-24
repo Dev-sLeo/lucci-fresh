@@ -160,22 +160,20 @@
       flex-shrink: 0;
     }
 
-    &-bars {
-      display: flex;
-      gap: 5px;
-      flex: 1;
-    }
-
-    &-bar-seg {
+    &-bar {
       flex: 1;
       height: 5px;
       background: rgba(#1e593a, 0.18);
       border-radius: 100px;
-      transition: background-color 0.3s ease;
+      overflow: hidden;
+    }
 
-      &.is-filled {
-        background: map-get($color-verde, 500);
-      }
+    &-bar-fill {
+      display: block;
+      height: 100%;
+      background: map-get($color-verde, 500);
+      border-radius: 100px;
+      transition: width 0.3s ease;
     }
   }
 
@@ -315,9 +313,24 @@
       font-size: rem(13px);
       font-weight: 600;
       color: $color-preto;
-      min-width: 24px;
+      width: 28px;
+      min-width: 28px;
       text-align: center;
-      user-select: none;
+      border: none;
+      background: transparent;
+      padding: 0;
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:focus {
+        outline: none;
+        color: map-get($color-verde, 500);
+      }
     }
   }
 

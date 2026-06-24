@@ -41,14 +41,13 @@ $show_disc    = !empty($disc_info['show']);
     <?php if ($show_disc) : ?>
       <div class="c-cart-sidebar__discount-bottom">
         <span class="c-cart-sidebar__discount-fraction"><?= esc_html($disc_info['fraction']) ?></span>
-        <div class="c-cart-sidebar__discount-bars" aria-hidden="true">
-          <?php
-          $thresh   = max(1, (int) $disc_info['threshold']);
-          $current  = min($thresh, (int) $disc_info['current']);
-          for ($i = 1; $i <= $thresh; $i++) :
-          ?>
-            <span class="c-cart-sidebar__discount-bar-seg<?= $i <= $current ? ' is-filled' : '' ?>"></span>
-          <?php endfor; ?>
+        <?php
+        $thresh   = max(1, (int) $disc_info['threshold']);
+        $current  = min($thresh, (int) $disc_info['current']);
+        $percent  = round(($current / $thresh) * 100);
+        ?>
+        <div class="c-cart-sidebar__discount-bar" role="progressbar" aria-valuemin="0" aria-valuemax="<?= esc_attr($thresh) ?>" aria-valuenow="<?= esc_attr($current) ?>">
+          <span class="c-cart-sidebar__discount-bar-fill" style="width: <?= esc_attr($percent) ?>%;"></span>
         </div>
       </div>
     <?php endif; ?>
@@ -97,7 +96,14 @@ $show_disc    = !empty($disc_info['show']);
                         <path d="M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
                       </svg>
                     </button>
-                    <span class="c-cart-sidebar__qty-num"><?= esc_html($qty) ?></span>
+                    <input
+                      class="c-cart-sidebar__qty-num"
+                      type="number"
+                      inputmode="numeric"
+                      min="0"
+                      step="1"
+                      value="<?= esc_attr($qty) ?>"
+                      aria-label="<?= esc_attr__('Quantidade', 'lucci-fresh') ?>">
                     <button class="c-cart-sidebar__qty-btn js-cart-qty" type="button" data-action="plus" aria-label="<?= esc_attr__('Aumentar quantidade', 'lucci-fresh') ?>">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
