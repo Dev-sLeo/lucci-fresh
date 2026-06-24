@@ -1,0 +1,213 @@
+// =============================================================================
+// Fluid Checkout (Lite) - Checkout em etapas, integrado ao estilo do tema
+// =============================================================================
+
+.fc-wrapper {
+  font-family: $ff-primary;
+  color: $wc-text;
+
+  // ── Variáveis do plugin sobrescritas com as cores/raio do tema ────────────
+  --fluidcheckout--color--success: #{map-get($color-verde, 500)};
+  --fluidcheckout--checkout-progress--bar-color--complete: #{map-get($color-verde, 500)};
+  --fluidcheckout--checkout-progress--bar-color--current: #{$color-laranja-cta};
+  --fluidcheckout--checkout-progress--step-count--text-color: #{$wc-muted};
+  --fluidcheckout--section--border-radius: #{$wc-radius};
+  --fluidcheckout--color--white: #fff;
+  --fluidcheckout--color--dark-grey: #{$wc-muted};
+
+  h1, h2, h3, h4 {
+    font-family: $ff-heading;
+    color: $wc-text;
+  }
+
+  a {
+    color: $color-laranja-cta;
+  }
+}
+
+// ── Barra de progresso das etapas ──────────────────────────────────────────
+.fc-progress-bar {
+  &__inner {
+    background: #fff;
+    border: 1px solid $wc-border;
+  }
+
+  &__count {
+    font-family: $ff-primary;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+  }
+
+  &--bars &__steps {
+    background: rgba($wc-text, 0.08);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  &--bars &__step {
+    border-radius: 0;
+  }
+}
+
+// ── Etapas / sub-etapas ─────────────────────────────────────────────────────
+.fc-step {
+  &__substep-title {
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 600;
+    color: $wc-text;
+  }
+
+  &__substep-edit {
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-laranja-cta;
+    text-decoration: underline;
+
+    &:hover {
+      color: darken($color-laranja-cta, 8%);
+    }
+  }
+
+  &__substep-save,
+  &__next-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $ff-primary;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: $color-laranja-cta;
+    border: 1px solid transparent;
+    border-radius: 600px;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: darken($color-laranja-cta, 8%);
+    }
+  }
+}
+
+// ── Campos do formulário (reaproveita o estilo dos demais campos do checkout) ─
+.fc-step__substep-fields {
+  .form-row {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      font-family: $ff-primary;
+      font-size: 13px;
+      font-weight: 600;
+      color: $wc-text;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1.5px solid map-get($color-verde, 100);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-family: $ff-primary;
+      color: $wc-text;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: map-get($color-verde, 500);
+        box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+      }
+    }
+  }
+}
+
+// ── Select2 (campo País) no mesmo estilo dos demais inputs ──────────────────
+.select2-container--default .select2-selection--single {
+  height: auto;
+  display: flex;
+  align-items: center;
+  border: 1.5px solid map-get($color-verde, 100);
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  .select2-selection__rendered {
+    padding: 0;
+    line-height: normal;
+    font-family: $ff-primary;
+    font-size: 15px;
+    color: $wc-text;
+  }
+
+  .select2-selection__arrow {
+    height: 100%;
+  }
+}
+
+.select2-container--default.select2-container--open .select2-selection--single {
+  border-color: map-get($color-verde, 500);
+  box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+}
+
+.select2-dropdown {
+  border-color: map-get($color-verde, 100);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: $ff-primary;
+  font-size: 15px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background: map-get($color-verde, 500);
+}
+
+// ── Resumo do pedido (sidebar) ───────────────────────────────────────────────
+.fc-sidebar {
+  &__inner {
+    background: map-get($color-verde, 50);
+    border-radius: $wc-radius;
+  }
+}
+
+.fc-checkout-order-review-title {
+  font-family: $ff-primary;
+  font-size: 20px;
+  font-weight: 600;
+  color: $wc-text;
+}
+
+// ── Botão final de finalizar pedido (mantém o mesmo estilo do checkout clássico) ─
+.fc-place-order {
+  #place_order {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: $color-laranja-cta;
+    color: #fff;
+    padding: 16px 32px;
+    border: 1px solid transparent;
+    border-radius: 600px;
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: darken($color-laranja-cta, 8%);
+    }
+  }
+}
