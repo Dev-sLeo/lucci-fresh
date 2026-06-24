@@ -29,6 +29,7 @@ import singleProduct from "./scripts/single-product";
 import categoryFilter from "./scripts/categoryFilter";
 import cartSidebar from "./scripts/cartSidebar";
 import checkoutLayout from "./scripts/checkoutLayout";
+import cepAutofill from "./scripts/cepAutofill";
 
 window.gsap = gsap;
 
@@ -57,3 +58,4 @@ singleProduct();
 categoryFilter();
 cartSidebar();
 checkoutLayout();
+cepAutofill();
