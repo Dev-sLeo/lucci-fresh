@@ -15,7 +15,10 @@
   --fluidcheckout--color--white: #fff;
   --fluidcheckout--color--dark-grey: #{$wc-muted};
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: $ff-heading;
     color: $wc-text;
   }
@@ -29,7 +32,6 @@
 .fc-progress-bar {
   &__inner {
     background: #fff;
-    border: 1px solid $wc-border;
   }
 
   &__count {
@@ -52,6 +54,11 @@
 
 // ── Etapas / sub-etapas ─────────────────────────────────────────────────────
 .fc-step {
+
+  &__substep {
+    background: #fff !important;
+  }
+
   &__substep-title {
     font-family: $ff-primary;
     font-size: 16px;
@@ -70,30 +77,134 @@
       color: darken($color-laranja-cta, 8%);
     }
   }
+}
 
-  &__substep-save,
-  &__next-step {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: $ff-primary;
-    font-size: 15px;
-    font-weight: 600;
+// O CSS do próprio Fluid Checkout (.fc-wrapper .fc-step__substep-save e
+// .has-checkout-layout--multi-step .fc-step__actions .fc-step__next-step) tem
+// mais classes do que um simples ".fc-step__substep-save" — por isso, sem
+// igualar a especificidade aqui, o estilo do plugin sempre ganhava.
+.fc-wrapper .fc-checkout-steps .fc-step__substep-save,
+.fc-wrapper .fc-checkout-steps .fc-step__actions .fc-step__next-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $ff-primary;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: $color-laranja-cta;
+  border: 1px solid transparent;
+  border-radius: 600px;
+  padding: 14px 28px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background: darken($color-laranja-cta, 8%);
     color: #fff;
-    background: $color-laranja-cta;
-    border: 1px solid transparent;
-    border-radius: 600px;
-    padding: 14px 28px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background: darken($color-laranja-cta, 8%);
-    }
   }
 }
 
 // ── Campos do formulário (reaproveita o estilo dos demais campos do checkout) ─
+// O WooCommerce core não define largura/float para form-row-first/last (fica
+// a cargo do tema) — sem isso os campos "pareados" (Endereço+Número,
+// CEP+Bairro) ficavam todos empilhados em 100%. Usamos CSS Grid com posição
+// explícita por id em vez de flex+order: o Fluid Checkout não respeita a
+// "priority" definida via woocommerce_checkout_fields nesse formulário (a
+// ordem real no DOM varia), e flex+order depende da soma exata das larguras
+// dos itens — qualquer elemento sem "order" definido (ex.: Nome/Sobrenome)
+// também entra na conta e pode quebrar o pareamento. Grid com área nomeada
+// por campo não depende da ordem do DOM nem da largura dos vizinhos.
+#woocommerce-billing-fields__field-wrapper,
+#woocommerce-shipping-fields__field-wrapper {
+  display: grid;
+  grid-template-columns: 100%;
+  column-gap: 16px;
+  row-gap: 0;
+
+  @include mq(desktop-low) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  >.form-row {
+    margin-bottom: 16px;
+    width: 100% !important;
+  }
+
+  #billing_first_name_field,
+  #shipping_first_name_field {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #billing_last_name_field,
+  #shipping_last_name_field {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #billing_postcode_field,
+  #shipping_postcode_field {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #billing_neighborhood_field,
+  #shipping_neighborhood_field {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #billing_address_1_field,
+  #shipping_address_1_field {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  #billing_number_field,
+  #shipping_number_field {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  #billing_address_2_field,
+  #shipping_address_2_field,
+  .fc-expansible-form-section {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+
+  #billing_city_field,
+  #shipping_city_field {
+    grid-column: 1 / -1;
+    grid-row: 5;
+  }
+
+  #billing_phone_field,
+  #shipping_phone_field {
+    grid-column: 1 / -1;
+    grid-row: 6;
+  }
+
+  // País e Estado (ocultos) não recebem posição: como ficam com display:none,
+  // não interferem no fluxo do grid.
+}
+
+.fc-contact-fields__wrapper,
+.woocommerce-additional-fields__field-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  >.form-row {
+    flex: 1 1 100%;
+  }
+}
+
+.fc-expansible-form-section.form-row.address-field.form-row-wide.has-description.fc-text-field {
+  margin-bottom: 20px !important;
+}
+
 .fc-step__substep-fields {
   .form-row {
     margin-bottom: 16px;
@@ -129,6 +240,12 @@
         box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
       }
     }
+  }
+
+  // País e Estado são fixos (Brasil / São Paulo): não há escolha real, então
+  // ficam ocultos por completo, incluindo a label.
+  .fc-hidden-field {
+    display: none !important;
   }
 }
 

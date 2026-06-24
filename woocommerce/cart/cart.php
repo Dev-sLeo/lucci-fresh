@@ -10,6 +10,8 @@ defined('ABSPATH') || exit;
   <div class="s-container">
     <?php do_action('woocommerce_before_cart'); ?>
 
+    <?php include PATHS_PARTIALS . '/components/_cart-discount-banner.html.php'; ?>
+
     <form class="p-cart__form woocommerce-cart-form" action="<?= esc_url(wc_get_cart_url()); ?>" method="post">
 
       <?php do_action('woocommerce_before_cart_table'); ?>

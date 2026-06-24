@@ -44,6 +44,7 @@ define('LIB', TEMPLATEPATH . '/lib');
 
 // Functions
 require_once(THEMELIB . '/helpers.php');
+require_once(THEMELIB . '/helpers/cart-discount-info.php');
 require_once(THEMELIB . '/theme-customizer.php');
 require_once(THEMELIB . '/query-filters.php');
 require_once(THEMELIB . '/ajax.php');

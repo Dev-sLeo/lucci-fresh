@@ -4,6 +4,11 @@
 .p-cart {
   padding: 60px 0;
 
+  .c-cart-discount {
+    margin-bottom: 24px;
+    max-width: 480px;
+  }
+
   &__form {
     width: 100%;
   }

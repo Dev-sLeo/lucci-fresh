@@ -41,6 +41,12 @@ export default function cepAutofill() {
       `input[name="${p}-number"]`,
       `input[name="${p}_number"]`,
     ],
+    neighborhood: (p) => [
+      `#${p}-neighborhood`,
+      `#${p}_neighborhood`,
+      `input[name="${p}-neighborhood"]`,
+      `input[name="${p}_neighborhood"]`,
+    ],
   };
 
   function findField(prefix, key) {
@@ -118,6 +124,7 @@ export default function cepAutofill() {
 
       setValue(findField(prefix, "address"), data.logradouro);
       setValue(findField(prefix, "city"), data.localidade);
+      setValue(findField(prefix, "neighborhood"), data.bairro);
 
       const stateInput = findField(prefix, "state");
       if (stateInput && !stateInput.disabled) {

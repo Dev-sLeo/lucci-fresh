@@ -178,16 +178,59 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $fields['shipping']['shipping_address_2']['priority'] = 110; // por último
     }
     if (isset($fields['billing']['billing_city'])) {
-        $fields['billing']['billing_city']['label'] = __('Cidade', 'arterra');
+        $fields['billing']['billing_city']['label']    = __('Cidade', 'arterra');
+        $fields['billing']['billing_city']['class']    = ['form-row-wide'];
+        $fields['billing']['billing_city']['priority'] = 100;
+    }
+    if (isset($fields['shipping']['shipping_city'])) {
+        $fields['shipping']['shipping_city']['class']    = ['form-row-wide'];
+        $fields['shipping']['shipping_city']['priority'] = 100;
     }
     if (isset($fields['billing']['billing_postcode'])) {
         $fields['billing']['billing_postcode']['label']       = __('CEP', 'arterra');
         $fields['billing']['billing_postcode']['placeholder'] = '00000-000';
+        $fields['billing']['billing_postcode']['class']       = ['form-row-first'];
+        $fields['billing']['billing_postcode']['priority']    = 80;
+    }
+    if (isset($fields['shipping']['shipping_postcode'])) {
+        $fields['shipping']['shipping_postcode']['class']    = ['form-row-first'];
+        $fields['shipping']['shipping_postcode']['priority'] = 80;
+    }
+    // Bairro: nenhum plugin instalado registra esse campo, então criamos o nosso
+    $fields['billing']['billing_neighborhood'] = [
+        'label'       => __('Bairro', 'arterra'),
+        'placeholder' => '',
+        'required'    => true,
+        'class'       => ['form-row-last'],
+        'priority'    => 81, // ao lado do CEP
+    ];
+    if (isset($fields['shipping']['shipping_address_1'])) {
+        $fields['shipping']['shipping_neighborhood'] = [
+            'label'       => __('Bairro', 'arterra'),
+            'placeholder' => '',
+            'required'    => true,
+            'class'       => ['form-row-last'],
+            'priority'    => 81,
+        ];
     }
     if (isset($fields['billing']['billing_phone'])) {
         $fields['billing']['billing_phone']['label']       = __('Celular', 'arterra');
         $fields['billing']['billing_phone']['placeholder'] = '(00) 00000-0000';
         $fields['billing']['billing_phone']['required']    = true;
+        $fields['billing']['billing_phone']['class']       = ['form-row-last'];
+    }
+    if (isset($fields['shipping']['shipping_phone'])) {
+        $fields['shipping']['shipping_phone']['class'] = ['form-row-last'];
+    }
+
+    // Endereço | Número lado a lado
+    if (isset($fields['billing']['billing_address_1'])) {
+        $fields['billing']['billing_address_1']['class']    = ['form-row-first'];
+        $fields['billing']['billing_address_1']['priority'] = 90;
+    }
+    if (isset($fields['shipping']['shipping_address_1'])) {
+        $fields['shipping']['shipping_address_1']['class']    = ['form-row-first'];
+        $fields['shipping']['shipping_address_1']['priority'] = 90;
     }
 
     // Adiciona campo "Número" do endereço
@@ -195,8 +238,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         'label'       => __('Número', 'arterra'),
         'placeholder' => __('Nº', 'arterra'),
         'required'    => true,
-        'class'       => ['form-row-wide'],
-        'priority'    => 51, // logo após o endereço
+        'class'       => ['form-row-last'],
+        'priority'    => 91, // logo após o endereço
     ];
 
     if (isset($fields['shipping']['shipping_address_1'])) {
@@ -204,27 +247,35 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
             'label'       => __('Número', 'arterra'),
             'placeholder' => __('Nº', 'arterra'),
             'required'    => true,
-            'class'       => ['form-row-wide'],
-            'priority'    => 51,
+            'class'       => ['form-row-last'],
+            'priority'    => 91,
         ];
     }
 
-    // Estado fixo: São Paulo (entrega somente nesse estado)
+    // País e Estado fixos (Brasil / São Paulo): ocultos, pois não há escolha real
+    if (isset($fields['billing']['billing_country'])) {
+        $fields['billing']['billing_country']['class'] = ['form-row-wide', 'fc-hidden-field'];
+    }
+    if (isset($fields['shipping']['shipping_country'])) {
+        $fields['shipping']['shipping_country']['class'] = ['form-row-wide', 'fc-hidden-field'];
+    }
     if (isset($fields['billing']['billing_state'])) {
         $fields['billing']['billing_state']['type']     = 'hidden';
         $fields['billing']['billing_state']['default']  = 'SP';
         $fields['billing']['billing_state']['required'] = false;
+        $fields['billing']['billing_state']['class']     = ['form-row-wide', 'fc-hidden-field'];
     }
     if (isset($fields['shipping']['shipping_state'])) {
         $fields['shipping']['shipping_state']['type']     = 'hidden';
         $fields['shipping']['shipping_state']['default']  = 'SP';
         $fields['shipping']['shipping_state']['required'] = false;
+        $fields['shipping']['shipping_state']['class']     = ['form-row-wide', 'fc-hidden-field'];
     }
 
     return $fields;
 });
 
-// Salva o campo "Número" no pedido
+// Salva os campos "Número" e "Bairro" no pedido
 add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
     if (!empty($_POST['billing_number'])) {
         update_post_meta($order_id, '_billing_number', sanitize_text_field(wp_unslash($_POST['billing_number'])));
@@ -232,13 +283,23 @@ add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
     if (!empty($_POST['shipping_number'])) {
         update_post_meta($order_id, '_shipping_number', sanitize_text_field(wp_unslash($_POST['shipping_number'])));
     }
+    if (!empty($_POST['billing_neighborhood'])) {
+        update_post_meta($order_id, '_billing_neighborhood', sanitize_text_field(wp_unslash($_POST['billing_neighborhood'])));
+    }
+    if (!empty($_POST['shipping_neighborhood'])) {
+        update_post_meta($order_id, '_shipping_neighborhood', sanitize_text_field(wp_unslash($_POST['shipping_neighborhood'])));
+    }
 });
 
-// Exibe o campo "Número" junto ao endereço (admin, emails, detalhes do pedido)
+// Exibe "Número" e "Bairro" junto ao endereço (admin, emails, detalhes do pedido)
 add_filter('woocommerce_order_formatted_billing_address', function ($address, $order) {
     $number = $order->get_meta('_billing_number');
     if ($number) {
         $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    $neighborhood = $order->get_meta('_billing_neighborhood');
+    if ($neighborhood) {
+        $address['address_2'] = trim($address['address_2'] . ($address['address_2'] ? ' - ' : '') . 'Bairro: ' . $neighborhood);
     }
     return $address;
 }, 10, 2);
@@ -247,6 +308,10 @@ add_filter('woocommerce_order_formatted_shipping_address', function ($address, $
     $number = $order->get_meta('_shipping_number');
     if ($number) {
         $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    }
+    $neighborhood = $order->get_meta('_shipping_neighborhood');
+    if ($neighborhood) {
+        $address['address_2'] = trim($address['address_2'] . ($address['address_2'] ? ' - ' : '') . 'Bairro: ' . $neighborhood);
     }
     return $address;
 }, 10, 2);

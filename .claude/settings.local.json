@@ -30,7 +30,8 @@
       "Bash(grep -o '\"role\":\"radiogroup\"[^}]\\\\{0,40\\\\}\\\\|role:\"radiogroup\"[^}]\\\\{0,40\\\\}' \"c:/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins/woocommerce/assets/client/blocks/wc-cart-checkout-base-frontend.js\")",
       "Bash(php -l \"c:/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/themes/lucci-fresh/extension/woocommerce.php\")",
       "Bash(php -l \"c:/Users/leona/Local Sites/lucci-fresh/app/public/wp-content/plugins/aco-woo-dynamic-pricing/includes/class-awdp-viewpricingtable.php\")",
-      "Bash(find / -iname \"*fluid-checkout*\" -maxdepth 6 -type d 2>/dev/null)"
+      "Bash(find / -iname \"*fluid-checkout*\" -maxdepth 6 -type d 2>/dev/null)",
+      "Bash(php -l extension/woocommerce.php)"
     ],
     "additionalDirectories": [
       "C:\\Users\\leona\\Local Sites\\lucci-fresh\\app\\public\\wp-content\\themes\\lucci-fresh"
