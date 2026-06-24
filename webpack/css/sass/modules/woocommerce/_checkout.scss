@@ -146,6 +146,18 @@
     display: none !important;
   }
 
+  // Não induzir o cliente: oculta visualmente o radio da opção de entrega
+  // que o WooCommerce marca como selecionada por padrão (ex.: quando há só
+  // uma taxa de entrega disponível), até que ele clique manualmente.
+  .wc-block-components-shipping-rates-control.shipping-rate-not-chosen {
+    .wc-block-components-radio-control__input:checked {
+      border: 1px solid color-mix(in srgb, currentColor 48%, transparent);
+    }
+
+    .wc-block-components-radio-control__input:checked:before {
+      display: none;
+    }
+  }
 
 }
 

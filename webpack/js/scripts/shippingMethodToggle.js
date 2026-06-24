@@ -50,4 +50,57 @@ export default function shippingMethodToggle() {
     clearSelection();
   });
   observer.observe(document.body, { childList: true, subtree: true });
+
+  shippingRateToggle();
+}
+
+/**
+ * Lista de taxas de entrega (ex.: "Taxa de Entrega") do Checkout Block: quando
+ * existe apenas uma opção, o WooCommerce já marca o radio nativo como
+ * "checked" (estado real do input, usado no cálculo do frete). Como não
+ * podemos desmarcar o input sem afetar o frete já calculado, escondemos
+ * apenas a aparência marcada via CSS até o cliente clicar manualmente.
+ */
+function shippingRateToggle() {
+  const chosen = new WeakSet();
+
+  function getControls() {
+    return document.querySelectorAll(
+      ".wc-block-components-shipping-rates-control",
+    );
+  }
+
+  function clearSelection() {
+    getControls().forEach((control) => {
+      if (chosen.has(control)) return;
+      control.classList.add("shipping-rate-not-chosen");
+    });
+  }
+
+  function bind(control) {
+    if (control.dataset.toggleBound) return;
+    control.dataset.toggleBound = "true";
+
+    const markChosen = () => {
+      chosen.add(control);
+      control.classList.remove("shipping-rate-not-chosen");
+    };
+
+    control.addEventListener("click", markChosen, true);
+    control.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") markChosen();
+    }, true);
+  }
+
+  function run() {
+    getControls().forEach((control) => {
+      bind(control);
+    });
+    clearSelection();
+  }
+
+  run();
+
+  const observer = new MutationObserver(run);
+  observer.observe(document.body, { childList: true, subtree: true });
 }
