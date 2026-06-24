@@ -1,48 +1,71 @@
 <?php
 // extension/helpers/cart-discount-info.php
-// Retorna o progresso do desconto AWDP (Dynamic Pricing) para o cart sidebar.
+// Retorna o progresso do desconto por quantidade (plugin Progressive Pricing) para o banner do carrinho.
 defined('ABSPATH') || exit;
 
 /**
- * Calcula o progresso em direção ao desconto de quantidade do AWDP.
+ * Agrupa os itens do carrinho pelo conjunto de faixas (tiers) do Progressive Pricing
+ * que se aplica a cada um (resolvido via PPP_Pricing_Engine::resolve_tier_set).
+ *
+ * Itens cujo produto não tem nenhuma faixa configurada (categoria ppp_category
+ * sem tiers, ou produto sem categoria) são ignorados.
+ *
+ * @return array<string, array{tiers: array<int,array>, items: array, quantity: int}>
+ *         chave = hash do conjunto de tiers
+ */
+function lucci_group_cart_items_by_ppp_tiers(WC_Cart $cart): array
+{
+  $groups = [];
+
+  foreach ($cart->get_cart() as $cart_item) {
+    $product = $cart_item['data'] ?? null;
+    if (!$product instanceof WC_Product) {
+      continue;
+    }
+
+    $tiers = PPP_Pricing_Engine::resolve_tier_set($product);
+    if (empty($tiers)) {
+      continue;
+    }
+
+    $key = md5(wp_json_encode($tiers));
+
+    if (!isset($groups[$key])) {
+      $groups[$key] = [
+        'tiers'    => $tiers,
+        'items'    => [],
+        'quantity' => 0,
+      ];
+    }
+
+    $groups[$key]['items'][]  = $cart_item;
+    $groups[$key]['quantity'] += (int) $cart_item['quantity'];
+  }
+
+  return $groups;
+}
+
+/**
+ * Calcula o progresso em direção à próxima faixa de desconto do Progressive Pricing.
+ *
+ * Quando o carrinho tem itens cobertos por mais de um conjunto de faixas
+ * (ex.: categorias de preço diferentes), usa o grupo com maior quantidade.
  *
  * Retorna um array com:
  *  - show      (bool)   — se deve exibir o banner
- *  - current   (int)    — quantidade atual no carrinho
- *  - threshold (int)    — quantidade necessária para o próximo desconto
+ *  - current   (int)    — quantidade atual no grupo
+ *  - threshold (int)    — quantidade necessária para a próxima faixa
  *  - needed    (int)    — quantos itens faltam
  *  - fraction  (string) — ex: "3/5"
  *  - pct       (float)  — percentual de preenchimento da barra (0–100)
  *  - hint      (string) — mensagem de dica (HTML seguro)
- *  - hit       (bool)   — true se o desconto já foi atingido
+ *  - hit       (bool)   — true se a faixa de maior desconto já foi atingida
  *
  * @return array
  */
-// Categoria de produto à qual o desconto por quantidade se aplica
-const LUCCI_AWDP_DISCOUNT_CATEGORY = 'marmita';
-
-/**
- * Retorna apenas os itens do carrinho cujo produto pertence à categoria informada.
- *
- * @return array<string, array> cart_item_key => cart_item
- */
-function lucci_get_cart_items_in_category(WC_Cart $cart, string $category_slug): array
+function lucci_get_ppp_discount_info(): array
 {
-  $items = [];
-
-  foreach ($cart->get_cart() as $key => $item) {
-    $product_id = $item['variation_id'] ?: $item['product_id'];
-    if (has_term($category_slug, 'product_cat', $product_id)) {
-      $items[$key] = $item;
-    }
-  }
-
-  return $items;
-}
-
-function lucci_get_awdp_discount_info(): array
-{
-  if (!defined('AWDP_POST_TYPE') || !function_exists('WC') || !WC()->cart) {
+  if (!class_exists('PPP_Pricing_Engine') || !function_exists('WC') || !WC()->cart) {
     return ['show' => false];
   }
 
@@ -51,141 +74,91 @@ function lucci_get_awdp_discount_info(): array
     return ['show' => false];
   }
 
-  // Considera somente itens da categoria "Marmitas" para o cálculo do desconto
-  $discount_items = lucci_get_cart_items_in_category($cart, LUCCI_AWDP_DISCOUNT_CATEGORY);
-  if (empty($discount_items)) {
+  $groups = lucci_group_cart_items_by_ppp_tiers($cart);
+  if (empty($groups)) {
     return ['show' => false];
   }
 
-  $rules_posts = get_posts([
-    'post_type'      => AWDP_POST_TYPE,
-    'post_status'    => 'publish',
-    'numberposts'    => -1,
-    'no_found_rows'  => true,
-    'update_post_term_cache' => false,
-  ]);
+  // Usa o grupo com a maior quantidade de itens (faixa mais relevante para o cliente)
+  usort($groups, fn($a, $b) => $b['quantity'] - $a['quantity']);
+  $group = $groups[0];
 
-  if (empty($rules_posts)) {
-    return ['show' => false];
+  $tiers         = $group['tiers'];
+  $current_count = $group['quantity'];
+  $items         = $group['items'];
+
+  $last_tier     = end($tiers);
+  $max_threshold = (int) $last_tier['min_qty'];
+
+  $next_tier    = null;
+  $current_tier = null;
+
+  foreach ($tiers as $tier) {
+    $min = (int) $tier['min_qty'];
+    $max = '' === $tier['max_qty'] ? null : (int) $tier['max_qty'];
+
+    if ($current_count < $min) {
+      if ($next_tier === null) {
+        $next_tier = $tier;
+      }
+    } elseif (null === $max || $current_count <= $max) {
+      $current_tier = $tier;
+    }
   }
 
-  foreach ($rules_posts as $rule_post) {
-    $type = get_post_meta($rule_post->ID, 'discount_type', true);
-    if ($type !== 'cart_quantity') {
-      continue;
-    }
+  // Próxima faixa ainda não atingida
+  if ($next_tier !== null) {
+    $threshold = (int) $next_tier['min_qty'];
+    $needed    = $threshold - $current_count;
 
-    $qty_type           = get_post_meta($rule_post->ID, 'discount_quantity_type', true);
-    $quantity_rules_raw = get_post_meta($rule_post->ID, 'discount_quantityranges', true);
+    return [
+      'show'      => true,
+      'current'   => $current_count,
+      'threshold' => $threshold,
+      'needed'    => $needed,
+      'fraction'  => $current_count . '/' . $threshold,
+      'pct'       => min(100.0, ($current_count / max(1, $threshold)) * 100),
+      'hint'      => lucci_ppp_build_hint($needed, $next_tier, $items, $current_count),
+      'hit'       => false,
+    ];
+  }
 
-    if (empty($quantity_rules_raw)) {
-      continue;
-    }
-
-    $quantity_rules = maybe_unserialize($quantity_rules_raw);
-    if (empty($quantity_rules) || !is_array($quantity_rules)) {
-      continue;
-    }
-
-    // Ordena por start_range crescente
-    usort($quantity_rules, fn($a, $b) => (int) $a['start_range'] - (int) $b['start_range']);
-
-    // Contagem atual de acordo com o tipo da regra (somente itens de "Marmitas")
-    if ($qty_type === 'type_cart') {
-      // Número de tipos de produto distintos no carrinho
-      $current_count = count($discount_items);
-    } else {
-      // Quantidade total de itens no carrinho (padrão)
-      $current_count = (int) array_sum(wp_list_pluck($discount_items, 'quantity'));
-    }
-
-    $last_rule    = end($quantity_rules);
-    $max_threshold = (int) $last_rule['start_range'];
-
-    $next_tier    = null;
-    $current_tier = null;
-
-    foreach ($quantity_rules as $qr) {
-      $start = (int) $qr['start_range'];
-      $end   = isset($qr['end_range']) && $qr['end_range'] !== '' ? (int) $qr['end_range'] : 0;
-
-      if ($current_count < $start) {
-        if ($next_tier === null) {
-          $next_tier = $qr;
-        }
-      } elseif ($end === 0 || $current_count <= $end) {
-        $current_tier = $qr;
-      }
-    }
-
-    // Próximo tier não atingido ainda
-    if ($next_tier !== null) {
-      $threshold = (int) $next_tier['start_range'];
-      $needed    = $threshold - $current_count;
-      $dis_type  = $next_tier['dis_type'] ?? '';
-      $dis_value = (float) ($next_tier['dis_value'] ?? 0);
-
-      return [
-        'show'      => true,
-        'current'   => $current_count,
-        'threshold' => $threshold,
-        'needed'    => $needed,
-        'fraction'  => $current_count . '/' . $threshold,
-        'pct'       => min(100.0, ($current_count / max(1, $threshold)) * 100),
-        'hint'      => lucci_awdp_build_hint($needed, $dis_type, $dis_value, $discount_items, $current_count),
-        'hit'       => false,
-      ];
-    }
-
-    // Desconto já atingido
-    if ($current_tier !== null) {
-      $dis_type  = $current_tier['dis_type'] ?? '';
-      $dis_value = (float) ($current_tier['dis_value'] ?? 0);
-
-      if ($dis_type === 'percentage') {
-        $hint = sprintf(
-          /* translators: %s: percentual de desconto */
-          esc_html__('Você está recebendo %s%% de desconto!', 'lucci-fresh'),
-          number_format($dis_value, 0)
-        );
-      } else {
-        $hint = sprintf(
-          /* translators: %s: valor de economia */
-          esc_html__('Você está economizando %s!', 'lucci-fresh'),
-          'R$&nbsp;' . number_format($dis_value, 2, ',', '.')
-        );
-      }
-
-      return [
-        'show'      => true,
-        'current'   => $current_count,
-        'threshold' => $max_threshold,
-        'needed'    => 0,
-        'fraction'  => $current_count . '/' . $max_threshold,
-        'pct'       => 100.0,
-        'hint'      => $hint,
-        'hit'       => true,
-      ];
-    }
+  // Maior faixa de desconto já atingida
+  if ($current_tier !== null) {
+    return [
+      'show'      => true,
+      'current'   => $current_count,
+      'threshold' => $max_threshold,
+      'needed'    => 0,
+      'fraction'  => $current_count . '/' . $max_threshold,
+      'pct'       => 100.0,
+      'hint'      => lucci_ppp_build_hit_hint($current_tier),
+      'hit'       => true,
+    ];
   }
 
   return ['show' => false];
 }
 
 /**
- * Monta a mensagem de dica com base no tipo e valor de desconto.
+ * Monta a mensagem de dica para quando o desconto ainda não foi atingido.
+ *
+ * @param array $tier  Faixa do Progressive Pricing (min_qty, max_qty, discount_type, discount_value)
+ * @param array $items Itens do carrinho cobertos por esse conjunto de faixas
  */
-function lucci_awdp_build_hint(int $needed, string $dis_type, float $dis_value, array $discount_items, int $current_count): string
+function lucci_ppp_build_hint(int $needed, array $tier, array $items, int $current_count): string
 {
   $label = $needed === 1
     ? esc_html__('marmita', 'lucci-fresh')
     : esc_html__('marmitas', 'lucci-fresh');
 
-  if ($dis_type === 'percentage' && !empty($discount_items) && $current_count > 0) {
-    // Calcula o preço médio apenas dos itens de "Marmitas" e aplica o desconto
+  $dis_type  = $tier['discount_type'] ?? '';
+  $dis_value = (float) ($tier['discount_value'] ?? 0);
+
+  if ('percent' === $dis_type && !empty($items) && $current_count > 0) {
     $subtotal = array_sum(array_map(
       fn($item) => (float) $item['line_subtotal'],
-      $discount_items
+      $items
     ));
     $avg_price        = $subtotal / $current_count;
     $discounted_price = $avg_price * (1 - $dis_value / 100);
@@ -199,7 +172,17 @@ function lucci_awdp_build_hint(int $needed, string $dis_type, float $dis_value, 
     );
   }
 
-  if ($dis_type === 'fixed') {
+  if ('fixed_price' === $dis_type && $dis_value > 0) {
+    return sprintf(
+      /* translators: 1: número de itens, 2: label, 3: preço unitário */
+      esc_html__('Adicione mais %1$d %2$s e cada sai R$&nbsp;%3$s', 'lucci-fresh'),
+      $needed,
+      $label,
+      number_format($dis_value, 2, ',', '.')
+    );
+  }
+
+  if ('fixed_amount' === $dis_type && $dis_value > 0) {
     return sprintf(
       /* translators: 1: número de itens, 2: label, 3: valor de desconto */
       esc_html__('Adicione mais %1$d %2$s e economize R$&nbsp;%3$s', 'lucci-fresh'),
@@ -215,4 +198,41 @@ function lucci_awdp_build_hint(int $needed, string $dis_type, float $dis_value, 
     $needed,
     $label
   );
+}
+
+/**
+ * Monta a mensagem de dica para quando a maior faixa de desconto já foi atingida.
+ *
+ * @param array $tier Faixa do Progressive Pricing
+ */
+function lucci_ppp_build_hit_hint(array $tier): string
+{
+  $dis_type  = $tier['discount_type'] ?? '';
+  $dis_value = (float) ($tier['discount_value'] ?? 0);
+
+  if ('percent' === $dis_type) {
+    return sprintf(
+      /* translators: %s: percentual de desconto */
+      esc_html__('Você está recebendo %s%% de desconto!', 'lucci-fresh'),
+      number_format($dis_value, 0)
+    );
+  }
+
+  if ('fixed_amount' === $dis_type) {
+    return sprintf(
+      /* translators: %s: valor de economia */
+      esc_html__('Você está economizando %s!', 'lucci-fresh'),
+      'R$&nbsp;' . number_format($dis_value, 2, ',', '.')
+    );
+  }
+
+  if ('fixed_price' === $dis_type) {
+    return sprintf(
+      /* translators: %s: preço unitário com desconto */
+      esc_html__('Você está pagando apenas R$&nbsp;%s cada!', 'lucci-fresh'),
+      number_format($dis_value, 2, ',', '.')
+    );
+  }
+
+  return esc_html__('Você já está recebendo o maior desconto disponível!', 'lucci-fresh');
 }

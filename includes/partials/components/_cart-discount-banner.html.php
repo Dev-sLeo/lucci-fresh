@@ -1,9 +1,9 @@
 <?php
 // includes/partials/components/_cart-discount-banner.html.php
-// Banner de progresso de desconto AWDP, reutilizado no sidebar e na página do carrinho.
+// Banner de progresso de desconto (Progressive Pricing), reutilizado no sidebar e na página do carrinho.
 defined('ABSPATH') || exit;
 
-$disc_info = function_exists('lucci_get_awdp_discount_info') ? lucci_get_awdp_discount_info() : ['show' => false];
+$disc_info = function_exists('lucci_get_ppp_discount_info') ? lucci_get_ppp_discount_info() : ['show' => false];
 $show_disc = !empty($disc_info['show']);
 ?>
 <div class="c-cart-discount" <?= !$show_disc ? 'aria-hidden="true"' : '' ?>>
