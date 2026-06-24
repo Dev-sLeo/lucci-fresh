@@ -30,6 +30,7 @@ import categoryFilter from "./scripts/categoryFilter";
 import cartSidebar from "./scripts/cartSidebar";
 import checkoutLayout from "./scripts/checkoutLayout";
 import cepAutofill from "./scripts/cepAutofill";
+import shippingMethodToggle from "./scripts/shippingMethodToggle";
 
 window.gsap = gsap;
 
@@ -59,3 +60,4 @@ categoryFilter();
 cartSidebar();
 checkoutLayout();
 cepAutofill();
+shippingMethodToggle();
