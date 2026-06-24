@@ -26,6 +26,8 @@ $price_value  = !empty($price_raw)
   : '<span class="woocommerce-Price-amount amount"><bdi>R$&nbsp;0</bdi></span>';
 $in_stock   = $product->is_in_stock();
 
+$resume_product = get_field('resumo_product', $product->get_id()) ?: $product->get_short_description();
+
 if (has_post_thumbnail($product->get_id())) {
   $thumbnail = get_the_post_thumbnail(
     $product->get_id(),
@@ -50,7 +52,7 @@ if (has_post_thumbnail($product->get_id())) {
       <a href="<?= esc_url($permalink) ?>" class="c-product-card__name">
         <?= esc_html($name) ?>
       </a>
-      <p class="c-product-card__description"><?= esc_html($product->get_short_description()) ?></p>
+      <p class="c-product-card__description"><?= $resume_product ?></p>
     </div>
 
     <div class="c-product-card__actions">

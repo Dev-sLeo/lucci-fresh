@@ -89,6 +89,19 @@ add_filter('woocommerce_shipping_chosen_method', function ($default, $rates, $ch
     return $chosen_method ? $default : '';
 }, 10, 3);
 
+// Em toda nova visita ao carrinho/checkout, limpa qualquer método de entrega
+// já escolhido (inclusive retirada na loja) para que nada venha pré-selecionado
+// nem seja somado ao total antes do cliente escolher manualmente.
+// Não afeta a escolha real: cliques no checkout acontecem via Store API/REST,
+// que não passa por este hook (apenas o carregamento normal da página passa).
+add_action('template_redirect', function () {
+    if (!(is_cart() || is_checkout())) return;
+    if (!WC()->session) return;
+
+    WC()->session->set('chosen_shipping_methods', []);
+    WC()->session->set('shipping_method_counts', []);
+});
+
 // Campos desnecessários para mercado BR
 add_filter('woocommerce_checkout_fields', function ($fields) {
 

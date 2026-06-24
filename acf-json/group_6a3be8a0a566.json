@@ -5,10 +5,10 @@
         {
             "key": "field_6a3bea8d750f9",
             "label": "Resumo",
-            "name": "resumo",
+            "name": "resumo_product",
             "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "",
+            "type": "textarea",
+            "instructions": "Se não for preenchido ira pegar o campo breve descrição do produto",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -17,11 +17,11 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "allow_in_bindings": 0,
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
         }
     ],
     "location": [
@@ -40,10 +40,10 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "",
+    "description": "Se não for preenchido ira pegar o campo breve descrição do produto",
     "show_in_rest": 0,
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1782311585
+    "modified": 1782313498
 }

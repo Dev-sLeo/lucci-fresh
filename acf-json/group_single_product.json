@@ -91,44 +91,6 @@
             ]
         },
         {
-            "key": "field_69ebb_tab02",
-            "label": "Conteúdo",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_69ebb_ingredientes",
-            "label": "Ingredientes",
-            "name": "ingredientes",
-            "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "Lista de ingredientes do produto.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "basic",
-            "media_upload": 0,
-            "delay": 0
-        },
-        {
             "key": "field_69ebb_tab03",
             "label": "Tabela Nutricional",
             "name": "",
@@ -423,5 +385,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778097145
+    "modified": 1782312839
 }
