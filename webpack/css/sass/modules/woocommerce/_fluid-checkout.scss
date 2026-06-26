@@ -215,10 +215,7 @@
   #billing_phone_field {
     grid-column: 1;
     grid-row: 1;
-
-    input {
-      width: 100% !important;
-    }
+    width: 100% !important;
   }
 
   #billing_cpf_field {
@@ -353,7 +350,7 @@
 // A transição no "top" suaviza a troca de posição (static -> fixed) feita
 // pelo script de sticky-states do plugin, dando a sensação de que o resumo
 // "desliza" até colar abaixo do header em vez de saltar.
-.fc-sidebar[data-sticky-states] > [data-sticky-states-inner] {
+.fc-sidebar[data-sticky-states]>[data-sticky-states-inner] {
   transition: top 0.25s ease;
 }
 
