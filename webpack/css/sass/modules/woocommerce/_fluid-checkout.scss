@@ -20,7 +20,7 @@
   h3,
   h4 {
     font-family: $ff-heading;
-    color: $wc-text;
+    color: #1f2818 !important;
   }
 
   a {
@@ -63,7 +63,7 @@
     font-family: $ff-primary;
     font-size: 16px;
     font-weight: 600;
-    color: $wc-text;
+    color: #1f2818 !important;
   }
 
   &__substep-edit {
@@ -77,6 +77,10 @@
       color: darken($color-laranja-cta, 8%);
     }
   }
+}
+
+.has-checkout-layout--multi-step.woocommerce-checkout form .fc-wrapper .fc-checkout-step[data-step-complete] .fc-step__substep .fc-step__substep-title:before {
+  background-color: #597837 !important;
 }
 
 // O CSS do próprio Fluid Checkout (.fc-wrapper .fc-step__substep-save e
@@ -191,6 +195,44 @@
   // não interferem no fluxo do grid.
 }
 
+// Celular | CPF lado a lado (campos ficam em .woocommerce-billing-only-fields__field-wrapper,
+// fora do grid de #woocommerce-billing-fields__field-wrapper acima)
+.woocommerce-billing-only-fields__field-wrapper {
+  display: grid;
+  grid-template-columns: 100%;
+  column-gap: 16px;
+  row-gap: 0;
+
+  @include mq(desktop-low) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  >.form-row {
+    margin-bottom: 16px;
+    width: 100% !important;
+  }
+
+  #billing_phone_field {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #billing_cpf_field {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+// Checkbox "Igual ao endereço de entrega": alinhado à esquerda, centralizado
+// em linha com o texto, gap de 4px
+.fc-same-address-checkbox {
+  label.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
 .fc-contact-fields__wrapper,
 .woocommerce-additional-fields__field-wrapper {
   display: flex;
@@ -301,7 +343,7 @@
   font-family: $ff-primary;
   font-size: 20px;
   font-weight: 600;
-  color: $wc-text;
+  color: #1f2818;
 }
 
 // ── Botão final de finalizar pedido (mantém o mesmo estilo do checkout clássico) ─

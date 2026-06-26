@@ -222,6 +222,9 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     if (isset($fields['shipping']['shipping_phone'])) {
         $fields['shipping']['shipping_phone']['class'] = ['form-row-last'];
     }
+    if (isset($fields['billing']['billing_cpf'])) {
+        $fields['billing']['billing_cpf']['class'] = ['form-row-first'];
+    }
 
     // Endereço | Número lado a lado
     if (isset($fields['billing']['billing_address_1'])) {
@@ -430,6 +433,17 @@ add_filter('gettext', function ($translated, $text, $domain) {
     ];
     return $map[$text] ?? $translated;
 }, 10, 3);
+
+// -----------------------------------------------------------------------------
+// Fluid Checkout: nome do pacote de entrega ("Remessa" -> "Taxa de entrega")
+// -----------------------------------------------------------------------------
+
+add_filter('gettext_with_context', function ($translated, $text, $context, $domain) {
+    if ($domain === 'fluid-checkout' && $text === 'Shipping' && $context === 'shipping packages') {
+        return 'Taxa de entrega';
+    }
+    return $translated;
+}, 10, 4);
 
 // -----------------------------------------------------------------------------
 // Login com e-mail apenas (sem nome de usuário)

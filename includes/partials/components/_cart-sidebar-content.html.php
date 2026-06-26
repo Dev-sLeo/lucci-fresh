@@ -5,11 +5,17 @@ defined('ABSPATH') || exit;
 
 if (!function_exists('WC') || !WC()->cart) return;
 
-$cart         = WC()->cart;
-$items        = $cart->get_cart();
-$subtotal     = $cart->get_subtotal();
-$discount     = $cart->get_discount_total();
-$total        = $cart->get_total('');
+$cart            = WC()->cart;
+$items           = $cart->get_cart();
+$coupon_discount = $cart->get_discount_total();
+// Desconto progressivo (Progressive Pricing) é aplicado via set_price() no preço
+// do item, então get_subtotal() já vem com ele embutido e get_discount_total()
+// não o contabiliza. Somamos o desconto de volta ao subtotal exibido para que
+// "Subtotal - Desconto = Total" feche certinho, como um cupom.
+$tier_discount   = class_exists( 'PPP_Pricing_Engine' ) ? PPP_Pricing_Engine::get_cart_discount_total( $cart ) : 0.0;
+$subtotal        = $cart->get_subtotal() + $tier_discount;
+$discount        = $coupon_discount + $tier_discount;
+$total           = $cart->get_total('');
 $has_items    = !empty($items);
 $checkout_url = wc_get_checkout_url();
 $nonce        = wp_create_nonce('lucci-cart-nonce');

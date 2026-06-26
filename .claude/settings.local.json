@@ -35,7 +35,8 @@
       "Bash(npx webpack *)",
       "Bash(git check-ignore *)",
       "Bash(wp term *)",
-      "Bash(xargs ls -1)"
+      "Bash(xargs ls -1)",
+      "Bash(node -e \"console.log\\(require\\('./package.json'\\).scripts\\)\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\leona\\Local Sites\\lucci-fresh\\app\\public\\wp-content\\themes\\lucci-fresh"
