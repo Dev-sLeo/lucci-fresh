@@ -17,13 +17,14 @@
     font-family: $ff-heading;
     font-size: rem(32px);
     font-style: normal;
+    font-weight: 400;
     color: $color-preto;
     margin: 0;
-    text-align: center;
+    text-align: left;
 
     @include mq(desktop-low) {
       font-size: rem(40px);
-      text-align: left;
+
     }
   }
 

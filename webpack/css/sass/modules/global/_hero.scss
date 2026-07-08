@@ -123,11 +123,13 @@
 
   &__cta {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
 
     @include mq(desktop-low) {
-      flex-direction: row;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
   }
