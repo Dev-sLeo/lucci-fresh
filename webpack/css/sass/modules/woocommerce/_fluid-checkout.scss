@@ -120,16 +120,27 @@
 // dos itens — qualquer elemento sem "order" definido (ex.: Nome/Sobrenome)
 // também entra na conta e pode quebrar o pareamento. Grid com área nomeada
 // por campo não depende da ordem do DOM nem da largura dos vizinhos.
+// Os campos (.form-row) não são filhos diretos do wrapper: o Fluid Checkout
+// insere um ".collapsible-content__inner" entre eles (usado na animação de
+// colapso/expansão). O grid precisa ser aplicado nesse elemento intermediário
+// — em `#wrapper` diretamente, os itens de grid (grid-row/grid-column) não
+// têm efeito nenhum, pois só funcionam em filhos diretos do container.
 #woocommerce-billing-fields__field-wrapper,
 #woocommerce-shipping-fields__field-wrapper {
-  display: grid;
-  grid-template-columns: 100%;
-  column-gap: 16px;
-  row-gap: 0;
+  >.collapsible-content__inner {
+    display: grid;
+    grid-template-columns: 100%;
+    column-gap: 16px;
+    row-gap: 0;
 
-  >.form-row {
-    margin-bottom: 16px;
-    width: 100% !important;
+    @include mq(desktop-low) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    >.form-row {
+      margin-bottom: 16px;
+      width: 100% !important;
+    }
   }
 
   #billing_first_name_field,
@@ -144,34 +155,34 @@
     grid-row: 1;
   }
 
-  #billing_postcode_field,
-  #shipping_postcode_field {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  #billing_neighborhood_field,
-  #shipping_neighborhood_field {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
   #billing_address_1_field,
   #shipping_address_1_field {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
   }
 
   #billing_number_field,
   #shipping_number_field {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
   }
 
   #billing_address_2_field,
   #shipping_address_2_field,
   .fc-expansible-form-section {
     grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  #billing_postcode_field,
+  #shipping_postcode_field {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  #billing_neighborhood_field,
+  #shipping_neighborhood_field {
+    grid-column: 2;
     grid-row: 4;
   }
 
