@@ -1,7 +1,7 @@
 // modules/pages/single-product/_content.scss
 
 .s-sp-content {
-  padding: 56px 0;
+  padding: 56px 0 32px;
 
   @include mq(desktop-low) {
     padding: 80px 0;
@@ -9,8 +9,9 @@
 
   &__inner {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     gap: 48px;
+    padding-bottom: 24px;
     border-bottom: 1px solid rgba(112, 132, 95, 0.20);
 
     @include mq(desktop-low) {
@@ -54,11 +55,14 @@
   &__nutrition-description {
     color: rgba(31, 40, 24, 0.70);
     font-family: Manrope;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 180%;
-    /* 36px */
+
+    @include mq(desktop-low) {
+      font-size: 16px;
+    }
   }
 
   &__body {
@@ -86,13 +90,14 @@
   &__nutrition {
     border: 1px solid rgba(#70845f, 0.3);
     border-radius: 24px;
-    padding: 32px 24px;
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
 
     @include mq(desktop-low) {
       padding: 48px;
+      gap: 24px;
     }
   }
 
@@ -111,15 +116,27 @@
   &__table {
     display: flex;
     flex-direction: column;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @include mq(desktop-low) {
+      overflow-x: visible;
+    }
   }
 
   &__row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px;
+    padding: 12px 8px;
     gap: 16px;
     border-radius: 8px;
+    min-width: max-content;
+
+    @include mq(desktop-low) {
+      padding: 16px;
+      min-width: 0;
+    }
 
     &--header {
 
@@ -131,7 +148,13 @@
 
     &--multi {
       .s-sp-content__nutriente {
-        flex: 1;
+        flex: 0 0 auto;
+        min-width: 160px;
+
+        @include mq(desktop-low) {
+          flex: 1;
+          min-width: 0;
+        }
       }
 
       .s-sp-content__valor {
@@ -145,12 +168,16 @@
   &__divider {
     border: none;
     border-top: 1px solid rgba(#70845f, 0.2);
-    margin: 0;
+    margin: 4px 0;
+
+    @include mq(desktop-low) {
+      margin: 0;
+    }
   }
 
   &__nutriente {
     font-family: $ff-primary;
-    font-size: rem(15px);
+    font-size: rem(14px);
     font-weight: 400;
     line-height: normal;
     color: $color-preto;
@@ -162,7 +189,7 @@
 
   &__valor {
     font-family: $ff-primary;
-    font-size: rem(15px);
+    font-size: rem(14px);
     font-weight: 500;
     line-height: normal;
     color: #70845f;
