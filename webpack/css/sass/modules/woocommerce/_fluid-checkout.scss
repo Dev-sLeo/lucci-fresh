@@ -127,10 +127,6 @@
   column-gap: 16px;
   row-gap: 0;
 
-  @include mq(desktop-low) {
-    grid-template-columns: 1fr 1fr;
-  }
-
   >.form-row {
     margin-bottom: 16px;
     width: 100% !important;

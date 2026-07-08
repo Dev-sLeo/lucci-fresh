@@ -173,9 +173,11 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $fields['billing']['billing_address_2']['label']       = __('Complemento', 'arterra');
         $fields['billing']['billing_address_2']['placeholder'] = __('Apto, bloco, sala...', 'arterra');
         $fields['billing']['billing_address_2']['priority']    = 110; // por último
+        $fields['billing']['billing_address_2']['required']    = false;
     }
     if (isset($fields['shipping']['shipping_address_2'])) {
         $fields['shipping']['shipping_address_2']['priority'] = 110; // por último
+        $fields['shipping']['shipping_address_2']['required'] = false;
     }
     if (isset($fields['billing']['billing_city'])) {
         $fields['billing']['billing_city']['label']    = __('Cidade', 'arterra');
@@ -276,6 +278,17 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     }
 
     return $fields;
+});
+
+// Complemento (address_2) é opcional: evita que o Fluid Checkout colapse o campo
+// atrás de um link "Adicionar apartamento... (opcional)". Sem isso, o campo some/
+// reaparece a cada recálculo de frete (o HTML do endereço é regerado via AJAX),
+// dando a impressão de que o formulário "quebra" quando o frete é calculado.
+add_filter('fc_hide_optional_fields_skip_list', function ($skip_list) {
+    $skip_list[] = 'address_2';
+    $skip_list[] = 'billing_address_2';
+    $skip_list[] = 'shipping_address_2';
+    return $skip_list;
 });
 
 // Salva os campos "Número" e "Bairro" no pedido
