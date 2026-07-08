@@ -132,12 +132,41 @@ function lucci_get_ppp_discount_info(): array
       'needed'    => 0,
       'fraction'  => $current_count . '/' . $max_threshold,
       'pct'       => 100.0,
-      'hint'      => lucci_ppp_build_hit_hint($current_tier),
+      'hint'      => lucci_ppp_build_hit_hint($current_tier, $items, $current_count),
       'hit'       => true,
     ];
   }
 
   return ['show' => false];
+}
+
+/**
+ * Calcula o preço unitário médio REGULAR (sem nenhum desconto do Progressive
+ * Pricing já aplicado) dos itens informados. Usar `line_subtotal` seria errado
+ * aqui: assim que uma faixa de desconto é atingida, o PPP já reduz o preço dos
+ * itens no carrinho — subtrair o desconto de novo em cima desse valor já
+ * descontado faz o cálculo ficar cada vez mais errado a cada faixa.
+ *
+ * @param array $items         Itens do carrinho cobertos pelo conjunto de faixas
+ * @param int   $current_count Quantidade total desses itens
+ */
+function lucci_ppp_avg_regular_price(array $items, int $current_count): float
+{
+  if ($current_count <= 0) {
+    return 0.0;
+  }
+
+  $total = 0.0;
+  foreach ($items as $item) {
+    $product = $item['data'] ?? null;
+    if (!$product instanceof WC_Product) {
+      continue;
+    }
+    $regular_price = (float) $product->get_regular_price();
+    $total += $regular_price * (int) $item['quantity'];
+  }
+
+  return $total / $current_count;
 }
 
 /**
@@ -156,11 +185,7 @@ function lucci_ppp_build_hint(int $needed, array $tier, array $items, int $curre
   $dis_value = (float) ($tier['discount_value'] ?? 0);
 
   if ('percent' === $dis_type && !empty($items) && $current_count > 0) {
-    $subtotal = array_sum(array_map(
-      fn($item) => (float) $item['line_subtotal'],
-      $items
-    ));
-    $avg_price        = $subtotal / $current_count;
+    $avg_price        = lucci_ppp_avg_regular_price($items, $current_count);
     $discounted_price = $avg_price * (1 - $dis_value / 100);
 
     return sprintf(
@@ -182,13 +207,16 @@ function lucci_ppp_build_hint(int $needed, array $tier, array $items, int $curre
     );
   }
 
-  if ('fixed_amount' === $dis_type && $dis_value > 0) {
+  if ('fixed_amount' === $dis_type && $dis_value > 0 && !empty($items) && $current_count > 0) {
+    $avg_price        = lucci_ppp_avg_regular_price($items, $current_count);
+    $discounted_price = max(0, $avg_price - $dis_value);
+
     return sprintf(
-      /* translators: 1: número de itens, 2: label, 3: valor de desconto */
-      esc_html__('Adicione mais %1$d %2$s e economize R$&nbsp;%3$s', 'lucci-fresh'),
+      /* translators: 1: número de itens, 2: label (marmita/marmitas), 3: preço com desconto */
+      esc_html__('Adicione mais %1$d %2$s e cada sai R$&nbsp;%3$s', 'lucci-fresh'),
       $needed,
       $label,
-      number_format($dis_value, 2, ',', '.')
+      number_format($discounted_price, 2, ',', '.')
     );
   }
 
@@ -203,9 +231,11 @@ function lucci_ppp_build_hint(int $needed, array $tier, array $items, int $curre
 /**
  * Monta a mensagem de dica para quando a maior faixa de desconto já foi atingida.
  *
- * @param array $tier Faixa do Progressive Pricing
+ * @param array $tier          Faixa do Progressive Pricing
+ * @param array $items         Itens do carrinho cobertos por esse conjunto de faixas
+ * @param int   $current_count Quantidade atual no grupo
  */
-function lucci_ppp_build_hit_hint(array $tier): string
+function lucci_ppp_build_hit_hint(array $tier, array $items = [], int $current_count = 0): string
 {
   $dis_type  = $tier['discount_type'] ?? '';
   $dis_value = (float) ($tier['discount_value'] ?? 0);
@@ -215,6 +245,17 @@ function lucci_ppp_build_hit_hint(array $tier): string
       /* translators: %s: percentual de desconto */
       esc_html__('Você está recebendo %s%% de desconto!', 'lucci-fresh'),
       number_format($dis_value, 0)
+    );
+  }
+
+  if ('fixed_amount' === $dis_type && !empty($items) && $current_count > 0) {
+    $avg_price        = lucci_ppp_avg_regular_price($items, $current_count);
+    $discounted_price = max(0, $avg_price - $dis_value);
+
+    return sprintf(
+      /* translators: %s: preço unitário com desconto */
+      esc_html__('Você está pagando apenas R$&nbsp;%s cada!', 'lucci-fresh'),
+      number_format($discounted_price, 2, ',', '.')
     );
   }
 

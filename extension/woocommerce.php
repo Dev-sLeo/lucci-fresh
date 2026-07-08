@@ -227,6 +227,9 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     if (isset($fields['billing']['billing_cpf'])) {
         $fields['billing']['billing_cpf']['class'] = ['form-row-first'];
     }
+    if (isset($fields['order']['order_comments'])) {
+        $fields['order']['order_comments']['label'] = __('Observações para entrega', 'arterra');
+    }
 
     // Endereço | Número lado a lado
     if (isset($fields['billing']['billing_address_1'])) {
