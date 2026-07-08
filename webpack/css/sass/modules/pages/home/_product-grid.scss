@@ -86,9 +86,11 @@
   // Swiper — mobile: slider horizontal / desktop: grid 3 colunas
   .swiper {
     overflow: visible;
+    margin: 0 -1.5rem;
 
     @include mq(desktop-low) {
       overflow: visible;
+      margin: 0;
     }
   }
 
