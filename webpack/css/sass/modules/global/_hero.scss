@@ -28,200 +28,24 @@
     }
   }
 
-  // ── Inner flex row ────────────────────────────────────────────────────────
+  // ── Inner ─────────────────────────────────────────────────────────────────
   &__inner {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding-top: 48px;
-    padding-bottom: 0;
-    padding-left: 1.5rem;
-    padding-right: 0;
+    display: block;
     position: relative;
     z-index: 1;
-
-    @include mq(desktop-low) {
-      flex-direction: row;
-      align-items: center;
-      gap: 0;
-      min-height: 550px;
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-
-  // ── Content (left column) ─────────────────────────────────────────────────
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    color: #fff;
-    flex-shrink: 0;
-    width: 100%;
-    text-align: center;
-    padding-right: 1.5rem;
-
-    @include mq(desktop-low) {
-      text-align: left;
-      width: auto;
-      flex-shrink: 0;
-      padding-left: 1rem;
-      padding-right: 3rem;
-      padding-top: 88px;
-      padding-bottom: 88px;
-      gap: 48px;
-    }
-
-    @include mq(desktop) {
-      padding-left: calc((100% - #{$container-desktop}) / 2);
-    }
-  }
-
-  &__text {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    @include mq(desktop-low) {
-      max-width: 510px;
-    }
-  }
-
-  &__title {
-    font-family: $ff-heading;
-    font-style: normal;
-    font-size: rem(40px);
-    line-height: 1.2;
-    color: #fff;
-    margin: 0;
-
-    @include mq(tablet) {
-      font-size: rem(52px);
-    }
-
-    @include mq(desktop-low) {
-      font-size: rem(56px);
-      max-width: 506px;
-    }
-  }
-
-  &__description {
-    font-family: $ff-primary;
-    font-weight: 400;
-    font-size: rem(18px);
-    line-height: 1.6;
-    color: #fff;
-    margin: 0;
-
-    @include mq(desktop-low) {
-      font-size: rem(22px);
-      max-width: 416px;
-    }
-  }
-
-  &__cta {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    @include mq(desktop-low) {
-      justify-content: flex-start;
-      flex-wrap: wrap;
-    }
-  }
-
-  &__btn {
-    width: 100%;
-    padding: 14px 20px;
-    font-size: rem(16px);
-    justify-content: center;
-
-    @include mq(desktop-low) {
-      width: auto;
-      padding: 24px 20px;
-      font-size: rem(20px);
-      min-width: 134px;
-    }
-  }
-
-  // ── Media (right column) ──────────────────────────────────────────────────
-  &__media {
-    flex: 1;
-    display: flex;
-    align-items: flex-end;
-    position: relative;
-    min-width: 0;
-  }
-
-  // Product image container
-  &__product {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 100%;
-
-    @include mq(desktop-low) {
-      width: 930px;
-    }
   }
 
   &__image {
     display: block;
-    width: auto;
-    max-width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    object-position: bottom center;
-
-    @include mq(tablet) {
-      max-height: 480px;
-    }
+    width: 100%;
+    height: auto;
+    max-height: 1005px;
+    object-fit: cover;
+    object-position: center;
 
     @include mq(desktop-low) {
-      max-height: 580px;
-    }
-
-    @include mq(desktop) {
       max-height: 640px;
     }
-  }
-
-  // Side decorative photos
-  &__photos {
-    display: none;
-
-    @include mq(desktop-low) {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      flex: 1;
-      padding-top: 40px;
-      padding-bottom: 40px;
-      min-width: 0;
-    }
-
-    @include mq(desktop) {
-      max-width: 260px;
-    }
-  }
-
-  &__photo {
-    border-radius: 16px;
-    overflow: hidden;
-    flex: 1;
-    min-height: 0;
-  }
-
-  &__photo-img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   // ── Slider wrapper (posição relativa para as arrows absolutas) ───────────
@@ -276,15 +100,9 @@
 
   // ── Controls row — só os bullets, centralizados ───────────────────────────
   &__controls {
-    position: relative;
     z-index: 2;
     display: flex;
     justify-content: center;
-    padding: rem(16) 0 rem(24);
-
-    @include mq(desktop-low) {
-      padding: rem(20) 0 rem(36);
-    }
   }
 
   &__pagination {

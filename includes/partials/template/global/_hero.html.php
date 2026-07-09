@@ -15,66 +15,30 @@ $slides = get_field('hero') ?: [];
       <div class="swiper-wrapper">
 
         <?php foreach ($slides as $slide) :
-          $titulo    = $slide['title']       ?? '';
-          $descricao = $slide['description'] ?? '';
-          $buttons   = $slide['buttons']     ?? [];
+          $titulo   = $slide['title'] ?? '';
+          $link     = $slide['link']  ?? '';
           // O grupo de imagens tem name="" no ACF — sub-fields ficam em $slide['']
           $imagens  = isset($slide['imagens']) && is_array($slide['imagens']) ? $slide['imagens'] : $slide;
           $img_desk = $imagens['desktop'] ?? null;
           $img_mob  = $imagens['mobile']  ?? null;
+          $tag      = $link ? 'a' : 'div';
         ?>
           <div class="swiper-slide">
-            <div class="s-hero__inner">
-
-              <div class="s-hero__content">
-                <div class="s-hero__text">
-                  <?php if ($titulo) : ?>
-                    <h1 class="s-hero__title"><?= esc_html($titulo) ?></h1>
+            <<?= $tag ?> class="s-hero__inner"<?php if ($link) : ?> href="<?= esc_url($link) ?>"<?php endif; ?>>
+              <?php if ($img_desk) : ?>
+                <picture>
+                  <?php if ($img_mob) : ?>
+                    <source srcset="<?= esc_url($img_mob['url']) ?>" media="(max-width: 719px)">
                   <?php endif; ?>
-                  <?php if ($descricao) : ?>
-                    <div class="s-hero__description"><?= wp_kses_post($descricao) ?></div>
-                  <?php endif; ?>
-                </div>
-
-                <?php if (!empty($buttons)) : ?>
-                  <div class="s-hero__cta">
-                    <?php foreach ($buttons as $i => $btn_row) :
-                      $btn    = $btn_row['button'] ?? [];
-                      $url    = $btn['url']    ?? '#';
-                      $texto  = $btn['title']  ?? '';
-                      $target = $btn['target'] ?? '_self';
-                      if (!$texto) continue;
-                      $variant = $i === 0 ? 'u-button__white' : 'u-button__wood';
-                    ?>
-                      <a href="<?= esc_url($url) ?>"
-                        class="u-button <?= esc_attr($variant) ?> s-hero__btn"
-                        target="<?= esc_attr($target) ?>">
-                        <?= esc_html($texto) ?>
-                      </a>
-                    <?php endforeach; ?>
-                  </div>
-                <?php endif; ?>
-              </div>
-
-              <div class="s-hero__media">
-                <div class="s-hero__product">
-                  <?php if ($img_desk) : ?>
-                    <picture>
-                      <?php if ($img_mob) : ?>
-                        <source srcset="<?= esc_url($img_mob['url']) ?>" media="(max-width: 719px)">
-                      <?php endif; ?>
-                      <img
-                        class="s-hero__image"
-                        src="<?= esc_url($img_desk['url']) ?>"
-                        alt="<?= esc_attr($img_desk['alt'] ?? $titulo) ?>"
-                        width="<?= esc_attr($img_desk['width'] ?? '') ?>"
-                        height="<?= esc_attr($img_desk['height'] ?? '') ?>">
-                    </picture>
-                  <?php endif; ?>
-                </div>
-              </div>
-
-            </div>
+                  <img
+                    class="s-hero__image"
+                    src="<?= esc_url($img_desk['url']) ?>"
+                    alt="<?= esc_attr($img_desk['alt'] ?? $titulo) ?>"
+                    width="<?= esc_attr($img_desk['width'] ?? '') ?>"
+                    height="<?= esc_attr($img_desk['height'] ?? '') ?>">
+                </picture>
+              <?php endif; ?>
+            </<?= $tag ?>>
           </div>
         <?php endforeach; ?>
 
