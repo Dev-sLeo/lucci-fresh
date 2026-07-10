@@ -54,8 +54,29 @@
                     "sub_fields": [
                         {
                             "key": "field_69e28cacdaaef",
-                            "label": "Text",
+                            "label": "Desktop",
                             "name": "text",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_6a5008d448e85",
+                            "label": "Mobile",
+                            "name": "mobile",
                             "aria-label": "",
                             "type": "text",
                             "instructions": "",
@@ -628,5 +649,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779387102
+    "modified": 1783630050
 }
