@@ -143,63 +143,69 @@
     }
   }
 
-  #billing_first_name_field,
-  #shipping_first_name_field {
-    grid-column: 1;
-    grid-row: 1;
-  }
+  // O posicionamento por coluna só faz sentido quando o grid realmente tem
+  // 2 colunas explícitas (a partir de desktop-low). No mobile, com apenas
+  // 1 coluna definida, um "grid-column: 2" cria uma coluna implícita extra
+  // (auto-sized), fazendo o campo vazar para a direita da tela.
+  @include mq(desktop-low) {
+    #billing_first_name_field,
+    #shipping_first_name_field {
+      grid-column: 1;
+      grid-row: 1;
+    }
 
-  #billing_last_name_field,
-  #shipping_last_name_field {
-    grid-column: 2;
-    grid-row: 1;
-  }
+    #billing_last_name_field,
+    #shipping_last_name_field {
+      grid-column: 2;
+      grid-row: 1;
+    }
 
-  #billing_address_1_field,
-  #shipping_address_1_field {
-    grid-column: 1;
-    grid-row: 2;
-  }
+    #billing_address_1_field,
+    #shipping_address_1_field {
+      grid-column: 1;
+      grid-row: 2;
+    }
 
-  #billing_number_field,
-  #shipping_number_field {
-    grid-column: 2;
-    grid-row: 2;
-  }
+    #billing_number_field,
+    #shipping_number_field {
+      grid-column: 2;
+      grid-row: 2;
+    }
 
-  #billing_address_2_field,
-  #shipping_address_2_field,
-  .fc-expansible-form-section {
-    grid-column: 1 / -1;
-    grid-row: 3;
-  }
+    #billing_address_2_field,
+    #shipping_address_2_field,
+    .fc-expansible-form-section {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
 
-  #billing_postcode_field,
-  #shipping_postcode_field {
-    grid-column: 1;
-    grid-row: 4;
-  }
+    #billing_postcode_field,
+    #shipping_postcode_field {
+      grid-column: 1;
+      grid-row: 4;
+    }
 
-  #billing_neighborhood_field,
-  #shipping_neighborhood_field {
-    grid-column: 2;
-    grid-row: 4;
-  }
+    #billing_neighborhood_field,
+    #shipping_neighborhood_field {
+      grid-column: 2;
+      grid-row: 4;
+    }
 
-  #billing_city_field,
-  #shipping_city_field {
-    grid-column: 1 / -1;
-    grid-row: 5;
-  }
+    #billing_city_field,
+    #shipping_city_field {
+      grid-column: 1 / -1;
+      grid-row: 5;
+    }
 
-  #billing_phone_field,
-  #shipping_phone_field {
-    grid-column: 1 / -1;
-    grid-row: 6;
-  }
+    #billing_phone_field,
+    #shipping_phone_field {
+      grid-column: 1 / -1;
+      grid-row: 6;
+    }
 
-  // País e Estado (ocultos) não recebem posição: como ficam com display:none,
-  // não interferem no fluxo do grid.
+    // País e Estado (ocultos) não recebem posição: como ficam com
+    // display:none, não interferem no fluxo do grid.
+  }
 }
 
 // Celular | CPF lado a lado (campos ficam em .woocommerce-billing-only-fields__field-wrapper,
@@ -219,15 +225,17 @@
     width: 100% !important;
   }
 
-  #billing_phone_field {
-    grid-column: 1;
-    grid-row: 1;
-    width: 100% !important;
-  }
+  @include mq(desktop-low) {
+    #billing_phone_field {
+      grid-column: 1;
+      grid-row: 1;
+      width: 100% !important;
+    }
 
-  #billing_cpf_field {
-    grid-column: 2;
-    grid-row: 1;
+    #billing_cpf_field {
+      grid-column: 2;
+      grid-row: 1;
+    }
   }
 }
 
