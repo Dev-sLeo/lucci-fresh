@@ -35,6 +35,15 @@ $total_args = [
 $total_products = count(get_posts($total_args));
 
 $nonce = wp_create_nonce('category_products_nonce');
+
+// Restaurar estado do filtro/paginação a partir da URL (GET)
+$current_subcat = isset($_GET['subcat']) ? absint($_GET['subcat']) : 0;
+$current_page   = isset($_GET['pagina']) ? max(1, absint($_GET['pagina'])) : 1;
+
+// Se o subcat informado não pertence a esta categoria, ignora
+if ($current_subcat > 0 && (empty($subcats) || is_wp_error($subcats) || !in_array($current_subcat, wp_list_pluck($subcats, 'term_id'), true))) {
+  $current_subcat = 0;
+}
 ?>
 <section class="s-cat-products" id="js-cat-products">
   <div class="s-container">
@@ -53,14 +62,16 @@ $nonce = wp_create_nonce('category_products_nonce');
         <div class="s-cat-products__filters"
           data-category-filter
           data-term-id="<?= esc_attr($term_id) ?>"
-          data-nonce="<?= esc_attr($nonce) ?>">
+          data-nonce="<?= esc_attr($nonce) ?>"
+          data-current-subcat="<?= esc_attr($current_subcat) ?>"
+          data-current-page="<?= esc_attr($current_page) ?>">
 
-          <button class="s-cat-products__filter-btn s-cat-products__filter-btn--active" data-subcat="0">
+          <button class="s-cat-products__filter-btn<?= $current_subcat === 0 ? ' s-cat-products__filter-btn--active' : '' ?>" data-subcat="0">
             <?= esc_html__('Todos', 'lucci-fresh') ?>
           </button>
 
           <?php foreach ($subcats as $subcat) : ?>
-            <button class="s-cat-products__filter-btn" data-subcat="<?= esc_attr($subcat->term_id) ?>">
+            <button class="s-cat-products__filter-btn<?= $current_subcat === (int) $subcat->term_id ? ' s-cat-products__filter-btn--active' : '' ?>" data-subcat="<?= esc_attr($subcat->term_id) ?>">
               <?= esc_html($subcat->name) ?>
             </button>
           <?php endforeach; ?>
@@ -75,12 +86,12 @@ $nonce = wp_create_nonce('category_products_nonce');
         'post_type'      => 'product',
         'posts_per_page' => 9,
         'post_status'    => 'publish',
-        'paged'          => 1,
+        'paged'          => $current_page,
         'tax_query'      => [[
           'taxonomy'         => 'product_cat',
           'field'            => 'term_id',
-          'terms'            => $term_id,
-          'include_children' => true,
+          'terms'            => $current_subcat > 0 ? $current_subcat : $term_id,
+          'include_children' => $current_subcat === 0,
         ]],
       ];
       $query = new WP_Query($args);
@@ -103,8 +114,8 @@ $nonce = wp_create_nonce('category_products_nonce');
     <div class="s-cat-products__pagination" data-category-pagination>
       <?php
       $max_pages = $query->max_num_pages;
-      if ($max_pages > 1) :
-        $tpl_engine->partial('components/pagination/blog-pagination');
+      if ($max_pages > 1 && function_exists('get_category_products_pagination_html')) :
+        echo get_category_products_pagination_html($current_page, $max_pages);
       endif;
       ?>
     </div>

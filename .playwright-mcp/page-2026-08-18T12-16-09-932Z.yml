@@ -1,0 +1,89 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - paragraph [ref=f1e5]: REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00
+    - generic [ref=f1e8]:
+      - link [ref=f1e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=f1e10]
+      - navigation "Menu principal" [ref=f1e11]:
+        - list [ref=f1e12]:
+          - listitem [ref=f1e13]:
+            - link "Home" [ref=f1e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f1e17]:
+            - generic [ref=f1e18]:
+              - link "Produtos" [ref=f1e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=f1e21] [cursor=pointer]
+          - listitem [ref=f1e25]:
+            - link "Quem somos" [ref=f1e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f1e29]:
+            - link "Fale Conosco" [ref=f1e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=f1e33]:
+        - button "Buscar" [ref=f1e34] [cursor=pointer]
+        - link "Minha conta" [ref=f1e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=f1e45]
+    - search [ref=f1e54]:
+      - searchbox [ref=f1e55]
+      - button [ref=f1e56] [cursor=pointer]
+      - button [ref=f1e60] [cursor=pointer]
+  - main [ref=f1e64]:
+    - generic [ref=f1e65]: "Partial não encontrado. nome do arquivo: 'template/pages/tours/_hero.html.php' Partial não encontrado. nome do arquivo: 'template/pages/tours/_filter.html.php' Partial não encontrado. nome do arquivo: 'template/pages/home/_product-slider.html.php' Partial não encontrado. nome do arquivo: 'template/pages/home/_product-slider.html.php' Partial não encontrado. nome do arquivo: 'template/pages/home/_product-slider.html.php'"
+  - contentinfo "Rodapé" [ref=f1e66]:
+    - generic [ref=f1e69]:
+      - generic [ref=f1e70]:
+        - link "Lucci Fresh – Página inicial" [ref=f1e71] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=f1e73] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=f1e74]:
+        - list [ref=f1e75]:
+          - listitem [ref=f1e76]:
+            - link "Home" [ref=f1e77] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f1e78]:
+            - link "Quem somos" [ref=f1e79] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f1e80]:
+            - link "Fale Conosco" [ref=f1e81] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=f1e82]:
+            - link "Marmita" [ref=f1e83] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=f1e84]:
+            - link "Lanches" [ref=f1e85] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=f1e86]:
+            - link "Santa Pizzinha" [ref=f1e87] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=f1e88]:
+            - link "Doces" [ref=f1e89] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=f1e90]:
+            - link "Porções" [ref=f1e91] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=f1e92]:
+            - link "Sucos" [ref=f1e93] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=f1e94]:
+        - link "Facebook" [ref=f1e95] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=f1e99] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=f1e104] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=f1e114]
+    - generic [ref=f1e117]:
+      - paragraph [ref=f1e118]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=f1e119] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=f1e120]:
+        - link "Termos de Uso" [ref=f1e121] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=f1e122] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - status [ref=f1e123]

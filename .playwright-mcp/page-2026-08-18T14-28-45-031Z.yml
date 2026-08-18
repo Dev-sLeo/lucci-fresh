@@ -1,0 +1,139 @@
+- generic [active] [ref=f19e1]:
+  - banner [ref=f19e2]:
+    - paragraph [ref=f19e5]: REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00
+    - generic [ref=f19e8]:
+      - link [ref=f19e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=f19e10]
+      - navigation "Menu principal" [ref=f19e11]:
+        - list [ref=f19e12]:
+          - listitem [ref=f19e13]:
+            - link "Home" [ref=f19e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f19e17]:
+            - generic [ref=f19e18]:
+              - link "Produtos" [ref=f19e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=f19e21] [cursor=pointer]
+          - listitem [ref=f19e25]:
+            - link "Quem somos" [ref=f19e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f19e29]:
+            - link "Fale Conosco" [ref=f19e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=f19e33]:
+        - button "Buscar" [ref=f19e34] [cursor=pointer]
+        - link "Minha conta" [ref=f19e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=f19e45]:
+          - generic "2 itens no carrinho" [ref=f19e52]: "2"
+    - search [ref=f19e55]:
+      - searchbox [ref=f19e56]
+      - button [ref=f19e57] [cursor=pointer]
+      - button [ref=f19e61] [cursor=pointer]
+  - main [ref=f19e65]:
+    - generic [ref=f19e68]:
+      - generic [ref=f19e208]:
+        - generic [ref=f19e211]: Código do cupom "teste" foi aplicado ao seu carrinho.
+        - button "Dispensar esta notificação" [ref=f19e212] [cursor=pointer]
+      - generic [ref=f19e69]:
+        - table [ref=f19e71]:
+          - caption [ref=f19e72]:
+            - heading "Produtos no carrinho" [level=2] [ref=f19e73]
+          - rowgroup [ref=f19e74]:
+            - row [ref=f19e75]:
+              - columnheader "Produto" [ref=f19e76]
+              - columnheader "Total" [ref=f19e77]
+          - rowgroup [ref=f19e78]:
+            - row [ref=f19e175]:
+              - cell [ref=f19e176]:
+                - link [ref=f19e177] [cursor=pointer]:
+                  - /url: http://lucci-fresh.local/product/carne-moida/
+              - cell "Carne Moída R$ 22,90 Sabor caseiro, ingredientes selecionados e praticidade para o seu dia a dia. Peça agora e… 2 Reduza a quantidade de Carne Moída Aumente a quantidade de Carne Moída Remover Carne Moída do carrinho" [ref=f19e179]:
+                - generic [ref=f19e180]:
+                  - link "Carne Moída" [ref=f19e181] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/carne-moida/
+                  - generic [ref=f19e182]: R$ 22,90
+                  - paragraph [ref=f19e187]: Sabor caseiro, ingredientes selecionados e praticidade para o seu dia a dia. Peça agora e…
+                  - generic [ref=f19e188]:
+                    - generic [ref=f19e189]:
+                      - spinbutton "Quantidade de Carne Moída no seu carrinho." [ref=f19e190]: "2"
+                      - button "Reduza a quantidade de Carne Moída" [ref=f19e191] [cursor=pointer]: −
+                      - button "Aumente a quantidade de Carne Moída" [ref=f19e192] [cursor=pointer]: ＋
+                    - button "Remover Carne Moída do carrinho" [ref=f19e193]
+              - cell "R$ 45,80" [ref=f19e196]
+        - generic [ref=f19e97]:
+          - generic [ref=f19e98]:
+            - heading "Total no carrinho" [level=2] [ref=f19e99]
+            - heading [level=2] [ref=f19e214]:
+              - button "Adicionar cupons" [ref=f19e102] [cursor=pointer]
+            - generic [ref=f19e217]:
+              - generic [ref=f19e218]: Cupons
+              - list [ref=f19e222]:
+                - listitem [ref=f19e223]:
+                  - generic [ref=f19e224]: teste
+                  - generic [ref=f19e225]: "Cupom: teste"
+                  - button "Remover cupom \"teste\"" [ref=f19e226]
+            - generic [ref=f19e106]:
+              - generic [ref=f19e107]: Total estimado
+              - generic "Carregando o preço..." [ref=f19e229]
+              - paragraph [ref=f19e110]: O frete será calculado na finalização da compra
+          - link "Finalizar Compra" [ref=f19e113] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/checkout/
+  - contentinfo "Rodapé" [ref=f19e115]:
+    - generic [ref=f19e118]:
+      - generic [ref=f19e119]:
+        - link "Lucci Fresh – Página inicial" [ref=f19e120] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=f19e122] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=f19e123]:
+        - list [ref=f19e124]:
+          - listitem [ref=f19e125]:
+            - link "Home" [ref=f19e126] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f19e127]:
+            - link "Quem somos" [ref=f19e128] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f19e129]:
+            - link "Fale Conosco" [ref=f19e130] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=f19e131]:
+            - link "Marmita" [ref=f19e132] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=f19e133]:
+            - link "Lanches" [ref=f19e134] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=f19e135]:
+            - link "Santa Pizzinha" [ref=f19e136] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=f19e137]:
+            - link "Doces" [ref=f19e138] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=f19e139]:
+            - link "Porções" [ref=f19e140] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=f19e141]:
+            - link "Sucos" [ref=f19e142] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=f19e143]:
+        - link "Facebook" [ref=f19e144] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=f19e148] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=f19e153] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=f19e163]
+    - generic [ref=f19e166]:
+      - paragraph [ref=f19e167]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=f19e168] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=f19e169]:
+        - link "Termos de Uso" [ref=f19e170] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=f19e171] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - paragraph [ref=f19e230]: Notificações
+  - generic [ref=f19e173]: Código do cupom "teste" foi aplicado ao seu carrinho.
+  - status [ref=f19e174]

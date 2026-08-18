@@ -10,8 +10,32 @@ export default function categoryFilter() {
     const nonce = filterEl.dataset.nonce || "";
     const ajaxUrl = typeof usAjax !== "undefined" ? usAjax.ajaxurl : "";
 
-    let currentSubcat = 0;
+    let currentSubcat = parseInt(filterEl.dataset.currentSubcat, 10) || 0;
+    let currentPage = parseInt(filterEl.dataset.currentPage, 10) || 1;
     let isLoading = false;
+
+    // ── URL sync ───────────────────────────────────────────────────────────
+    function updateUrl(subcatId, page) {
+        var url = new URL(window.location.href);
+
+        if (subcatId > 0) {
+            url.searchParams.set("subcat", subcatId);
+        } else {
+            url.searchParams.delete("subcat");
+        }
+
+        if (page > 1) {
+            url.searchParams.set("pagina", page);
+        } else {
+            url.searchParams.delete("pagina");
+        }
+
+        window.history.pushState(
+            { subcat: subcatId, pagina: page },
+            "",
+            url.pathname + url.search + url.hash
+        );
+    }
 
     // ── Skeleton ───────────────────────────────────────────────────────────
     function renderSkeleton(count) {
@@ -90,7 +114,9 @@ export default function categoryFilter() {
         btn.classList.add("s-cat-products__filter-btn--active");
 
         currentSubcat = parseInt(btn.dataset.subcat, 10) || 0;
-        fetchProducts(currentSubcat, 1);
+        currentPage = 1;
+        updateUrl(currentSubcat, currentPage);
+        fetchProducts(currentSubcat, currentPage);
     });
 
     // ── Pagination clicks (delegated) ──────────────────────────────────────
@@ -101,11 +127,29 @@ export default function categoryFilter() {
         var page = parseInt(btn.dataset.page, 10);
         if (!page || page < 1) return;
 
-        fetchProducts(currentSubcat, page);
+        currentPage = page;
+        updateUrl(currentSubcat, currentPage);
+        fetchProducts(currentSubcat, currentPage);
 
         var section = document.querySelector("#js-cat-products");
         if (section) {
             section.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+    });
+
+    // ── Browser back/forward ─────────────────────────────────────────────
+    window.addEventListener("popstate", function () {
+        var params = new URLSearchParams(window.location.search);
+        currentSubcat = parseInt(params.get("subcat"), 10) || 0;
+        currentPage = parseInt(params.get("pagina"), 10) || 1;
+
+        filterEl
+            .querySelectorAll(".s-cat-products__filter-btn")
+            .forEach(function (b) {
+                var isActive = (parseInt(b.dataset.subcat, 10) || 0) === currentSubcat;
+                b.classList.toggle("s-cat-products__filter-btn--active", isActive);
+            });
+
+        fetchProducts(currentSubcat, currentPage);
     });
 }
