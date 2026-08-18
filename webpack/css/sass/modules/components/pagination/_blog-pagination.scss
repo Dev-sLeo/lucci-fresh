@@ -14,14 +14,14 @@
     cursor: pointer;
     padding: 0;
     transition: opacity 0.2s ease;
-    color: #0056FF;
+    color: #da864d;
 
     svg {
       width: 54px;
       height: 54px;
 
       path {
-        stroke: #0056FF;
+        stroke: #da864d;
       }
     }
 
@@ -48,7 +48,7 @@
       width: 64px;
       height: 53px;
       border-radius: 40px;
-      border: 1.5px solid #0056FF;
+      border: 1.5px solid #da864d;
       background: #fff;
       color: var(--Black-01, #0F1D3A);
       text-align: center;
@@ -63,15 +63,15 @@
       transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
       &:hover {
-        border-color: #0056FF;
-        background-color: #0056FF;
+        border-color: #da864d;
+        background-color: #da864d;
         color: $white;
       }
     }
 
     &--active button {
-      background: #0056FF;
-      border-color: #0056FF;
+      background: #da864d;
+      border-color: #da864d;
       color: #fff;
       pointer-events: none;
     }

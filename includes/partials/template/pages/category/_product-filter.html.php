@@ -45,7 +45,12 @@ if ($current_subcat > 0 && (empty($subcats) || is_wp_error($subcats) || !in_arra
   $current_subcat = 0;
 }
 ?>
-<section class="s-cat-products" id="js-cat-products">
+<section class="s-cat-products" id="js-cat-products"
+  data-category-root
+  data-term-id="<?= esc_attr($term_id) ?>"
+  data-nonce="<?= esc_attr($nonce) ?>"
+  data-current-subcat="<?= esc_attr($current_subcat) ?>"
+  data-current-page="<?= esc_attr($current_page) ?>">
   <div class="s-container">
 
     <!-- Cabeçalho: título + contador + filtros -->
@@ -59,12 +64,7 @@ if ($current_subcat > 0 && (empty($subcats) || is_wp_error($subcats) || !in_arra
       </div>
 
       <?php if (!empty($subcats) && !is_wp_error($subcats)) : ?>
-        <div class="s-cat-products__filters"
-          data-category-filter
-          data-term-id="<?= esc_attr($term_id) ?>"
-          data-nonce="<?= esc_attr($nonce) ?>"
-          data-current-subcat="<?= esc_attr($current_subcat) ?>"
-          data-current-page="<?= esc_attr($current_page) ?>">
+        <div class="s-cat-products__filters" data-category-filter>
 
           <button class="s-cat-products__filter-btn<?= $current_subcat === 0 ? ' s-cat-products__filter-btn--active' : '' ?>" data-subcat="0">
             <?= esc_html__('Todos', 'lucci-fresh') ?>

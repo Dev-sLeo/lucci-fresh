@@ -1,0 +1,225 @@
+- generic [active] [ref=f28e1]:
+  - banner [ref=f28e2]:
+    - paragraph [ref=f28e5]: REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00
+    - generic [ref=f28e8]:
+      - link [ref=f28e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=f28e10]
+      - navigation "Menu principal" [ref=f28e11]:
+        - list [ref=f28e12]:
+          - listitem [ref=f28e13]:
+            - link "Home" [ref=f28e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f28e17]:
+            - generic [ref=f28e18]:
+              - link "Produtos" [ref=f28e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=f28e21] [cursor=pointer]
+          - listitem [ref=f28e25]:
+            - link "Quem somos" [ref=f28e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f28e29]:
+            - link "Fale Conosco" [ref=f28e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=f28e33]:
+        - button "Buscar" [ref=f28e34] [cursor=pointer]
+        - link "Minha conta" [ref=f28e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=f28e45]:
+          - generic "2 itens no carrinho" [ref=f28e52]: "2"
+    - search [ref=f28e55]:
+      - searchbox [ref=f28e56]
+      - button [ref=f28e57] [cursor=pointer]
+      - button [ref=f28e61] [cursor=pointer]
+  - main [ref=f28e65]:
+    - generic [ref=f28e66]:
+      - generic [ref=f28e69]:
+        - heading "Desconto progressiv" [level=1] [ref=f28e70]
+        - paragraph [ref=f28e71]: Quanto mais você leva, maior o desconto
+        - img "Desconto progressiv" [ref=f28e74]
+      - generic [ref=f28e76]:
+        - generic [ref=f28e78]:
+          - heading "Marmita" [level=2] [ref=f28e79]
+          - generic [ref=f28e81]: 2 opções
+        - generic [ref=f28e82]:
+          - article [ref=f28e83]:
+            - link [ref=f28e84] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product/peixe-low-carb/
+            - generic [ref=f28e86]:
+              - generic [ref=f28e87]:
+                - link "Peixe Low Carb" [ref=f28e88] [cursor=pointer]:
+                  - /url: http://lucci-fresh.local/product/peixe-low-carb/
+                - paragraph
+              - generic [ref=f28e89]:
+                - generic [ref=f28e90]: R$ 22,90
+                - link "Adicionar" [ref=f28e93] [cursor=pointer]:
+                  - /url: /product-category/marmita/?add-to-cart=161
+          - article [ref=f28e94]:
+            - link [ref=f28e95] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product/carne-moida/
+            - generic [ref=f28e97]:
+              - generic [ref=f28e98]:
+                - link "Carne Moída" [ref=f28e99] [cursor=pointer]:
+                  - /url: http://lucci-fresh.local/product/carne-moida/
+                - paragraph [ref=f28e100]: Teste
+              - generic [ref=f28e101]:
+                - generic [ref=f28e102]: R$ 22,90
+                - link "Adicionar" [ref=f28e105] [cursor=pointer]:
+                  - /url: /product-category/marmita/?add-to-cart=42
+      - generic [ref=f28e107]:
+        - heading "Os mais pedidos" [level=2] [ref=f28e109]
+        - generic [ref=f28e110]:
+          - button "Anterior" [disabled] [ref=f28e111]
+          - generic [ref=f28e115]:
+            - article [ref=f28e117]:
+              - link [ref=f28e118] [cursor=pointer]:
+                - /url: http://lucci-fresh.local/product/marguerita/
+              - generic [ref=f28e120]:
+                - generic [ref=f28e121]:
+                  - link "Marguerita" [ref=f28e122] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/marguerita/
+                  - paragraph
+                - generic [ref=f28e123]:
+                  - generic [ref=f28e124]: R$ 5,00
+                  - link "Adicionar" [ref=f28e127] [cursor=pointer]:
+                    - /url: /product-category/marmita/?add-to-cart=172
+            - article [ref=f28e129]:
+              - link [ref=f28e130] [cursor=pointer]:
+                - /url: http://lucci-fresh.local/product/palmito/
+              - generic [ref=f28e132]:
+                - generic [ref=f28e133]:
+                  - link "Palmito" [ref=f28e134] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/palmito/
+                  - paragraph
+                - generic [ref=f28e135]:
+                  - generic [ref=f28e136]: R$ 0
+                  - link "Adicionar" [ref=f28e138] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/palmito/
+            - article [ref=f28e140]:
+              - link [ref=f28e141] [cursor=pointer]:
+                - /url: http://lucci-fresh.local/product/legumes/
+              - generic [ref=f28e143]:
+                - generic [ref=f28e144]:
+                  - link "Legumes" [ref=f28e145] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/legumes/
+                  - paragraph
+                - generic [ref=f28e146]:
+                  - generic [ref=f28e147]: R$ 0
+                  - link "Adicionar" [ref=f28e149] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/legumes/
+            - article [ref=f28e151]:
+              - link [ref=f28e152] [cursor=pointer]:
+                - /url: http://lucci-fresh.local/product/peixe-low-carb/
+              - generic [ref=f28e154]:
+                - generic [ref=f28e155]:
+                  - link "Peixe Low Carb" [ref=f28e156] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/peixe-low-carb/
+                  - paragraph
+                - generic [ref=f28e157]:
+                  - generic [ref=f28e158]: R$ 22,90
+                  - link "Adicionar" [ref=f28e161] [cursor=pointer]:
+                    - /url: /product-category/marmita/?add-to-cart=161
+            - article [ref=f28e163]:
+              - link [ref=f28e164] [cursor=pointer]:
+                - /url: http://lucci-fresh.local/product/carne-moida/
+              - generic [ref=f28e166]:
+                - generic [ref=f28e167]:
+                  - link "Carne Moída" [ref=f28e168] [cursor=pointer]:
+                    - /url: http://lucci-fresh.local/product/carne-moida/
+                  - paragraph [ref=f28e169]: Teste
+                - generic [ref=f28e170]:
+                  - generic [ref=f28e171]: R$ 22,90
+                  - link "Adicionar" [ref=f28e174] [cursor=pointer]:
+                    - /url: /product-category/marmita/?add-to-cart=42
+          - button "Próximo" [ref=f28e175] [cursor=pointer]
+      - generic [ref=f28e179]:
+        - generic [ref=f28e180]:
+          - paragraph [ref=f28e181]: Depoimentos
+          - heading "O que nossos clientes dizem." [level=2] [ref=f28e182]
+        - generic [ref=f28e185]:
+          - article [ref=f28e187]:
+            - generic [ref=f28e190]:
+              - paragraph [ref=f28e191]: Filipe Coelho
+              - paragraph [ref=f28e192]: 4 meses atrás
+            - generic [ref=f28e194]:
+              - generic "Avaliação 5.0 de 5" [ref=f28e200]
+              - paragraph [ref=f28e223]: Muito gostosas as marmitas, super prático para o dia a dia
+          - article [ref=f28e225]:
+            - generic [ref=f28e228]:
+              - paragraph [ref=f28e229]: Filipe Coelho
+              - paragraph [ref=f28e230]: 4 meses atrás
+            - generic [ref=f28e232]:
+              - generic "Avaliação 5.0 de 5" [ref=f28e238]
+              - paragraph [ref=f28e261]: Muito gostosas as marmitas, super prático para o dia a dia
+          - article [ref=f28e263]:
+            - generic [ref=f28e266]:
+              - paragraph [ref=f28e267]: Filipe Coelho
+              - paragraph [ref=f28e268]: 4 meses atrás
+            - generic [ref=f28e270]:
+              - generic "Avaliação 4.0 de 5" [ref=f28e276]
+              - paragraph [ref=f28e297]: Muito gostosas as marmitas, super prático para o dia a dia
+        - generic [ref=f28e298]:
+          - button "Anterior" [disabled] [ref=f28e299] [cursor=pointer]
+          - button "Próximo" [ref=f28e304] [cursor=pointer]
+        - generic [ref=f28e307]:
+          - img "Google Logo" [ref=f28e310]
+          - generic [ref=f28e311]:
+            - generic [ref=f28e312]:
+              - generic [ref=f28e313]: "5.0"
+              - generic "Avaliação 5.0 de 5" [ref=f28e314]
+            - generic [ref=f28e335]: de 5 com base em 363 avaliações
+  - contentinfo "Rodapé" [ref=f28e336]:
+    - generic [ref=f28e339]:
+      - generic [ref=f28e340]:
+        - link "Lucci Fresh – Página inicial" [ref=f28e341] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=f28e343] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=f28e344]:
+        - list [ref=f28e345]:
+          - listitem [ref=f28e346]:
+            - link "Home" [ref=f28e347] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f28e348]:
+            - link "Quem somos" [ref=f28e349] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f28e350]:
+            - link "Fale Conosco" [ref=f28e351] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=f28e352]:
+            - link "Marmita" [ref=f28e353] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=f28e354]:
+            - link "Lanches" [ref=f28e355] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=f28e356]:
+            - link "Santa Pizzinha" [ref=f28e357] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=f28e358]:
+            - link "Doces" [ref=f28e359] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=f28e360]:
+            - link "Porções" [ref=f28e361] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=f28e362]:
+            - link "Sucos" [ref=f28e363] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=f28e364]:
+        - link "Facebook" [ref=f28e365] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=f28e369] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=f28e374] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=f28e384]
+    - generic [ref=f28e387]:
+      - paragraph [ref=f28e388]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=f28e389] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=f28e390]:
+        - link "Termos de Uso" [ref=f28e391] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=f28e392] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - status [ref=f28e393]

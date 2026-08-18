@@ -1,17 +1,18 @@
 "use strict";
 
 export default function categoryFilter() {
-    const filterEl = document.querySelector("[data-category-filter]");
-    if (!filterEl) return;
+    const rootEl = document.querySelector("[data-category-root]");
+    if (!rootEl) return;
 
-    const gridEl = document.querySelector("[data-category-grid]");
-    const paginEl = document.querySelector("[data-category-pagination]");
-    const termId = parseInt(filterEl.dataset.termId, 10) || 0;
-    const nonce = filterEl.dataset.nonce || "";
+    const filterEl = rootEl.querySelector("[data-category-filter]");
+    const gridEl = rootEl.querySelector("[data-category-grid]");
+    const paginEl = rootEl.querySelector("[data-category-pagination]");
+    const termId = parseInt(rootEl.dataset.termId, 10) || 0;
+    const nonce = rootEl.dataset.nonce || "";
     const ajaxUrl = typeof usAjax !== "undefined" ? usAjax.ajaxurl : "";
 
-    let currentSubcat = parseInt(filterEl.dataset.currentSubcat, 10) || 0;
-    let currentPage = parseInt(filterEl.dataset.currentPage, 10) || 1;
+    let currentSubcat = parseInt(rootEl.dataset.currentSubcat, 10) || 0;
+    let currentPage = parseInt(rootEl.dataset.currentPage, 10) || 1;
     let isLoading = false;
 
     // ── URL sync ───────────────────────────────────────────────────────────
@@ -99,25 +100,27 @@ export default function categoryFilter() {
     }
 
     // ── Filter tab clicks ──────────────────────────────────────────────────
-    filterEl.addEventListener("click", function (e) {
-        var btn = e.target.closest(".s-cat-products__filter-btn");
-        if (!btn) return;
+    if (filterEl) {
+        filterEl.addEventListener("click", function (e) {
+            var btn = e.target.closest(".s-cat-products__filter-btn");
+            if (!btn) return;
 
-        if (btn.classList.contains("s-cat-products__filter-btn--active"))
-            return;
+            if (btn.classList.contains("s-cat-products__filter-btn--active"))
+                return;
 
-        filterEl
-            .querySelectorAll(".s-cat-products__filter-btn")
-            .forEach(function (b) {
-                b.classList.remove("s-cat-products__filter-btn--active");
-            });
-        btn.classList.add("s-cat-products__filter-btn--active");
+            filterEl
+                .querySelectorAll(".s-cat-products__filter-btn")
+                .forEach(function (b) {
+                    b.classList.remove("s-cat-products__filter-btn--active");
+                });
+            btn.classList.add("s-cat-products__filter-btn--active");
 
-        currentSubcat = parseInt(btn.dataset.subcat, 10) || 0;
-        currentPage = 1;
-        updateUrl(currentSubcat, currentPage);
-        fetchProducts(currentSubcat, currentPage);
-    });
+            currentSubcat = parseInt(btn.dataset.subcat, 10) || 0;
+            currentPage = 1;
+            updateUrl(currentSubcat, currentPage);
+            fetchProducts(currentSubcat, currentPage);
+        });
+    }
 
     // ── Pagination clicks (delegated) ──────────────────────────────────────
     document.addEventListener("click", function (e) {
@@ -143,12 +146,14 @@ export default function categoryFilter() {
         currentSubcat = parseInt(params.get("subcat"), 10) || 0;
         currentPage = parseInt(params.get("pagina"), 10) || 1;
 
-        filterEl
-            .querySelectorAll(".s-cat-products__filter-btn")
-            .forEach(function (b) {
-                var isActive = (parseInt(b.dataset.subcat, 10) || 0) === currentSubcat;
-                b.classList.toggle("s-cat-products__filter-btn--active", isActive);
-            });
+        if (filterEl) {
+            filterEl
+                .querySelectorAll(".s-cat-products__filter-btn")
+                .forEach(function (b) {
+                    var isActive = (parseInt(b.dataset.subcat, 10) || 0) === currentSubcat;
+                    b.classList.toggle("s-cat-products__filter-btn--active", isActive);
+                });
+        }
 
         fetchProducts(currentSubcat, currentPage);
     });
