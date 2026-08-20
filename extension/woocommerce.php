@@ -225,7 +225,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $fields['shipping']['shipping_phone']['class'] = ['form-row-last'];
     }
     if (isset($fields['billing']['billing_cpf'])) {
-        $fields['billing']['billing_cpf']['class'] = ['form-row-first'];
+        $fields['billing']['billing_cpf']['class']       = ['form-row-first'];
+        $fields['billing']['billing_cpf']['placeholder'] = '*';
     }
     if (isset($fields['order']['order_comments'])) {
         $fields['order']['order_comments']['label'] = __('Observações para entrega', 'arterra');
