@@ -227,10 +227,6 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     if (isset($fields['billing']['billing_cpf'])) {
         $fields['billing']['billing_cpf']['class']    = ['form-row-first'];
         $fields['billing']['billing_cpf']['required'] = true;
-        $label                                        = isset($fields['billing']['billing_cpf']['label']) ? $fields['billing']['billing_cpf']['label'] : __('CPF', 'arterra');
-        if (! preg_match('/\*\s*$/', $label)) {
-            $fields['billing']['billing_cpf']['label'] = $label . ' *';
-        }
     }
     if (isset($fields['order']['order_comments'])) {
         $fields['order']['order_comments']['label'] = __('Observações para entrega', 'arterra');
