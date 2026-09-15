@@ -1,0 +1,212 @@
+- generic [ref=f12e1]:
+  - banner [ref=f12e2]:
+    - generic [ref=f12e8]:
+      - link [ref=f12e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=f12e10]
+      - navigation "Menu principal" [ref=f12e11]:
+        - list [ref=f12e12]:
+          - listitem [ref=f12e13]:
+            - link "Home" [ref=f12e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f12e17]:
+            - generic [ref=f12e18]:
+              - link "Produtos" [ref=f12e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=f12e21] [cursor=pointer]
+          - listitem [ref=f12e25]:
+            - link "Quem somos" [ref=f12e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f12e29]:
+            - link "Fale Conosco" [ref=f12e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=f12e33]:
+        - button "Buscar" [ref=f12e34] [cursor=pointer]
+        - link "Minha conta" [ref=f12e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=f12e45]:
+          - generic "1 itens no carrinho" [ref=f12e52]: "1"
+    - search [ref=f12e55]:
+      - searchbox [ref=f12e56]
+      - button [ref=f12e57] [cursor=pointer]
+      - button [ref=f12e61] [cursor=pointer]
+  - main [ref=f12e65]:
+    - generic [ref=f12e66]:
+      - heading "Checkout" [level=1] [ref=f12e67]
+      - generic [ref=f12e69]:
+        - generic [ref=f12e72]:
+          - generic [ref=f12e73]: Passo 2 de 4
+          - generic [ref=f12e74]:
+            - generic [ref=f12e75]: Contato
+            - generic [ref=f12e76]: Entrega
+            - generic: Cobrança
+            - generic: Pagamento
+        - form "Finalização de compra" [ref=f12e79]:
+          - generic [ref=f12e80]:
+            - generic [ref=f12e82]:
+              - region "Contato" [ref=f12e83]:
+                - heading "Contato" [level=2] [ref=f12e84]
+                - generic [ref=f12e85]:
+                  - heading " Contato" [level=3] [ref=f12e86]
+                  - generic [ref=f12e87]: teste.checkout@lucci-fresh.local
+                  - 'button "Alterar: Contato" [ref=f12e91] [cursor=pointer]': Alterar
+              - region "Entrega" [ref=f12e92]:
+                - heading "Entrega" [level=2] [ref=f12e93]
+                - generic [ref=f12e94]:
+                  - heading "Endereço de entrega" [level=3] [ref=f12e95]
+                  - generic [ref=f12e363]:
+                    - paragraph [ref=f12e364]:
+                      - generic [ref=f12e365]: Nome *
+                      - textbox "Nome" [ref=f12e367]:
+                        - /placeholder: ""
+                    - paragraph [ref=f12e368]:
+                      - generic [ref=f12e369]: Sobrenome *
+                      - textbox "Sobrenome" [ref=f12e371]:
+                        - /placeholder: ""
+                    - paragraph [ref=f12e372]:
+                      - generic [ref=f12e373]: CEP *
+                      - textbox "CEP *" [ref=f12e375]:
+                        - /placeholder: ""
+                    - paragraph [ref=f12e376]:
+                      - generic [ref=f12e377]: Bairro *
+                      - textbox "Bairro" [ref=f12e379]:
+                        - /placeholder: ""
+                    - paragraph [ref=f12e380]:
+                      - generic [ref=f12e381]: Endereço *
+                      - generic [ref=f12e382]:
+                        - textbox "Endereço *" [ref=f12e383]:
+                          - /placeholder: ""
+                        - generic [aria-hidden] [ref=f12e384]: Nome da rua e número da casa
+                    - paragraph [ref=f12e385]:
+                      - generic [ref=f12e386]: Número *
+                      - textbox "Número" [ref=f12e388]:
+                        - /placeholder: Nº
+                    - paragraph [ref=f12e389]:
+                      - generic [ref=f12e390]: Apartamento, suíte, unidade, etc. (opcional)
+                      - generic [ref=f12e391]:
+                        - textbox "Apartamento, suíte, unidade, etc. (opcional)" [ref=f12e392]:
+                          - /placeholder: Apartamento, unidade, prédio, andar, etc.
+                        - generic [aria-hidden] [ref=f12e393]: Apartamento, unidade, prédio, andar, etc.
+                    - paragraph [ref=f12e394]:
+                      - generic [ref=f12e395]: Cidade *
+                      - textbox "Cidade *" [ref=f12e397]:
+                        - /placeholder: ""
+                - generic [ref=f12e136]:
+                  - heading "Método de entrega" [level=3] [ref=f12e137]
+                  - generic [ref=f12e139]:
+                    - list [ref=f12e400]:
+                      - listitem [ref=f12e401]:
+                        - radio "Entrega (Free) " [ref=f12e402]
+                        - generic [ref=f12e403] [cursor=pointer]:
+                          - generic [ref=f12e404]: Entrega (Free)
+                          - text: 
+                      - listitem [ref=f12e406]:
+                        - radio "Taxa fixa R$ 25,00 " [checked] [ref=f12e407]
+                        - generic [ref=f12e408] [cursor=pointer]:
+                          - generic [ref=f12e409]:
+                            - generic [ref=f12e410]: Taxa fixa
+                            - generic [ref=f12e411]: R$ 25,00
+                          - text: 
+                    - generic [ref=f12e414]:
+                      - paragraph [ref=f12e416]:
+                        - generic [ref=f12e417]: Data de entrega
+                        - textbox "Data de entrega" [active] [ref=f12e418]:
+                          - /placeholder: Selecione uma data de entrega
+                          - text: 16/09/2026
+                      - paragraph [ref=f12e456]:
+                        - generic [ref=f12e457]: Horário
+                        - combobox [aria-hidden] [ref=f12e458] [cursor=pointer]
+                        - combobox "Selecione um horário" [ref=f12e637] [cursor=pointer]
+                - generic [ref=f12e157]:
+                  - heading "Notas Adicionais" [level=3] [ref=f12e158]
+                  - button " Adicionar observações para entrega (opcional)" [ref=f12e166] [cursor=pointer]
+                - button "Prosseguir ao faturamento" [ref=f12e168] [cursor=pointer]
+              - text:  
+            - generic [ref=f12e172]:
+              - generic [ref=f12e173]:
+                - heading "Resumo do pedido" [level=3] [ref=f12e174]
+                - link "Editar carrinho" [ref=f12e175] [cursor=pointer]:
+                  - /url: http://lucci-fresh.local/cart/
+              - table [ref=f12e419]:
+                - rowgroup [ref=f12e420]:
+                  - row [ref=f12e421]:
+                    - columnheader "Produto" [ref=f12e422]
+                    - columnheader "Subtotal" [ref=f12e423]
+                - rowgroup [ref=f12e424]:
+                  - row [ref=f12e425]:
+                    - 'cell "Peixe Low Carb Peixe Low Carb Preço: R$ 22,90 × 1" [ref=f12e426]':
+                      - img "Peixe Low Carb" [ref=f12e427]
+                      - generic [ref=f12e428]:
+                        - generic [ref=f12e429]: Peixe Low Carb
+                        - generic [ref=f12e430]:
+                          - generic [ref=f12e431]: "Preço:"
+                          - generic [ref=f12e432]: R$ 22,90
+                        - strong [ref=f12e434]: × 1
+                    - cell "R$ 22,90" [ref=f12e435]
+                - rowgroup [ref=f12e438]:
+                  - row [ref=f12e439]:
+                    - rowheader "Subtotal" [ref=f12e440]
+                    - cell "R$ 22,90" [ref=f12e441]
+                  - row [ref=f12e444]:
+                    - rowheader "Taxa de entrega" [ref=f12e445]
+                    - cell "R$ 25,00" [ref=f12e446]
+                  - row [ref=f12e449]:
+                    - rowheader "Total" [ref=f12e450]
+                    - cell "R$ 47,90" [ref=f12e451]:
+                      - strong [ref=f12e452]:
+                        - generic [ref=f12e453]: R$ 47,90
+  - contentinfo "Rodapé" [ref=f12e212]:
+    - generic [ref=f12e215]:
+      - generic [ref=f12e216]:
+        - link "Lucci Fresh – Página inicial" [ref=f12e217] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=f12e219] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=f12e220]:
+        - list [ref=f12e221]:
+          - listitem [ref=f12e222]:
+            - link "Home" [ref=f12e223] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f12e224]:
+            - link "Quem somos" [ref=f12e225] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f12e226]:
+            - link "Fale Conosco" [ref=f12e227] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=f12e228]:
+            - link "Marmita" [ref=f12e229] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=f12e230]:
+            - link "Lanches" [ref=f12e231] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=f12e232]:
+            - link "Santa Pizzinha" [ref=f12e233] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=f12e234]:
+            - link "Doces" [ref=f12e235] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=f12e236]:
+            - link "Porções" [ref=f12e237] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=f12e238]:
+            - link "Sucos" [ref=f12e239] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=f12e240]:
+        - link "Facebook" [ref=f12e241] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=f12e245] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=f12e250] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=f12e260]
+    - generic [ref=f12e263]:
+      - paragraph [ref=f12e264]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=f12e265] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=f12e266]:
+        - link "Termos de Uso" [ref=f12e267] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=f12e268] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - status [ref=f12e269]

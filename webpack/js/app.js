@@ -30,6 +30,7 @@ import cartSidebar from "./scripts/cartSidebar";
 import checkoutLayout from "./scripts/checkoutLayout";
 import cepAutofill from "./scripts/cepAutofill";
 import shippingMethodToggle from "./scripts/shippingMethodToggle";
+import deliveryDateReposition from "./scripts/deliveryDateReposition";
 
 window.gsap = gsap;
 
@@ -59,3 +60,4 @@ cartSidebar();
 checkoutLayout();
 cepAutofill();
 shippingMethodToggle();
+deliveryDateReposition();

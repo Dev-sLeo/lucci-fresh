@@ -416,6 +416,23 @@ add_filter('woocommerce_add_to_cart_fragments', function ($fragments) {
 });
 
 // -----------------------------------------------------------------------------
+// Minha conta
+// -----------------------------------------------------------------------------
+
+// Habilita o botão nativo "Repetir compra" também para pedidos em processamento,
+// além dos já concluídos, na lista de pedidos em Minha Conta.
+add_filter('woocommerce_valid_order_statuses_for_order_again', function ($statuses) {
+    $statuses[] = 'processing';
+    return array_unique($statuses);
+});
+
+// Remove o item "Downloads" do menu de Minha Conta
+add_filter('woocommerce_account_menu_items', function ($items) {
+    unset($items['downloads']);
+    return $items;
+});
+
+// -----------------------------------------------------------------------------
 // Scripts & Estilos
 // -----------------------------------------------------------------------------
 
@@ -605,3 +622,47 @@ add_action('plugins_loaded', function () {
         }, 101);
     }
 }, 20);
+
+// O YITH WooCommerce Delivery Date só traz traduções para pt_PT (Portugal),
+// não para pt_BR. Sem tradução pt_BR, o WordPress usa o texto original em
+// inglês, e o campo de data de entrega aparece com labels em inglês no meio
+// de um checkout todo em português. Traduzimos manualmente as strings do
+// campo de data que ficam visíveis no checkout.
+add_filter('gettext', function ($translation, $text, $domain) {
+    if ('yith-woocommerce-delivery-date' !== $domain) {
+        return $translation;
+    }
+
+    $strings = [
+        'Delivery Date'                            => 'Data de entrega',
+        'Select a delivery date'                   => 'Selecione uma data de entrega',
+        'Carrier'                                  => 'Transportadora',
+        'Select a carrier'                         => 'Selecione uma transportadora',
+        'Select Carrier'                           => 'Selecione a transportadora',
+        'Time Slot'                                => 'Horário',
+        'Select time slot'                         => 'Selecione um horário',
+        'Fee'                                      => 'Taxa',
+        'Enter a valid date.'                      => 'Informe uma data válida.',
+        'Error: the date %s isn\'t available.'     => 'A data %s não está disponível.',
+    ];
+
+    return $strings[$text] ?? $translation;
+}, 10, 3);
+
+// O formato do horário ("From: 10:00 - To: 21:00") usa _x() com contexto
+// próprio, que o filtro `gettext` acima não intercepta — precisa do
+// `gettext_with_context`.
+add_filter('gettext_with_context', function ($translation, $text, $context, $domain) {
+    if ('yith-woocommerce-delivery-date' !== $domain) {
+        return $translation;
+    }
+
+    if ('From' === $text && 'from time' === $context) {
+        return 'De';
+    }
+    if ('To' === $text && 'to time' === $context) {
+        return 'Até';
+    }
+
+    return $translation;
+}, 10, 4);

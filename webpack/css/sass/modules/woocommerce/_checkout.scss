@@ -161,6 +161,229 @@
 
 }
 
+// Campo de data de entrega (YITH Delivery Date): o JS (deliveryDateReposition.js)
+// move esse bloco para logo abaixo da lista "Método de entrega" (full width),
+// em vez de deixá-lo preso ao formulário de endereço (posição original do
+// plugin). Data e horário ficam lado a lado dentro do próprio bloco.
+.ywcdd_select_delivery_date_content {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0 24px;
+
+  &:empty {
+    display: none;
+  }
+
+  // Escondido até o cliente escolher manualmente o método de entrega (ver
+  // deliveryDateReposition.js) — evita mostrar o campo já preenchido quando
+  // só existe uma opção de frete e o WooCommerce a marca por padrão.
+  &.ywcdd-not-chosen {
+    display: none !important;
+  }
+
+  >.ywcdd_carrier_content,
+  >.ywcdd_datepicker_content,
+  >.ywcdd_timeslot_content {
+    flex: 1 1 240px;
+    min-width: 0;
+  }
+
+  // O select2 do carrier/horário (gerado pelo YITH depois do nosso CSS ser
+  // carregado) não herda a largura nem o estilo dos demais campos do
+  // checkout. Usamos as mesmas variáveis do WooCommerce (--wc-form-*) que os
+  // outros inputs do formulário já usam, para ficar idêntico de verdade,
+  // com !important para vencer o CSS padrão do select2.
+  .select2-container {
+    width: 100% !important;
+
+    .select2-selection--single {
+      display: flex !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+      height: 38px !important;
+      min-height: 38px !important;
+      max-height: 38px !important;
+      font-size: 15px !important;
+      line-height: normal !important;
+      border: var(--wc-form-border-width, 1px) solid var(--wc-form-border-color, #200707) !important;
+      border-radius: var(--wc-form-border-radius, 4px) !important;
+      padding: 7.5px !important;
+      background: #fff !important;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      .select2-selection__rendered {
+        padding: 0 !important;
+        line-height: normal !important;
+        font-family: $ff-primary !important;
+        font-size: 15px !important;
+        color: $wc-text !important;
+        min-height: unset !important;
+      }
+
+      .select2-selection__arrow {
+        height: 100% !important;
+      }
+    }
+  }
+
+  .select2-container--open .select2-selection--single {
+    border-color: map-get($color-verde, 500) !important;
+    box-shadow: 0 0 0 3px rgba(30, 89, 58, 0.1);
+  }
+}
+
+// Placeholder exibido enquanto o YITH Delivery Date busca data/transportadora
+// via AJAX (ver deliveryDateReposition.js) — evita a sensação de tela parada
+// entre escolher o frete e o campo de data realmente aparecer.
+.ywcdd-loading-skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin-top: 16px;
+
+  &__bar {
+    flex: 1 1 240px;
+    min-width: 0;
+    height: 49px;
+    border-radius: 12px;
+    background: linear-gradient(90deg,
+        map-get($color-verde, 50) 25%,
+        map-get($color-verde, 100) 37%,
+        map-get($color-verde, 50) 63%);
+    background-size: 400% 100%;
+    animation: ywcdd-skeleton-pulse 1.4s ease infinite;
+  }
+}
+
+@keyframes ywcdd-skeleton-pulse {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+// Spinner padrão do WooCommerce (ícone genérico cinza) usado enquanto o
+// frete/checkout recalcula via AJAX: recolorido para as cores do site em vez
+// do ícone padrão, e trocado por um spinner CSS (sem depender do SVG).
+.woocommerce .blockUI.blockOverlay::before {
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  background: none;
+  border-radius: 50%;
+  border: 3px solid map-get($color-verde, 100);
+  border-top-color: map-get($color-verde, 500);
+}
+
+// Calendário de data de entrega (jQuery UI Datepicker do YITH Delivery Date)
+// nas cores do site em vez do tema cinza padrão do jQuery UI.
+#ui-datepicker-div.ui-datepicker {
+  border: 1px solid map-get($color-verde, 100);
+  border-radius: $wc-radius;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+  font-family: $ff-primary;
+  z-index: 1000;
+
+  .ui-datepicker-header {
+    background: map-get($color-verde, 500);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 0;
+  }
+
+  .ui-datepicker-title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .ui-datepicker-prev,
+  .ui-datepicker-next {
+    top: 8px;
+    cursor: pointer;
+
+    span {
+      display: none;
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      margin: 6px auto;
+    }
+  }
+
+  .ui-datepicker-prev {
+    left: 8px;
+
+    &::before {
+      transform: rotate(135deg);
+    }
+  }
+
+  .ui-datepicker-next {
+    right: 8px;
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+  }
+
+  .ui-datepicker-prev-hover,
+  .ui-datepicker-next-hover {
+    opacity: 0.7;
+  }
+
+  th {
+    color: $wc-text;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+  }
+
+  td {
+    padding: 2px;
+
+    span,
+    a {
+      text-align: center;
+      border-radius: 8px;
+      padding: 8px;
+      color: $wc-text;
+    }
+
+    a:hover {
+      background: map-get($color-verde, 50);
+      border-color: map-get($color-verde, 100);
+    }
+
+    .ui-state-active {
+      background: map-get($color-verde, 500);
+      border-color: map-get($color-verde, 500);
+      color: #fff;
+    }
+
+    .ui-datepicker-today a {
+      border: 1px solid map-get($color-verde, 500);
+    }
+
+    &.ui-datepicker-unselectable span {
+      color: #ccc;
+    }
+  }
+}
+
 // Campos de checkout
 .woocommerce-billing-fields,
 .woocommerce-shipping-fields,

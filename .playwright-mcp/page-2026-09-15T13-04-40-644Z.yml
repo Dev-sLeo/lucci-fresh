@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - paragraph [ref=e5]: REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00
+    - generic [ref=e8]:
+      - link [ref=e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=e10]
+      - navigation "Menu principal" [ref=e11]:
+        - list [ref=e12]:
+          - listitem [ref=e13]:
+            - link "Home" [ref=e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=e17]:
+            - generic [ref=e18]:
+              - link "Produtos" [ref=e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=e21] [cursor=pointer]
+          - listitem [ref=e25]:
+            - link "Quem somos" [ref=e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=e29]:
+            - link "Fale Conosco" [ref=e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=e33]:
+        - button "Buscar" [ref=e34] [cursor=pointer]
+        - link "Minha conta" [ref=e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=e45]
+    - search [ref=e54]:
+      - searchbox [ref=e55]
+      - button [ref=e56] [cursor=pointer]
+      - button [ref=e60] [cursor=pointer]
+  - main [ref=e64]:
+    - generic [ref=e68]:
+      - heading "Your cart is currently empty!" [level=2] [ref=e69]
+      - separator [ref=e70]: ···
+      - heading "New in store" [level=2] [ref=e71]
+      - list [ref=e73]:
+        - listitem [ref=e74]:
+          - link "Marguerita Marguerita" [ref=e75] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/marguerita/
+            - img "Marguerita" [ref=e77]
+            - generic [ref=e78]: Marguerita
+          - generic [ref=e79]: R$ 5,00
+          - 'link "Adicione ao carrinho: “Marguerita”" [ref=e82] [cursor=pointer]':
+            - /url: /cart/?add-to-cart=172
+            - text: Adicionar ao carrinho
+        - listitem [ref=e83]:
+          - link "Palmito Palmito" [ref=e84] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/palmito/
+            - img "Palmito" [ref=e86]
+            - generic [ref=e87]: Palmito
+          - link "Leia mais sobre “Palmito”" [ref=e89] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/palmito/
+            - text: Adicionar ao carrinho
+        - listitem [ref=e90]:
+          - link "Legumes Legumes" [ref=e91] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/legumes/
+            - img "Legumes" [ref=e93]
+            - generic [ref=e94]: Legumes
+          - link "Leia mais sobre “Legumes”" [ref=e96] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/legumes/
+            - text: Adicionar ao carrinho
+        - listitem [ref=e97]:
+          - link "Peixe Low Carb Peixe Low Carb" [ref=e98] [cursor=pointer]:
+            - /url: http://lucci-fresh.local/product/peixe-low-carb/
+            - img "Peixe Low Carb" [ref=e100]
+            - generic [ref=e101]: Peixe Low Carb
+          - generic [ref=e102]: R$ 22,90
+          - 'link "Adicione ao carrinho: “Peixe Low Carb”" [ref=e105] [cursor=pointer]':
+            - /url: /cart/?add-to-cart=161
+            - text: Adicionar ao carrinho
+  - contentinfo "Rodapé" [ref=e106]:
+    - generic [ref=e109]:
+      - generic [ref=e110]:
+        - link "Lucci Fresh – Página inicial" [ref=e111] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=e113] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=e114]:
+        - list [ref=e115]:
+          - listitem [ref=e116]:
+            - link "Home" [ref=e117] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=e118]:
+            - link "Quem somos" [ref=e119] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=e120]:
+            - link "Fale Conosco" [ref=e121] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=e122]:
+            - link "Marmita" [ref=e123] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=e124]:
+            - link "Lanches" [ref=e125] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=e126]:
+            - link "Santa Pizzinha" [ref=e127] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=e128]:
+            - link "Doces" [ref=e129] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=e130]:
+            - link "Porções" [ref=e131] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=e132]:
+            - link "Sucos" [ref=e133] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=e134]:
+        - link "Facebook" [ref=e135] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=e139] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=e144] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=e154]
+    - generic [ref=e157]:
+      - paragraph [ref=e158]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=e159] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=e160]:
+        - link "Termos de Uso" [ref=e161] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=e162] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - status [ref=e165]

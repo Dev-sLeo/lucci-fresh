@@ -15,3 +15,4 @@ vendor
 .env
 .mcp.json
 .mcp.lock
+.playwright-mcp/

@@ -1,0 +1,384 @@
+- generic [ref=f11e1]:
+  - banner [ref=f11e2]:
+    - paragraph [ref=f11e5]: REFEIÇÕES CONGELADAS • ENTREGAMOS EM ATÉ 23 KM DA VILA PRUDENTE-SP • TAXA GRÁTIS ACIMA DE R$600,00
+    - generic [ref=f11e8]:
+      - link [ref=f11e9] [cursor=pointer]:
+        - /url: http://lucci-fresh.local/
+        - img "Lucci Fresh" [ref=f11e10]
+      - navigation "Menu principal" [ref=f11e11]:
+        - list [ref=f11e12]:
+          - listitem [ref=f11e13]:
+            - link "Home" [ref=f11e15] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f11e17]:
+            - generic [ref=f11e18]:
+              - link "Produtos" [ref=f11e19] [cursor=pointer]:
+                - /url: "#"
+              - button "Submenu" [ref=f11e21] [cursor=pointer]
+          - listitem [ref=f11e25]:
+            - link "Quem somos" [ref=f11e27] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f11e29]:
+            - link "Fale Conosco" [ref=f11e31] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+      - generic [ref=f11e33]:
+        - button "Buscar" [ref=f11e34] [cursor=pointer]
+        - link "Minha conta" [ref=f11e40] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/my-account/
+        - button "Abrir carrinho" [ref=f11e45]:
+          - generic "1 itens no carrinho" [ref=f11e52]: "1"
+    - search [ref=f11e55]:
+      - searchbox [ref=f11e56]
+      - button [ref=f11e57] [cursor=pointer]
+      - button [ref=f11e61] [cursor=pointer]
+  - main [ref=f11e65]:
+    - generic [ref=f11e66]:
+      - heading "Checkout" [level=1] [ref=f11e67]
+      - generic [ref=f11e69]:
+        - generic [ref=f11e72]:
+          - generic [ref=f11e73]: Passo 2 de 4
+          - generic [ref=f11e74]:
+            - generic [ref=f11e75]: Contato
+            - generic [ref=f11e76]: Entrega
+            - generic: Cobrança
+            - generic: Pagamento
+        - form "Finalização de compra" [ref=f11e79]:
+          - generic [ref=f11e80]:
+            - generic [ref=f11e82]:
+              - region "Contato" [ref=f11e83]:
+                - heading "Contato" [level=2] [ref=f11e84]
+                - generic [ref=f11e85]:
+                  - heading " Contato" [level=3] [ref=f11e86]
+                  - generic [ref=f11e87]: teste.checkout@lucci-fresh.local
+                  - 'button "Alterar: Contato" [ref=f11e91] [cursor=pointer]': Alterar
+              - region "Entrega" [ref=f11e92]:
+                - heading "Entrega" [level=2] [ref=f11e93]
+                - generic [ref=f11e94]:
+                  - heading "Endereço de entrega" [level=3] [ref=f11e95]
+                  - generic [ref=f11e363]:
+                    - paragraph [ref=f11e364]:
+                      - generic [ref=f11e365]: Nome *
+                      - textbox "Nome" [ref=f11e367]:
+                        - /placeholder: ""
+                    - paragraph [ref=f11e368]:
+                      - generic [ref=f11e369]: Sobrenome *
+                      - textbox "Sobrenome" [ref=f11e371]:
+                        - /placeholder: ""
+                    - paragraph [ref=f11e372]:
+                      - generic [ref=f11e373]: CEP *
+                      - textbox "CEP *" [ref=f11e375]:
+                        - /placeholder: ""
+                    - paragraph [ref=f11e376]:
+                      - generic [ref=f11e377]: Bairro *
+                      - textbox "Bairro" [ref=f11e379]:
+                        - /placeholder: ""
+                    - paragraph [ref=f11e380]:
+                      - generic [ref=f11e381]: Endereço *
+                      - generic [ref=f11e382]:
+                        - textbox "Endereço *" [ref=f11e383]:
+                          - /placeholder: ""
+                        - generic [aria-hidden] [ref=f11e384]: Nome da rua e número da casa
+                    - paragraph [ref=f11e385]:
+                      - generic [ref=f11e386]: Número *
+                      - textbox "Número" [ref=f11e388]:
+                        - /placeholder: Nº
+                    - paragraph [ref=f11e389]:
+                      - generic [ref=f11e390]: Apartamento, suíte, unidade, etc. (opcional)
+                      - generic [ref=f11e391]:
+                        - textbox "Apartamento, suíte, unidade, etc. (opcional)" [ref=f11e392]:
+                          - /placeholder: Apartamento, unidade, prédio, andar, etc.
+                        - generic [aria-hidden] [ref=f11e393]: Apartamento, unidade, prédio, andar, etc.
+                    - paragraph [ref=f11e394]:
+                      - generic [ref=f11e395]: Cidade *
+                      - textbox "Cidade *" [ref=f11e397]:
+                        - /placeholder: ""
+                - generic [ref=f11e136]:
+                  - heading "Método de entrega" [level=3] [ref=f11e137]
+                  - generic [ref=f11e139]:
+                    - list [ref=f11e400]:
+                      - listitem [ref=f11e401]:
+                        - radio "Entrega (Free) " [ref=f11e402]
+                        - generic [ref=f11e403] [cursor=pointer]:
+                          - generic [ref=f11e404]: Entrega (Free)
+                          - text: 
+                      - listitem [ref=f11e406]:
+                        - radio "Taxa fixa R$ 25,00 " [checked] [ref=f11e407]
+                        - generic [ref=f11e408] [cursor=pointer]:
+                          - generic [ref=f11e409]:
+                            - generic [ref=f11e410]: Taxa fixa
+                            - generic [ref=f11e411]: R$ 25,00
+                          - text: 
+                    - generic [ref=f11e414]:
+                      - paragraph [ref=f11e416]:
+                        - generic [ref=f11e417]: Data de entrega
+                        - textbox "Data de entrega" [active] [ref=f11e418]:
+                          - /placeholder: Selecione uma data de entrega
+                          - text: 16/09/2026
+                      - paragraph [ref=f11e456]:
+                        - generic [ref=f11e457]: Horário
+                        - combobox [aria-hidden] [ref=f11e458] [cursor=pointer]
+                        - combobox "Selecione um horário" [ref=f11e461] [cursor=pointer]
+                - generic [ref=f11e157]:
+                  - heading "Notas Adicionais" [level=3] [ref=f11e158]
+                  - button " Adicionar observações para entrega (opcional)" [ref=f11e166] [cursor=pointer]
+                - button "Prosseguir ao faturamento" [ref=f11e168] [cursor=pointer]
+              - text:  
+            - generic [ref=f11e172]:
+              - generic [ref=f11e173]:
+                - heading "Resumo do pedido" [level=3] [ref=f11e174]
+                - link "Editar carrinho" [ref=f11e175] [cursor=pointer]:
+                  - /url: http://lucci-fresh.local/cart/
+              - table [ref=f11e419]:
+                - rowgroup [ref=f11e420]:
+                  - row [ref=f11e421]:
+                    - columnheader "Produto" [ref=f11e422]
+                    - columnheader "Subtotal" [ref=f11e423]
+                - rowgroup [ref=f11e424]:
+                  - row [ref=f11e425]:
+                    - 'cell "Peixe Low Carb Peixe Low Carb Preço: R$ 22,90 × 1" [ref=f11e426]':
+                      - img "Peixe Low Carb" [ref=f11e427]
+                      - generic [ref=f11e428]:
+                        - generic [ref=f11e429]: Peixe Low Carb
+                        - generic [ref=f11e430]:
+                          - generic [ref=f11e431]: "Preço:"
+                          - generic [ref=f11e432]: R$ 22,90
+                        - strong [ref=f11e434]: × 1
+                    - cell "R$ 22,90" [ref=f11e435]
+                - rowgroup [ref=f11e438]:
+                  - row [ref=f11e439]:
+                    - rowheader "Subtotal" [ref=f11e440]
+                    - cell "R$ 22,90" [ref=f11e441]
+                  - row [ref=f11e444]:
+                    - rowheader "Taxa de entrega" [ref=f11e445]
+                    - cell "R$ 25,00" [ref=f11e446]
+                  - row [ref=f11e449]:
+                    - rowheader "Total" [ref=f11e450]
+                    - cell "R$ 47,90" [ref=f11e451]:
+                      - strong [ref=f11e452]:
+                        - generic [ref=f11e453]: R$ 47,90
+  - contentinfo "Rodapé" [ref=f11e212]:
+    - generic [ref=f11e215]:
+      - generic [ref=f11e216]:
+        - link "Lucci Fresh – Página inicial" [ref=f11e217] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/
+        - link "R. Américo Vespucci, 646 Vila Prudente, São Paulo – SP, 03135-010" [ref=f11e219] [cursor=pointer]:
+          - /url: https://maps.app.goo.gl/E4tHJHHAyeVHEnUx7
+      - navigation "Menu rodapé" [ref=f11e220]:
+        - list [ref=f11e221]:
+          - listitem [ref=f11e222]:
+            - link "Home" [ref=f11e223] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/
+          - listitem [ref=f11e224]:
+            - link "Quem somos" [ref=f11e225] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/quem-somos/
+          - listitem [ref=f11e226]:
+            - link "Fale Conosco" [ref=f11e227] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/fale-conosco/
+          - listitem [ref=f11e228]:
+            - link "Marmita" [ref=f11e229] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/marmita/
+          - listitem [ref=f11e230]:
+            - link "Lanches" [ref=f11e231] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/lanches/
+          - listitem [ref=f11e232]:
+            - link "Santa Pizzinha" [ref=f11e233] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/santa-pizzinha/
+          - listitem [ref=f11e234]:
+            - link "Doces" [ref=f11e235] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/doces/
+          - listitem [ref=f11e236]:
+            - link "Porções" [ref=f11e237] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/porcoes/
+          - listitem [ref=f11e238]:
+            - link "Sucos" [ref=f11e239] [cursor=pointer]:
+              - /url: http://lucci-fresh.local/product-category/sucos/
+      - generic [ref=f11e240]:
+        - link "Facebook" [ref=f11e241] [cursor=pointer]:
+          - /url: "#"
+        - link "Instagram" [ref=f11e245] [cursor=pointer]:
+          - /url: "#"
+        - link "Whatsapp" [ref=f11e250] [cursor=pointer]:
+          - /url: "#"
+    - separator [ref=f11e260]
+    - generic [ref=f11e263]:
+      - paragraph [ref=f11e264]:
+        - text: Lucci Fresh- todos os direitos reservados / Criação de Sites por
+        - link "Upsites" [ref=f11e265] [cursor=pointer]:
+          - /url: https://upsites.digital/?origin=lucci-fresh
+      - generic [ref=f11e266]:
+        - link "Termos de Uso" [ref=f11e267] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/refund_returns/
+        - link "Politica de privacidade" [ref=f11e268] [cursor=pointer]:
+          - /url: http://lucci-fresh.local/politica-de-privacidade/
+  - status [ref=f11e269]
+  - generic [ref=f11e463]:
+    - generic [ref=f11e464]:
+      - generic [ref=f11e465]:
+        - generic "Anterior" [ref=f11e466]
+        - generic [ref=f11e467]: setembro 2026
+      - table [ref=f11e468]:
+        - rowgroup [ref=f11e469]:
+          - row [ref=f11e470]:
+            - columnheader "S" [ref=f11e471]
+            - columnheader "T" [ref=f11e472]
+            - columnheader "Q" [ref=f11e473]
+            - columnheader "Q" [ref=f11e474]
+            - columnheader "S" [ref=f11e475]
+            - columnheader "S" [ref=f11e476]
+            - columnheader "D" [ref=f11e477]
+        - rowgroup [ref=f11e478]:
+          - row [ref=f11e479]:
+            - cell [ref=f11e480]
+            - cell "1" [ref=f11e481]
+            - cell "2" [ref=f11e483]
+            - cell "3" [ref=f11e485]
+            - cell "4" [ref=f11e487]
+            - cell "5" [ref=f11e489]
+            - cell "6" [ref=f11e491]
+          - row [ref=f11e493]:
+            - cell "7" [ref=f11e494]
+            - cell "8" [ref=f11e496]
+            - cell "9" [ref=f11e498]
+            - cell "10" [ref=f11e500]
+            - cell "11" [ref=f11e502]
+            - cell "12" [ref=f11e504]
+            - cell "13" [ref=f11e506]
+          - row [ref=f11e508]:
+            - cell "14" [ref=f11e509]
+            - cell "15" [ref=f11e511]
+            - cell [ref=f11e513]:
+              - link "16" [ref=f11e514] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e515]:
+              - link "17" [ref=f11e516] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e517]:
+              - link "18" [ref=f11e518] [cursor=pointer]:
+                - /url: "#"
+            - cell "19" [ref=f11e519]
+            - cell "20" [ref=f11e521]
+          - row [ref=f11e523]:
+            - cell [ref=f11e524]:
+              - link "21" [ref=f11e525] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e526]:
+              - link "22" [ref=f11e527] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e528]:
+              - link "23" [ref=f11e529] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e530]:
+              - link "24" [ref=f11e531] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e532]:
+              - link "25" [ref=f11e533] [cursor=pointer]:
+                - /url: "#"
+            - cell "26" [ref=f11e534]
+            - cell "27" [ref=f11e536]
+          - row [ref=f11e538]:
+            - cell [ref=f11e539]:
+              - link "28" [ref=f11e540] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e541]:
+              - link "29" [ref=f11e542] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e543]:
+              - link "30" [ref=f11e544] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e545]
+            - cell [ref=f11e546]
+            - cell [ref=f11e547]
+            - cell [ref=f11e548]
+    - generic [ref=f11e549]:
+      - generic [ref=f11e550]:
+        - generic "Próximo" [ref=f11e551]
+        - generic [ref=f11e552]: outubro 2026
+      - table [ref=f11e553]:
+        - rowgroup [ref=f11e554]:
+          - row [ref=f11e555]:
+            - columnheader "S" [ref=f11e556]
+            - columnheader "T" [ref=f11e557]
+            - columnheader "Q" [ref=f11e558]
+            - columnheader "Q" [ref=f11e559]
+            - columnheader "S" [ref=f11e560]
+            - columnheader "S" [ref=f11e561]
+            - columnheader "D" [ref=f11e562]
+        - rowgroup [ref=f11e563]:
+          - row [ref=f11e564]:
+            - cell [ref=f11e565]
+            - cell [ref=f11e566]
+            - cell [ref=f11e567]
+            - cell [ref=f11e568]:
+              - link "1" [ref=f11e569] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e570]:
+              - link "2" [ref=f11e571] [cursor=pointer]:
+                - /url: "#"
+            - cell "3" [ref=f11e572]
+            - cell "4" [ref=f11e574]
+          - row [ref=f11e576]:
+            - cell [ref=f11e577]:
+              - link "5" [ref=f11e578] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e579]:
+              - link "6" [ref=f11e580] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e581]:
+              - link "7" [ref=f11e582] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e583]:
+              - link "8" [ref=f11e584] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e585]:
+              - link "9" [ref=f11e586] [cursor=pointer]:
+                - /url: "#"
+            - cell "10" [ref=f11e587]
+            - cell "11" [ref=f11e589]
+          - row [ref=f11e591]:
+            - cell [ref=f11e592]:
+              - link "12" [ref=f11e593] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e594]:
+              - link "13" [ref=f11e595] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e596]:
+              - link "14" [ref=f11e597] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e598]:
+              - link "15" [ref=f11e599] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e600]:
+              - link "16" [ref=f11e601] [cursor=pointer]:
+                - /url: "#"
+            - cell "17" [ref=f11e602]
+            - cell "18" [ref=f11e604]
+          - row [ref=f11e606]:
+            - cell [ref=f11e607]:
+              - link "19" [ref=f11e608] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e609]:
+              - link "20" [ref=f11e610] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e611]:
+              - link "21" [ref=f11e612] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e613]:
+              - link "22" [ref=f11e614] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e615]:
+              - link "23" [ref=f11e616] [cursor=pointer]:
+                - /url: "#"
+            - cell "24" [ref=f11e617]
+            - cell "25" [ref=f11e619]
+          - row [ref=f11e621]:
+            - cell [ref=f11e622]:
+              - link "26" [ref=f11e623] [cursor=pointer]:
+                - /url: "#"
+            - cell [ref=f11e624]:
+              - link "27" [ref=f11e625] [cursor=pointer]:
+                - /url: "#"
+            - cell "28" [ref=f11e626]
+            - cell "29" [ref=f11e628]
+            - cell "30" [ref=f11e630]
+            - cell "31" [ref=f11e632]
+            - cell [ref=f11e634]

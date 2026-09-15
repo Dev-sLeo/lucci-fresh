@@ -1,6 +1,32 @@
 // -----------------------------------------------------------------------------
 // Minha conta
 // -----------------------------------------------------------------------------
+
+// Fallback caso o botão "Repetir compra" seja renderizado pelo template padrão do WooCommerce
+.order-again .button {
+  display: flex !important;
+  padding: 16px 32px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 600px !important;
+  border: var(--stroke-weight-1, 1px) solid transparent !important;
+  transition: all .3s ease !important;
+  max-width: max-content !important;
+  cursor: pointer !important;
+  font-family: Manrope !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  background-color: #DA864D !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: #b76a3b !important;
+  }
+}
+
 .woocommerce-account {
   .singular-page.is-logged-out {
     padding: 4rem 0;

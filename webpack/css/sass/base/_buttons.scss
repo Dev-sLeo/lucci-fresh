@@ -1,44 +1,44 @@
 .u-button {
-  font-family: Manrope;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  padding: 16px 32px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 600px;
-  border: var(--stroke-weight-1, 1px) solid transparent;
-  transition: all .3s ease;
-  max-width: max-content;
-  cursor: pointer;
+  font-family: Manrope !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  display: flex !important;
+  padding: 16px 32px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 600px !important;
+  border: var(--stroke-weight-1, 1px) solid transparent !important;
+  transition: all .3s ease !important;
+  max-width: max-content !important;
+  cursor: pointer !important;
 
   &__white {
-    background-color: #ffffff;
-    color: #425d33;
+    background-color: #ffffff !important;
+    color: #425d33 !important;
 
     &:hover {
-      background-color: #f0f0f0;
+      background-color: #f0f0f0 !important;
     }
   }
 
   &__green {
-    background-color: #425d33;
-    color: #ffffff;
+    background-color: #425d33 !important;
+    color: #ffffff !important;
 
     &:hover {
-      background-color: #344a28;
+      background-color: #344a28 !important;
     }
   }
 
   &__wood {
-    background-color: #DA864D;
-    color: #ffffff;
+    background-color: #DA864D !important;
+    color: #ffffff !important;
 
     &:hover {
-      background-color: #b76a3b;
+      background-color: #b76a3b !important;
     }
   }
 }
