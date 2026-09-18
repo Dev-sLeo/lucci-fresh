@@ -426,6 +426,25 @@ add_filter('woocommerce_valid_order_statuses_for_order_again', function ($status
     return array_unique($statuses);
 });
 
+// O WooCommerce só mostra "Repetir compra" dentro do pedido (hook
+// woocommerce_order_again_button), não na listagem de "Meus pedidos". Aqui
+// adicionamos a mesma ação na listagem, reaproveitando a mesma URL e as
+// mesmas regras de elegibilidade de status usadas no botão do pedido.
+add_filter('woocommerce_my_account_my_orders_actions', function ($actions, $order) {
+    $statuses_for_reordering = apply_filters('woocommerce_valid_order_statuses_for_order_again', ['completed']);
+
+    if ($order->has_status($statuses_for_reordering)) {
+        $actions['order-again'] = [
+            'url'        => wp_nonce_url(add_query_arg('order_again', $order->get_id(), wc_get_cart_url()), 'woocommerce-order_again'),
+            'name'       => __('Order again', 'woocommerce'),
+            /* translators: %s: order number */
+            'aria-label' => sprintf(__('Order again number %s', 'woocommerce'), $order->get_order_number()),
+        ];
+    }
+
+    return $actions;
+}, 10, 2);
+
 // Remove o item "Downloads" do menu de Minha Conta
 add_filter('woocommerce_account_menu_items', function ($items) {
     unset($items['downloads']);

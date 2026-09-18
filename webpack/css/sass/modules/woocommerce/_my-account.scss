@@ -239,6 +239,24 @@
           background: darken($color-laranja-cta, 8%);
         }
       }
+
+      // "Visualizar" + "Comprar novamente": empilhados com espaçamento no
+      // mobile (evita sobreposição dos botões em pílula) e lado a lado
+      // (flex) a partir do desktop.
+      &__cell-order-actions {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        @include mq(desktop-low) {
+          flex-direction: row;
+        }
+
+        .u-button {
+          font-size: 12px !important;
+        }
+      }
     }
 
     // Detalhes do pedido
