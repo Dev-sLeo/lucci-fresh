@@ -642,6 +642,45 @@ add_action('plugins_loaded', function () {
     }
 }, 20);
 
+// -----------------------------------------------------------------------------
+// Fix: YITH WooCommerce Delivery Date x Flexible Shipping
+// -----------------------------------------------------------------------------
+// O YITH Delivery Date só exibe os campos de data/hora no checkout se o método
+// de envio escolhido tiver "Método de processamento" configurado. Para o
+// Flexible Shipping, o YITH adiciona esses dois campos extras (select_process_method
+// e set_method_as_mandatory) via `woocommerce_settings_api_form_fields_flexible_shipping_info`,
+// mas esse hook é o da tela de configurações globais do plugin (id
+// `flexible_shipping_info`), não o da tela de edição de cada instância de método
+// por zona de entrega (id real: `flexible_shipping`). Como o merchant configura
+// o método na tela por zona, os campos nunca aparecem lá e nunca são salvos em
+// `woocommerce_flexible_shipping_<instance_id>_settings` — que é exatamente a
+// option que o YITH lê em `get_woocommerce_shipping_option()`. Resultado: o
+// processing method fica sempre vazio e os campos de data somem no checkout.
+// Corrige registrando os mesmos campos no hook do id real do método.
+add_filter('woocommerce_settings_api_form_fields_flexible_shipping', function ($form_fields) {
+    if (!function_exists('YITH_Delivery_Date_Processing_Method')) {
+        return $form_fields;
+    }
+
+    $form_fields['select_process_method'] = [
+        'title'   => __('Processing Method', 'yith-woocommerce-delivery-date'),
+        'type'    => 'select',
+        'default' => '',
+        'class'   => 'ywcdd_processing_method wc-enhanced-select',
+        'options' => YITH_Delivery_Date_Processing_Method()->get_formatted_processing_method(),
+    ];
+
+    $form_fields['set_method_as_mandatory'] = [
+        'title'       => __('Set as required', 'yith-woocommerce-delivery-date'),
+        'type'        => 'checkbox',
+        'default'     => 'no',
+        'class'       => 'ywcdd_set_mandatory',
+        'description' => __('If enabled, customers must select a date for the delivery', 'yith-woocommerce-delivery-date'),
+    ];
+
+    return $form_fields;
+}, 99);
+
 // O YITH WooCommerce Delivery Date só traz traduções para pt_PT (Portugal),
 // não para pt_BR. Sem tradução pt_BR, o WordPress usa o texto original em
 // inglês, e o campo de data de entrega aparece com labels em inglês no meio
