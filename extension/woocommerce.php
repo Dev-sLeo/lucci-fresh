@@ -681,6 +681,44 @@ add_filter('woocommerce_settings_api_form_fields_flexible_shipping', function ($
     return $form_fields;
 }, 99);
 
+// -----------------------------------------------------------------------------
+// Fix: CSS do plugin "Integration Rede Itaú for WooCommerce" (woo-rede)
+// vazando para outras telas do admin
+// -----------------------------------------------------------------------------
+// O CSS admin do plugin (lkn-integration-rede-for-woocommerce-admin.css) é
+// carregado em TODAS as páginas do wp-admin (sem checar a tela) e contém a
+// regra global `.form-table tbody, .form-table tbody tr td { width: 100%
+// !important; }`. `.form-table` é a classe padrão usada pelo WordPress/
+// WooCommerce em qualquer tela de configurações (ex.: método de envio do
+// Flexible Shipping, YITH Delivery Date etc.), então essa regra força a
+// coluna <td> a 100% de largura em telas que nada têm a ver com o plugin,
+// espremendo a coluna <th> e quebrando o texto letra por letra.
+// Neutralizamos a regra fora da própria tela de configuração do gateway
+// Rede/Itaú, sem precisar alterar o arquivo do plugin (que seria sobrescrito
+// em updates).
+add_action('admin_enqueue_scripts', function () {
+    if (!wp_style_is('lkn-integration-rede-for-woocommerce', 'enqueued')) {
+        return;
+    }
+
+    $page    = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+    $tab     = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : '';
+    $section = isset($_GET['section']) ? sanitize_text_field(wp_unslash($_GET['section'])) : '';
+
+    $is_own_screen = 'wc-settings' === $page
+        && 'checkout' === $tab
+        && (bool) preg_match('/rede|maxipago/i', $section);
+
+    if ($is_own_screen) {
+        return;
+    }
+
+    wp_add_inline_style(
+        'lkn-integration-rede-for-woocommerce',
+        '.form-table tbody, .form-table tbody tr td { width: auto !important; }'
+    );
+}, 999);
+
 // O YITH WooCommerce Delivery Date só traz traduções para pt_PT (Portugal),
 // não para pt_BR. Sem tradução pt_BR, o WordPress usa o texto original em
 // inglês, e o campo de data de entrega aparece com labels em inglês no meio
@@ -724,3 +762,139 @@ add_filter('gettext_with_context', function ($translation, $text, $context, $dom
 
     return $translation;
 }, 10, 4);
+
+// -----------------------------------------------------------------------------
+// YITH WooCommerce Delivery Date — compatibilidade com métodos de frete que a
+// própria YITH não configura corretamente (Flexible Shipping com regras da
+// Octolize e o Local Pickup nativo do WooCommerce). Sem isso, o campo de data
+// de entrega nunca aparece para esses métodos, mesmo com tudo mais certo no
+// checkout — a YITH nunca recebe um "Processing Method" válido para eles.
+// -----------------------------------------------------------------------------
+
+// 1) "Taxa de Entrega" (Flexible Shipping / regras de distância da Octolize)
+//
+// A integração nativa da YITH (includes/integrations/class.yith-wc-flexible-
+// shipping-integration.php) tenta adicionar os campos "Processing Method" e
+// "Set as required" no hook `woocommerce_settings_api_form_fields_flexible_
+// shipping_info` — mas a versão atual do plugin Flexible Shipping usa o id
+// `flexible_shipping_single`, não `flexible_shipping_info`. Esse hook nunca
+// dispara, então o campo nunca chega a existir na tela de edição do método
+// (e o script da YITH que tenta escondê-lo quando há tabela de regras nunca
+// tem o que esconder). Adicionamos os mesmos campos no hook certo, com uma
+// classe CSS diferente da usada pela YITH para não cair nesse script.
+add_filter('woocommerce_settings_api_form_fields_flexible_shipping_single', function ($form_fields) {
+    if (!function_exists('YITH_Delivery_Date_Processing_Method')) {
+        return $form_fields;
+    }
+
+    $form_fields['select_process_method'] = [
+        'title'   => __('Processing Method', 'yith-woocommerce-delivery-date'),
+        'type'    => 'select',
+        'default' => '',
+        'class'   => 'wc-enhanced-select',
+        'options' => YITH_Delivery_Date_Processing_Method()->get_formatted_processing_method(),
+    ];
+
+    $form_fields['set_method_as_mandatory'] = [
+        'title'       => __('Set as required', 'yith-woocommerce-delivery-date'),
+        'type'        => 'checkbox',
+        'default'     => 'no',
+        'description' => __('If enabled, customers must select a date for the delivery', 'yith-woocommerce-delivery-date'),
+    ];
+
+    return $form_fields;
+}, 20);
+
+// Depois de configurar o "Processing Method" acima (WooCommerce > Configurações
+// > Entrega > [zona] > Taxa de Entrega), o campo de data passa a funcionar
+// normalmente — o resto da lógica da YITH já lê essas opções do jeito padrão,
+// sem precisar de mais nada aqui.
+
+// 2) "Retirar na loja" (Local Pickup nativo do WooCommerce, id "pickup_location")
+//
+// Esse método não usa o formulário de configurações clássico do WooCommerce —
+// a tela de admin dele é 100% React (ver WC_Blocks Shipping\PickupLocation::
+// admin_options()) — então não existe hook equivalente a
+// `woocommerce_settings_api_form_fields_pickup_location` para a YITH (ou nós)
+// adicionar um campo ali. A YITH também não tem nenhuma integração própria
+// para esse id (confirmado: nenhuma ocorrência de "pickup_location" no plugin).
+//
+// Como alternativa, mapeamos manualmente cada endereço de retirada (índice 0,
+// 1, 2... na ordem em que aparecem em WooCommerce > Configurações > Entrega >
+// Local Pickup) a um "Processing Method" já cadastrado em WooCommerce > Data
+// de Entrega > Processing Methods. Preencha o array abaixo com o ID de cada
+// Processing Method (visível na URL ao editar um Processing Method em
+// wp-admin, ex.: post.php?post=123&action=edit → ID é 123).
+add_filter('ywcdd_get_shipping_method_option', function ($shipping_settings, $shipping_id) {
+    if (0 !== strpos((string) $shipping_id, 'pickup_location')) {
+        return $shipping_settings;
+    }
+
+    $pickup_location_processing_methods = [
+        'pickup_location_0' => 654, // Retirar na loja (Rua Américo Vespucci, 646) — Processing Method "Entregas"
+        'pickup_location_1' => 654, // Retirar na loja (Rua Orfanato, 761) — Processing Method "Entregas"
+    ];
+
+    $option_name = str_replace(':', '_', $shipping_id);
+
+    if (empty($pickup_location_processing_methods[$option_name])) {
+        return $shipping_settings;
+    }
+
+    return [
+        'select_process_method'   => (string) $pickup_location_processing_methods[$option_name],
+        'set_method_as_mandatory' => 'no',
+    ];
+}, 20, 2);
+
+// 3) O "Data de entrega" às vezes fica em branco mesmo com tudo configurado
+// certo (itens 1 e 2 acima) — o motivo é que a YITH calcula os dias
+// disponíveis fazendo até 30 consultas separadas ao banco (uma por dia do
+// calendário, em includes/class.yith-delivery-date-calendar.php::is_holiday(),
+// sem nenhum cache). Medimos essa chamada em ~18-19s neste ambiente; se o
+// hospedeiro tiver latência de banco parecida, ela pode passar do tempo
+// máximo de execução do PHP e o pedido simplesmente falha sem aviso — dando
+// a impressão de que o calendário "nunca aparece", mesmo esperando bastante.
+//
+// Como não dá pra alterar o cache dentro do plugin (arquivo de terceiros),
+// colocamos um cache de resultado por fora: a mesma combinação de
+// transportadora + método de processamento só recalcula essa lista pesada
+// uma vez por dia (os dias disponíveis não mudam de uma consulta pra outra
+// no mesmo dia); as próximas consultas do dia respondem na hora.
+add_action('wp_ajax_update_datepicker', 'arterra_ywcdd_serve_cached_datepicker', 1);
+add_action('wp_ajax_nopriv_update_datepicker', 'arterra_ywcdd_serve_cached_datepicker', 1);
+function arterra_ywcdd_serve_cached_datepicker()
+{
+    if (empty($_POST['ywcdd_carrier_id'])) {
+        return;
+    }
+
+    $carrier_id = (int) $_POST['ywcdd_carrier_id'];
+    $process_id = (int) ($_POST['ywcdd_process_id'] ?? 0);
+    $cache_key  = 'arterra_ywcdd_dp_' . $carrier_id . '_' . $process_id . '_' . current_time('Y-m-d');
+
+    $cached = get_transient($cache_key);
+    if (false !== $cached) {
+        wp_send_json($cached);
+        // wp_send_json() já chama wp_die(); a linha abaixo nunca roda de
+        // fato, mas deixa claro pra quem ler que a execução para aqui.
+        return;
+    }
+
+    // Cache miss: deixa a YITH calcular normalmente (fluxo original, sem
+    // interferência), só capturando o resultado dela pra guardar em cache
+    // pro próximo cliente que pedir a mesma combinação hoje.
+    ob_start();
+    add_action('shutdown', function () use ($cache_key) {
+        $output = ob_get_clean();
+        $decoded = json_decode($output, true);
+
+        if (JSON_ERROR_NONE === json_last_error() && !empty($decoded['available_days'])) {
+            // 6 horas: dá pra ajustar se as regras de calendário/feriado
+            // mudarem com mais frequência que isso.
+            set_transient($cache_key, $decoded, 6 * HOUR_IN_SECONDS);
+        }
+
+        echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    }, 0);
+}

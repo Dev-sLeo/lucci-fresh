@@ -66,6 +66,35 @@ export default function deliveryDateReposition() {
     );
   }
 
+  // Bug de corrida do próprio plugin: o YITH só chama `ajax_find_date_available()`
+  // (o que de fato busca os dias disponíveis e liga o calendário) quando o
+  // `update_carrier_list` retorna `update_delivery_form: true` — ou seja, só
+  // quando o método de processamento MUDOU em relação ao anterior. No Fluid
+  // Checkout, o evento `updated_checkout` dispara várias vezes durante o
+  // preenchimento do endereço (antes do cliente sequer escolher o frete), o
+  // que já deixa `current_shipping_method_id` apontando pro método certo. Na
+  // hora que o cliente realmente clica, a YITH acha que "nada mudou", pula o
+  // recálculo, e o HTML da data/transportadora aparece (de uma resposta
+  // anterior) mas o `.datepicker()` do jQuery UI nunca é inicializado — o
+  // campo fica visível, mas clicar nele não abre calendário nenhum.
+  //
+  // Como não dá pra corrigir a lógica de comparação dentro do plugin,
+  // detectamos esse estado "meio-renderizado" (conteúdo presente, mas sem a
+  // classe `hasDatepicker` que o jQuery UI adiciona ao inicializar) e forçamos
+  // o mesmo evento que o próprio plugin dispara depois de um recálculo bem
+  // sucedido (`init-delivery-fields`), uma única vez por render.
+  function ensureDatepickerInitialized(dateField) {
+    const input = dateField.querySelector("#ywcdd_datepicker");
+    if (!input || input.classList.contains("hasDatepicker") || input.dataset.ywcddRetried) {
+      return;
+    }
+
+    input.dataset.ywcddRetried = "true";
+    if (window.jQuery) {
+      window.jQuery(document).trigger("init-delivery-fields");
+    }
+  }
+
   function dedupe(fields) {
     if (fields.length <= 1) return fields[0] || null;
 
@@ -97,7 +126,14 @@ export default function deliveryDateReposition() {
       // Nem todo método de entrega tem data configurada no YITH (ex.: retirada
       // grátis) — se depois de um tempo nada chegou, o placeholder não faz
       // mais sentido e seria enganoso deixá-lo girando para sempre.
-      window.setTimeout(removeSkeleton, 4000);
+      //
+      // O timeout é alto de propósito: a chamada AJAX `update_datepicker` do
+      // próprio plugin (que busca os dias disponíveis) foi medida em ~18-19s
+      // em teste real neste ambiente — bem mais lenta do que parece à primeira
+      // vista. Um timeout curto (ex.: 4s) esconde o skeleton bem antes da
+      // resposta chegar, e o cliente fica olhando pra uma caixa vazia sem
+      // nenhum indicador de carregamento pelo resto da espera.
+      window.setTimeout(removeSkeleton, 30000);
     };
 
     // Captura antes do WooCommerce processar o clique, e cobre o caso de já
@@ -131,6 +167,7 @@ export default function deliveryDateReposition() {
 
     if (hasRealContent(dateField)) {
       removeSkeleton();
+      ensureDatepickerInitialized(dateField);
     }
 
     applyVisibility();
