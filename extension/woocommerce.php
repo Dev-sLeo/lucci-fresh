@@ -769,48 +769,16 @@ add_filter('gettext_with_context', function ($translation, $text, $context, $dom
 // Octolize e o Local Pickup nativo do WooCommerce). Sem isso, o campo de data
 // de entrega nunca aparece para esses métodos, mesmo com tudo mais certo no
 // checkout — a YITH nunca recebe um "Processing Method" válido para eles.
+//
+// "Taxa de Entrega" (Flexible Shipping / regras de distância da Octolize) já
+// está coberto pelo filtro `woocommerce_settings_api_form_fields_flexible_
+// shipping` mais acima (ver seção "Fix: YITH WooCommerce Delivery Date x
+// Flexible Shipping"). Confirmado via teste real (nome do campo no HTML =
+// `woocommerce_flexible_shipping_select_process_method`) que esse é o id
+// certo — não precisa de nada além disso pra esse método.
 // -----------------------------------------------------------------------------
 
-// 1) "Taxa de Entrega" (Flexible Shipping / regras de distância da Octolize)
-//
-// A integração nativa da YITH (includes/integrations/class.yith-wc-flexible-
-// shipping-integration.php) tenta adicionar os campos "Processing Method" e
-// "Set as required" no hook `woocommerce_settings_api_form_fields_flexible_
-// shipping_info` — mas a versão atual do plugin Flexible Shipping usa o id
-// `flexible_shipping_single`, não `flexible_shipping_info`. Esse hook nunca
-// dispara, então o campo nunca chega a existir na tela de edição do método
-// (e o script da YITH que tenta escondê-lo quando há tabela de regras nunca
-// tem o que esconder). Adicionamos os mesmos campos no hook certo, com uma
-// classe CSS diferente da usada pela YITH para não cair nesse script.
-add_filter('woocommerce_settings_api_form_fields_flexible_shipping_single', function ($form_fields) {
-    if (!function_exists('YITH_Delivery_Date_Processing_Method')) {
-        return $form_fields;
-    }
-
-    $form_fields['select_process_method'] = [
-        'title'   => __('Processing Method', 'yith-woocommerce-delivery-date'),
-        'type'    => 'select',
-        'default' => '',
-        'class'   => 'wc-enhanced-select',
-        'options' => YITH_Delivery_Date_Processing_Method()->get_formatted_processing_method(),
-    ];
-
-    $form_fields['set_method_as_mandatory'] = [
-        'title'       => __('Set as required', 'yith-woocommerce-delivery-date'),
-        'type'        => 'checkbox',
-        'default'     => 'no',
-        'description' => __('If enabled, customers must select a date for the delivery', 'yith-woocommerce-delivery-date'),
-    ];
-
-    return $form_fields;
-}, 20);
-
-// Depois de configurar o "Processing Method" acima (WooCommerce > Configurações
-// > Entrega > [zona] > Taxa de Entrega), o campo de data passa a funcionar
-// normalmente — o resto da lógica da YITH já lê essas opções do jeito padrão,
-// sem precisar de mais nada aqui.
-
-// 2) "Retirar na loja" (Local Pickup nativo do WooCommerce, id "pickup_location")
+// "Retirar na loja" (Local Pickup nativo do WooCommerce, id "pickup_location")
 //
 // Esse método não usa o formulário de configurações clássico do WooCommerce —
 // a tela de admin dele é 100% React (ver WC_Blocks Shipping\PickupLocation::
@@ -819,36 +787,36 @@ add_filter('woocommerce_settings_api_form_fields_flexible_shipping_single', func
 // adicionar um campo ali. A YITH também não tem nenhuma integração própria
 // para esse id (confirmado: nenhuma ocorrência de "pickup_location" no plugin).
 //
-// Como alternativa, mapeamos manualmente cada endereço de retirada (índice 0,
-// 1, 2... na ordem em que aparecem em WooCommerce > Configurações > Entrega >
-// Local Pickup) a um "Processing Method" já cadastrado em WooCommerce > Data
-// de Entrega > Processing Methods. Preencha o array abaixo com o ID de cada
-// Processing Method (visível na URL ao editar um Processing Method em
-// wp-admin, ex.: post.php?post=123&action=edit → ID é 123).
+// Como alternativa, mapeamos cada endereço de retirada (índice 0, 1, 2... na
+// ordem em que aparecem em WooCommerce > Configurações > Entrega > Local
+// Pickup) a um "Processing Method" já cadastrado em WooCommerce > Data de
+// Entrega > Processing Methods. Esse mapeamento fica salvo em uma option do
+// banco (não em ID fixo no código, que mudaria entre local/staging/produção)
+// e é editado por uma tela própria em Configurações > Retirada + Data de
+// Entrega, com um <select> por endereço listando os Processing Methods reais
+// já cadastrados no ambiente atual.
+const LUCCI_PICKUP_PROCESSING_METHOD_OPTION = 'lucci_pickup_location_processing_methods';
+
 add_filter('ywcdd_get_shipping_method_option', function ($shipping_settings, $shipping_id) {
     if (0 !== strpos((string) $shipping_id, 'pickup_location')) {
         return $shipping_settings;
     }
 
-    $pickup_location_processing_methods = [
-        'pickup_location_0' => 654, // Retirar na loja (Rua Américo Vespucci, 646) — Processing Method "Entregas"
-        'pickup_location_1' => 654, // Retirar na loja (Rua Orfanato, 761) — Processing Method "Entregas"
-    ];
+    $option_name              = str_replace(':', '_', (string) $shipping_id);
+    $processing_method_by_loc = get_option(LUCCI_PICKUP_PROCESSING_METHOD_OPTION, []);
 
-    $option_name = str_replace(':', '_', $shipping_id);
-
-    if (empty($pickup_location_processing_methods[$option_name])) {
+    if (empty($processing_method_by_loc[$option_name])) {
         return $shipping_settings;
     }
 
     return [
-        'select_process_method'   => (string) $pickup_location_processing_methods[$option_name],
+        'select_process_method'   => (string) $processing_method_by_loc[$option_name],
         'set_method_as_mandatory' => 'no',
     ];
 }, 20, 2);
 
-// 3) O "Data de entrega" às vezes fica em branco mesmo com tudo configurado
-// certo (itens 1 e 2 acima) — o motivo é que a YITH calcula os dias
+// Cache: o "Data de entrega" às vezes fica em branco mesmo com tudo
+// configurado certo (blocos acima) — o motivo é que a YITH calcula os dias
 // disponíveis fazendo até 30 consultas separadas ao banco (uma por dia do
 // calendário, em includes/class.yith-delivery-date-calendar.php::is_holiday(),
 // sem nenhum cache). Medimos essa chamada em ~18-19s neste ambiente; se o
