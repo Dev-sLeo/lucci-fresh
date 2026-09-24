@@ -34,6 +34,7 @@ import deliveryDateReposition from "./scripts/deliveryDateReposition";
 import checkoutSteps from "./scripts/checkoutSteps";
 import paymentMethodLayout from "./scripts/paymentMethodLayout";
 import shippingMethodCards from "./scripts/shippingMethodCards";
+import fluidCheckoutPaymentThrottle from "./scripts/fluidCheckoutPaymentThrottle";
 
 window.gsap = gsap;
 
@@ -67,3 +68,4 @@ deliveryDateReposition();
 checkoutSteps();
 paymentMethodLayout();
 shippingMethodCards();
+fluidCheckoutPaymentThrottle();
