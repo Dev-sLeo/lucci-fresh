@@ -8,6 +8,215 @@ defined('ABSPATH') || exit;
 if (!class_exists('WooCommerce')) return;
 
 // -----------------------------------------------------------------------------
+// Feature flag - checkout custom nativo (substitui o Fluid Checkout)
+// -----------------------------------------------------------------------------
+
+/**
+ * Liga o novo checkout do tema (layout Figma, sem Fluid Checkout).
+ * Controlado por uma opção em WooCommerce → Ajustes → Avançado → "Checkout
+ * novo (Lucci Fresh)" (ver luccifresh_register_new_checkout_setting()
+ * abaixo). Uma constante em wp-config.php (LUCCIFRESH_NEW_CHECKOUT_ENABLED)
+ * ainda funciona como override manual para debug local, mas o jeito normal
+ * de ligar/desligar é pelo painel.
+ *
+ * Lembrete: o plugin Fluid Checkout precisa estar DESATIVADO para o
+ * checkout novo aparecer de verdade (ver docs/woocommerce-customizations.md,
+ * seção "Checkout v2").
+ */
+function luccifresh_new_checkout_enabled(): bool
+{
+    if (defined('LUCCIFRESH_NEW_CHECKOUT_ENABLED')) {
+        return (bool) LUCCIFRESH_NEW_CHECKOUT_ENABLED;
+    }
+
+    return 'yes' === get_option('luccifresh_new_checkout_enabled', 'no');
+}
+
+/**
+ * true só na página real de Checkout, com o checkout novo ligado - usado
+ * por header.php/footer.php para trocar o cabeçalho/rodapé completos do
+ * site pelo cabeçalho/rodapé mínimos do Figma (sem menu, sem newsletter,
+ * só a faixa de entrega + logo + "Compra segura" / só a barra final).
+ */
+function luccifresh_is_new_checkout_page(): bool
+{
+    return luccifresh_new_checkout_enabled()
+        && function_exists('is_page')
+        && function_exists('wc_get_page_id')
+        && is_page(wc_get_page_id('checkout'));
+}
+
+/**
+ * O step de entrega do checkout novo (_step-entrega.html.php) chama
+ * wc_cart_totals_shipping_html() pra listar os métodos de frete fora do
+ * <table> padrão do WooCommerce - o Figma não tem o rótulo "Envio" que o
+ * WC imprime por padrão ali (cart/cart-shipping.php: <tr><th>Envio</th>...).
+ * WC()->cart calcula e cacheia os pacotes de frete bem antes do template
+ * rodar, então o filtro precisa estar registrado desde cedo (não dá pra
+ * adicionar só ao redor da chamada, chegaria tarde demais) - por isso fica
+ * sempre ativo aqui, mas só tem efeito quando `is_page()` já resolvido
+ * aponta pro checkout novo.
+ */
+add_filter('woocommerce_shipping_package_name', function ($package_name) {
+    return luccifresh_is_new_checkout_page() ? '' : $package_name;
+});
+
+/**
+ * Separa "título" de "descrição" no label de cada método de frete, pro
+ * checkout novo (Figma: título + preço numa linha, endereço/prazo embaixo
+ * em cinza). O WooCommerce não tem esses campos separados - pro Local
+ * Pickup nativo (id "pickup_location"), o "título" completo já vem
+ * concatenado como "Retirar na loja (Rua X - Bairro - Prazo Y)" (ver
+ * Automattic\WooCommerce\Blocks\Shipping\PickupLocation::init(), que monta
+ * o label assim: $this->title . ' (' . $location['name'] . ')'). Extraímos
+ * o texto entre parênteses como descrição.
+ *
+ * A descrição não pode ser devolvida junto no mesmo filtro (o <label> vira
+ * `display:flex` só com título+preço - ver _checkout-v2.scss) - ela é
+ * guardada aqui e impressa por fora do <label>, no hook seguinte que o
+ * cart-shipping.php já chama pra cada método
+ * (`do_action('woocommerce_after_shipping_rate', $method, $index)`,
+ * logo depois do </li> abrir... na verdade antes de fechar o <li>).
+ */
+add_filter('woocommerce_cart_shipping_method_full_label', function ($label, $method) {
+    if (!luccifresh_is_new_checkout_page()) {
+        return $label;
+    }
+
+    $raw_title   = $method->get_label();
+    $short_title = $raw_title;
+    $description = '';
+
+    if (preg_match('/^(.*?)\s*\((.*)\)\s*$/', $raw_title, $matches)) {
+        $short_title = $matches[1];
+        $description = $matches[2];
+    }
+
+    $GLOBALS['luccifresh_shipping_method_description'] = $description;
+
+    $price_html = '';
+    $has_cost   = 0 < $method->cost;
+    $hide_cost  = !$has_cost && in_array($method->get_method_id(), ['free_shipping', 'local_pickup'], true);
+
+    if ($has_cost && !$hide_cost) {
+        $amount = WC()->cart->display_prices_including_tax()
+            ? $method->cost + $method->get_shipping_tax()
+            : $method->cost;
+        $price_html = '<span class="shipping-method-price">' . wc_price($amount) . '</span>';
+    }
+
+    return '<span class="shipping-method-title">' . esc_html($short_title) . '</span>' . $price_html;
+}, 20, 2);
+
+add_action('woocommerce_after_shipping_rate', function () {
+    if (!luccifresh_is_new_checkout_page()) {
+        return;
+    }
+
+    $description = $GLOBALS['luccifresh_shipping_method_description'] ?? '';
+    unset($GLOBALS['luccifresh_shipping_method_description']);
+
+    if ('' === $description) {
+        return;
+    }
+
+    echo '<span class="shipping-method-description">' . esc_html($description) . '</span>';
+});
+
+/**
+ * Adiciona o toggle do checkout novo em WooCommerce → Ajustes → Avançado
+ * (seção padrão, junto com "Página do carrinho"/"Página de finalização de
+ * compra"). Usa a Settings API nativa do WooCommerce - sem tela nem
+ * processamento de formulário próprios, o próprio WC salva o valor.
+ */
+add_filter('woocommerce_get_settings_advanced', function ($settings, $current_section) {
+    if ('' !== $current_section) {
+        return $settings;
+    }
+
+    $settings[] = [
+        'title' => __('Checkout novo (Lucci Fresh)', 'lucci-fresh'),
+        'type'  => 'title',
+        'desc'  => __('Layout de checkout custom do tema, feito para substituir o Fluid Checkout. Antes de ligar, desative o plugin Fluid Checkout em Plugins - veja docs/woocommerce-customizations.md no tema para detalhes.', 'lucci-fresh'),
+        'id'    => 'luccifresh_new_checkout_options',
+    ];
+    $settings[] = [
+        'title'   => __('Ativar checkout novo', 'lucci-fresh'),
+        'desc'    => __('Usa o layout de checkout custom do tema em vez do Fluid Checkout.', 'lucci-fresh'),
+        'id'      => 'luccifresh_new_checkout_enabled',
+        'default' => 'no',
+        'type'    => 'checkbox',
+    ];
+    $settings[] = [
+        'type' => 'sectionend',
+        'id'   => 'luccifresh_new_checkout_options',
+    ];
+
+    return $settings;
+}, 10, 2);
+
+if (luccifresh_new_checkout_enabled()) {
+    /**
+     * Desliga o próprio template/página de checkout do Fluid Checkout
+     * (fc_enable_checkout_page_template é o filtro que o plugin expõe pra
+     * isso - ver inc/checkout-page-template.php) para que
+     * woocommerce/checkout/form-checkout.php do tema seja realmente usado.
+     * Sem essa linha o Fluid Checkout intercepta a página via
+     * `template_include` / `woocommerce_locate_template` (prioridade 100)
+     * e o layout novo nunca chega a renderizar, mesmo com a opção ligada.
+     */
+    add_filter('fc_enable_checkout_page_template', '__return_false');
+
+    /**
+     * A página "Checkout" está salva com o bloco nativo do WooCommerce
+     * (Checkout Block / Store API), não o shortcode clássico. O checkout
+     * novo do tema é construído em cima do pipeline clássico (mesmos hooks
+     * documentados em docs/woocommerce-customizations.md), então, com a
+     * opção ligada, trocamos o conteúdo renderizado da página pelo
+     * shortcode clássico - sem editar o conteúdo salvo no banco, para
+     * continuar 100% reversível só desligando a opção.
+     */
+    add_filter('the_content', function ($content) {
+        if (!is_page(wc_get_page_id('checkout')) || !in_the_loop() || !is_main_query()) {
+            return $content;
+        }
+        return do_shortcode('[woocommerce_checkout]');
+    }, 20);
+
+    /**
+     * O core do WooCommerce liga woocommerce_checkout_payment() dentro do
+     * hook woocommerce_checkout_order_review (prioridade 20 - ver
+     * wc-template-hooks.php), então o resumo do pedido (order-summary.html.php)
+     * já imprime a lista de gateways de pagamento sozinho. O step-pagamento
+     * chama woocommerce_checkout_payment() de novo explicitamente para
+     * colocá-la no lugar certo do layout (dentro do step 3) - sem essa
+     * remoção teríamos DOIS grupos de radio com name="payment_method" na
+     * mesma página (mesma classe de bug já resolvida para o método de
+     * frete em step-entrega.html.php / review-order.php).
+     */
+    remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 20);
+}
+
+/**
+ * Renderiza um subconjunto dos campos de billing (mesmos campos/validações
+ * já registrados via woocommerce_checkout_fields) dentro de um step do
+ * checkout novo. Não duplica regras: usa os fields exatamente como o
+ * WooCommerce e o filtro acima os definem (required, labels, priority etc.).
+ */
+function luccifresh_render_billing_field_group(array $keys): void
+{
+    $checkout = WC()->checkout();
+    $fields   = $checkout->get_checkout_fields('billing');
+
+    foreach ($keys as $key) {
+        if (!isset($fields[$key])) {
+            continue;
+        }
+        woocommerce_form_field($key, $fields[$key], $checkout->get_value($key));
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Layout & estrutura
 // -----------------------------------------------------------------------------
 
@@ -170,10 +379,24 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $fields['billing']['billing_address_1']['placeholder'] = __('Rua, Av., número...', 'arterra');
     }
     if (isset($fields['billing']['billing_address_2'])) {
+        // O WooCommerce marca o label desse campo como 'screen-reader-text'
+        // por padrão (ver WC_Countries::get_address_fields(), 'address_2') -
+        // some visualmente mesmo definindo um texto aqui. O Figma mostra o
+        // label "Complemento (opcional)" visível, igual aos outros campos -
+        // o "(opcional)" já é adicionado automaticamente pelo próprio
+        // woocommerce_form_field() quando required=false (ver
+        // wc-template-functions.php), então o label aqui fica só "Complemento".
         $fields['billing']['billing_address_2']['label']       = __('Complemento', 'arterra');
+        $fields['billing']['billing_address_2']['label_class'] = [];
         $fields['billing']['billing_address_2']['placeholder'] = __('Apto, bloco, sala...', 'arterra');
         $fields['billing']['billing_address_2']['priority']    = 110; // por último
         $fields['billing']['billing_address_2']['required']    = false;
+        // O Fluid Checkout (plugin ativo, mesmo com o template de checkout
+        // dele desligado - ver luccifresh_new_checkout_enabled()) sobrescreve
+        // a classe padrão do WooCommerce (form-row-wide) para form-row-last,
+        // pensada pro grid de 2 colunas do checkout antigo. O Figma mostra
+        // Complemento sozinho, ocupando a largura toda.
+        $fields['billing']['billing_address_2']['class'] = ['form-row-wide'];
     }
     if (isset($fields['shipping']['shipping_address_2'])) {
         $fields['shipping']['shipping_address_2']['priority'] = 110; // por último
@@ -730,6 +953,7 @@ add_filter('gettext', function ($translation, $text, $domain) {
     }
 
     $strings = [
+        'Delivery Details'                         => 'Detalhes da entrega',
         'Delivery Date'                            => 'Data de entrega',
         'Select a delivery date'                   => 'Selecione uma data de entrega',
         'Carrier'                                  => 'Transportadora',
@@ -796,6 +1020,113 @@ add_filter('gettext_with_context', function ($translation, $text, $context, $dom
 // Entrega, com um <select> por endereço listando os Processing Methods reais
 // já cadastrados no ambiente atual.
 const LUCCI_PICKUP_PROCESSING_METHOD_OPTION = 'lucci_pickup_location_processing_methods';
+
+add_action('admin_menu', function () {
+    add_options_page(
+        __('Retirada + Data de Entrega', 'lucci-fresh'),
+        __('Retirada + Data de Entrega', 'lucci-fresh'),
+        'manage_woocommerce',
+        'lucci-pickup-processing-methods',
+        'lucci_render_pickup_processing_methods_page'
+    );
+});
+
+add_action('admin_init', function () {
+    register_setting('lucci_pickup_processing_methods', LUCCI_PICKUP_PROCESSING_METHOD_OPTION, [
+        'type'              => 'array',
+        'sanitize_callback' => function ($value) {
+            $value = is_array($value) ? $value : [];
+            $clean = [];
+            foreach ($value as $index => $processing_method_id) {
+                $processing_method_id = absint($processing_method_id);
+                if ($processing_method_id > 0) {
+                    $clean['pickup_location_' . absint($index)] = $processing_method_id;
+                }
+            }
+            return $clean;
+        },
+        'default'           => [],
+    ]);
+});
+
+function lucci_get_wc_pickup_locations(): array
+{
+    return get_option('pickup_location_pickup_locations', []);
+}
+
+function lucci_get_yith_processing_methods(): array
+{
+    if (!post_type_exists('yith_proc_method')) {
+        return [];
+    }
+
+    return get_posts([
+        'post_type'      => 'yith_proc_method',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+    ]);
+}
+
+function lucci_render_pickup_processing_methods_page(): void
+{
+    if (!current_user_can('manage_woocommerce')) {
+        return;
+    }
+
+    $pickup_locations  = lucci_get_wc_pickup_locations();
+    $processing_methods = lucci_get_yith_processing_methods();
+    $saved              = get_option(LUCCI_PICKUP_PROCESSING_METHOD_OPTION, []);
+    ?>
+    <div class="wrap">
+        <h1><?= esc_html__('Retirada no local — Data de Entrega', 'lucci-fresh') ?></h1>
+        <p>
+            <?= esc_html__('O "Retirar na loja" do WooCommerce não tem tela nativa para configurar o "Processing Method" da YITH (é uma tela React). Escolha aqui, para cada endereço de retirada, qual Processing Method (com seus próprios horários e limite de pedidos) deve ser usado.', 'lucci-fresh') ?>
+        </p>
+
+        <?php if (empty($pickup_locations)) : ?>
+            <div class="notice notice-warning">
+                <p><?= esc_html__('Nenhum endereço de retirada encontrado em WooCommerce → Configurações → Entrega → Retirar na loja. Cadastre pelo menos um endereço primeiro.', 'lucci-fresh') ?></p>
+            </div>
+            <?php return; ?>
+        <?php endif; ?>
+
+        <?php if (empty($processing_methods)) : ?>
+            <div class="notice notice-warning">
+                <p><?= esc_html__('Nenhum Processing Method encontrado em WooCommerce → Data de Entrega → Processing Methods. Cadastre pelo menos um antes de continuar.', 'lucci-fresh') ?></p>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="options.php">
+            <?php settings_fields('lucci_pickup_processing_methods') ?>
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <?php foreach ($pickup_locations as $index => $location) :
+                        $field_key     = 'pickup_location_' . $index;
+                        $current_value = $saved[$field_key] ?? '';
+                    ?>
+                        <tr>
+                            <th scope="row"><?= esc_html($location['name'] ?? sprintf(__('Endereço #%d', 'lucci-fresh'), $index + 1)) ?></th>
+                            <td>
+                                <select name="<?= esc_attr(LUCCI_PICKUP_PROCESSING_METHOD_OPTION) ?>[<?= esc_attr($index) ?>]">
+                                    <option value=""><?= esc_html__('— Selecione um Processing Method —', 'lucci-fresh') ?></option>
+                                    <?php foreach ($processing_methods as $method) : ?>
+                                        <option value="<?= esc_attr($method->ID) ?>" <?php selected($current_value, $method->ID) ?>>
+                                            <?= esc_html($method->post_title) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php submit_button() ?>
+        </form>
+    </div>
+    <?php
+}
 
 add_filter('ywcdd_get_shipping_method_option', function ($shipping_settings, $shipping_id) {
     if (0 !== strpos((string) $shipping_id, 'pickup_location')) {

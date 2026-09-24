@@ -57,5 +57,10 @@ $add_to_body_class = '';
 
 <body <?php body_class($add_to_body_class); ?>>
   <?php wp_body_open(); ?>
-  <?php $tpl_engine->partial('template/header/header') ?>
+  <?php if (function_exists('luccifresh_is_new_checkout_page') && luccifresh_is_new_checkout_page()) : ?>
+    <?php $tpl_engine->partial('template/header/header-top') ?>
+    <?php $tpl_engine->partial('template/header/header-checkout') ?>
+  <?php else : ?>
+    <?php $tpl_engine->partial('template/header/header') ?>
+  <?php endif; ?>
   <main id="main" class="main">

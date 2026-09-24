@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "abilities-api-implement": {
+      "source": "Woocommerce/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/abilities-api-implement/SKILL.md",
+      "computedHash": "2fde4fa12365c556be0a4c56e1871cf03ac6f0cba0593477b0dfd52a55ad1c26"
+    },
+    "woocommerce-stale-pr-audit": {
+      "source": "Woocommerce/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/woocommerce-stale-pr-audit/SKILL.md",
+      "computedHash": "52ec915e586fbd171a597b8b2fad723e522a2069fa01d0075cb16dfbf8b1ff51"
+    }
+  }
+}

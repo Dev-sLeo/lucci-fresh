@@ -102,3 +102,12 @@ Para repetir a animação ao entrar novamente na viewport, defina `data-animate-
   Conteúdo com fade ao entrar e sair da tela.
 </div>
 ```
+
+## Customizações de WooCommerce
+
+Todas as customizações de WooCommerce (checkout, frete, YITH Delivery Date,
+traduções, etc.) ficam em [`extension/woocommerce.php`](extension/woocommerce.php).
+Antes de mexer em qualquer coisa relacionada a frete, checkout ou data de
+entrega, leia [`docs/woocommerce-customizations.md`](docs/woocommerce-customizations.md) —
+tem o motivo de cada hook existir e os pontos que já quebraram uma vez com
+update de plugin.

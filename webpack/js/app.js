@@ -31,6 +31,9 @@ import checkoutLayout from "./scripts/checkoutLayout";
 import cepAutofill from "./scripts/cepAutofill";
 import shippingMethodToggle from "./scripts/shippingMethodToggle";
 import deliveryDateReposition from "./scripts/deliveryDateReposition";
+import checkoutSteps from "./scripts/checkoutSteps";
+import paymentMethodLayout from "./scripts/paymentMethodLayout";
+import shippingMethodCards from "./scripts/shippingMethodCards";
 
 window.gsap = gsap;
 
@@ -61,3 +64,6 @@ checkoutLayout();
 cepAutofill();
 shippingMethodToggle();
 deliveryDateReposition();
+checkoutSteps();
+paymentMethodLayout();
+shippingMethodCards();

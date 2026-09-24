@@ -1,0 +1,1093 @@
+// -----------------------------------------------------------------------------
+// Checkout v2 - layout custom nativo (substitui o Fluid Checkout)
+// Pixel-matched ao Figma (arquivo elbG69dWuejODeEe5sekj7, node 2106:770).
+// Ativo somente quando luccifresh_new_checkout_enabled() está ligada.
+// -----------------------------------------------------------------------------
+
+$cv2-text-dark: $color-preto; // #1F2818
+$cv2-text-muted: #677060;
+$cv2-text-sage: #70845f;
+$cv2-border: #dfe3da;
+$cv2-bg-soft: #f6f7f3;
+$cv2-bg-promo: #ffedd0;
+$cv2-radius: 8px;
+
+// ── Cabeçalho e rodapé "distraction-free" (só na página de checkout) ────────
+.o-header-checkout {
+  background: #fff;
+
+  &__inner {
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    display: inline-flex;
+    span {
+      font-family: $ff-heading;
+      font-size: 24px;
+      color: $cv2-text-dark;
+    }
+  }
+
+  &__badge {
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 600;
+    color: $cv2-text-sage;
+  }
+}
+
+.o-header-checkout__divider {
+  height: 1px;
+  background: $cv2-border;
+  width: 100%;
+}
+
+.o-footer-checkout {
+  background: #fff;
+
+  &__inner {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      font-family: $ff-primary;
+      font-size: 13px;
+      color: $cv2-text-muted;
+    }
+
+    a {
+      color: $cv2-text-muted;
+      text-decoration: underline;
+
+      &:hover {
+        color: $cv2-text-sage;
+      }
+    }
+  }
+}
+
+// ── Conteúdo do checkout ──────────────────────────────────────────────────
+.p-checkout-v2 {
+  padding: 32px 0 64px;
+
+  &__back {
+    display: inline-block;
+    margin-bottom: 24px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 600;
+    color: $cv2-text-sage;
+  }
+
+  &__intro {
+    margin-bottom: 24px;
+
+    h1 {
+      font-family: $ff-heading;
+      font-weight: 400;
+      font-size: 40px;
+      color: $cv2-text-dark;
+      margin: 0 0 4px;
+    }
+
+    p {
+      font-family: $ff-primary;
+      font-size: 16px;
+      color: $cv2-text-muted;
+      margin: 0;
+    }
+  }
+
+  &__cols {
+    display: grid;
+    grid-template-columns: 1fr 424px;
+    gap: 48px;
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__steps {
+    max-width: 744px;
+  }
+}
+
+// ── Indicador de etapas ─────────────────────────────────────────────────────
+.c-checkout-progress {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 25%;
+  }
+
+  &__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: $cv2-bg-soft;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 700;
+    color: $cv2-text-muted;
+  }
+
+  &__label {
+    font-family: $ff-primary;
+    font-size: 15px;
+    font-weight: 500;
+    color: $cv2-text-muted;
+  }
+
+  &__item.is-active,
+  &__item.is-done {
+    .c-checkout-progress__number {
+      background: $cv2-text-sage;
+      color: #fff;
+    }
+
+    .c-checkout-progress__label {
+      font-weight: 700;
+      color: $cv2-text-dark;
+    }
+  }
+
+  // Só etapas concluídas voltam ao clicar (igual ao Figma: passos 1/2 são
+  // <a>, o passo atual é texto simples) - a atual e as futuras não têm
+  // cursor de link porque não fazem nada ao clicar.
+  &__item.is-done {
+    cursor: pointer;
+
+    &:hover .c-checkout-progress__label {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ── Card de step (formulário) ────────────────────────────────────────────
+.c-checkout-step {
+  background: #fff;
+  border: 1px solid $cv2-border;
+  border-radius: $cv2-radius;
+  padding: 32px;
+  margin-bottom: 24px;
+
+  &__title {
+    font-family: $ff-heading;
+    font-weight: 400;
+    font-size: 28px;
+    color: $cv2-text-dark;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-family: $ff-primary;
+    font-size: 15px;
+    color: $cv2-text-muted;
+    margin: 0 0 22px;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 22px;
+  }
+
+  &__helper {
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+    margin: 0 0 22px;
+  }
+
+  &__privacy {
+    font-family: $ff-primary;
+    font-size: 12px;
+    color: $cv2-text-muted;
+    margin: 16px 0 0;
+  }
+
+  &__confirmed {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 500;
+    color: $cv2-text-sage;
+    margin: 0 0 22px;
+
+    button {
+      background: none;
+      border: none;
+      font-weight: 600;
+      color: $cv2-text-sage;
+      cursor: pointer;
+    }
+  }
+
+  &__section-title {
+    font-family: $ff-heading;
+    font-weight: 400;
+    font-size: 20px;
+    color: $cv2-text-dark;
+    margin: 0 0 16px;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid $cv2-border;
+    margin: 22px 0;
+  }
+
+  // Sem JS: todos os steps ficam visíveis (checkout continua funcional).
+  // Com JS (form.js-stepped): só o step ativo aparece.
+  .p-checkout-v2__form.js-stepped &:not(.is-active) {
+    display: none;
+  }
+
+  // Campos do WooCommerce (form-row/input-text) restilizados no padrão do Figma
+  .form-row {
+    margin: 0;
+    padding: 0;
+
+    label {
+      display: block;
+      font-family: $ff-primary;
+      font-size: 14px;
+      font-weight: 600;
+      color: $cv2-text-dark;
+      margin-bottom: 8px;
+
+      .required {
+        display: none;
+      }
+    }
+
+    .input-text,
+    select,
+    textarea {
+      width: 100%;
+      height: 56px;
+      padding: 0 16px;
+      border: 1px solid $cv2-border;
+      border-radius: $cv2-radius;
+      font-family: $ff-primary;
+      font-size: 16px;
+      color: $cv2-text-dark;
+
+      &::placeholder {
+        color: $cv2-text-muted;
+      }
+    }
+
+    textarea {
+      height: auto;
+      min-height: 96px;
+      padding: 16px;
+    }
+  }
+
+  // Estado/País ficam fixos (SP/Brasil, loja só atende SP - ver
+  // extension/woocommerce.php) e são marcados com essa classe para ficar
+  // ocultos, igual já acontecia no checkout antigo.
+  .form-row.fc-hidden-field {
+    display: none;
+  }
+
+  // "Ship to a different address?" (checkout/form-shipping.php do WC core,
+  // sem override no tema) não existe no Figma - a loja não oferece endereço
+  // de entrega diferente do de cobrança. Mantemos o campo no DOM (evita
+  // reescrever o template nativo só por isso) e só escondemos visualmente.
+  #ship-to-different-address {
+    display: none;
+  }
+
+  .c-checkout-step__row {
+    display: flex;
+    gap: 20px;
+
+    .form-row {
+      flex: 1 1 0;
+    }
+
+    // Endereço/Número e CEP/Bairro não são 50/50 no Figma - os números
+    // abaixo reproduzem a proporção real (500:160 e 240:420).
+    &--address .form-row:first-child {
+      flex-grow: 500;
+    }
+    &--address .form-row:last-child {
+      flex-grow: 160;
+    }
+    &--cep .form-row:first-child {
+      flex-grow: 240;
+    }
+    &--cep .form-row:last-child {
+      flex-grow: 420;
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+
+  // ── Métodos de frete (radios nativos do WooCommerce, restilizados) ──────
+  //
+  // cart-shipping.php (WC core, sem override no tema) monta <tr><th>Envio
+  // </th><td><ul>...</ul></td></tr> - mas este container é uma <div>, não
+  // uma <table>, então o parser HTML descarta as tags <tr>/<th>/<td> por
+  // não serem válidas fora de tabela (mantendo só o texto "Envio" como nó
+  // solto). Não dá pra esconder algo que o navegador nem chega a criar no
+  // DOM - o nome do pacote é zerado na origem, via filtro
+  // `woocommerce_shipping_package_name`, em _step-entrega.html.php.
+  .c-checkout-step__shipping-methods {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    li {
+      // Grid (não flex) de propósito: título e descrição (a segunda vem do
+      // hook `woocommerce_after_shipping_rate`, ver extension/woocommerce.php)
+      // ficam na coluna 2, empilhados; o radio ocupa a coluna 1 e centraliza
+      // contra a 1ª linha (o título), sem se mexer se a descrição quebrar.
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 10px;
+      row-gap: 4px;
+      background: #fff;
+      border: 1px solid $cv2-border;
+      border-radius: $cv2-radius;
+      padding: 18px;
+      cursor: pointer;
+
+      &:has(input:checked) {
+        background: $cv2-bg-soft;
+        border-color: $cv2-text-sage;
+      }
+
+      input {
+        grid-column: 1;
+        grid-row: 1;
+        margin: 0;
+        margin-top: 3px;
+        width: 13px;
+        accent-color: $color-preto;
+        // O clique em qualquer lugar do card é tratado em JS
+        // (shippingMethodCards.js), que marca o radio manualmente -
+        // pointer-events aqui não faz diferença pro clique funcionar, só
+        // evita um segundo evento de clique nativo direto no input (que já
+        // dispara sozinho) brigar com o dispatch do JS.
+        pointer-events: none;
+      }
+
+      label {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex !important;
+        justify-content: space-between;
+        max-width: 95.49%;
+        width: 100%;
+        margin: 0;
+        font-family: $ff-primary;
+        font-size: 15px;
+        font-weight: 600;
+        color: $cv2-text-dark;
+        line-height: 1.45;
+      }
+
+      .shipping-method-description {
+        grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+        font-family: $ff-primary;
+        font-size: 13px;
+        font-weight: 400;
+        color: $cv2-text-muted;
+        line-height: 1.45;
+      }
+    }
+  }
+
+  // Botão "Continuar" (pill, laranja)
+  .c-btn--checkout-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 53px;
+    background: $color-laranja-cta;
+    border-radius: 600px;
+    border: 0;
+    font-family: $ff-primary;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      background: darken($color-laranja-cta, 5%);
+    }
+  }
+}
+
+// Restyle da lista padrão de gateways (ul.wc_payment_methods) como "cards",
+// mantendo o markup/JS nativo do WooCommerce (radios reais, sem duplicar
+// nenhuma lógica de toggle/validação/submit de cada gateway). O subtítulo
+// de cada card ("Aprovação em instantes" etc.) vem do override
+// woocommerce/checkout/payment-method.php (nenhum gateway real tem esse
+// dado - é cópia fixa do Figma).
+.c-checkout-step__payment {
+  &-subtitle {
+    font-family: $ff-primary;
+    font-size: 15px;
+    color: $cv2-text-muted;
+    margin: 0 0 16px;
+  }
+
+  // O core do WooCommerce (woocommerce-layout.css / blocks) pinta
+  // #payment.woocommerce-checkout-payment com um roxo translúcido
+  // (--wc-secondary) e padding/raio próprios - não existe no Figma.
+  // !important necessário: esse CSS do WC carrega DEPOIS do main.min.css
+  // do tema (ver header.php), então numa disputa de mesma especificidade
+  // ele vence por ordem na cascata.
+  #payment.woocommerce-checkout-payment {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  // O botão real de finalizar (#place_order, checkout/payment.php do WC
+  // core) sempre vem junto de #payment - mas nesse layout ele só deve
+  // aparecer no fim do step de Revisão (button[data-checkout-place-order]
+  // em _step-revisao.html.php, que só DISPARA o clique nesse botão real).
+  // Ficar visível aqui duplicava o CTA ("Finalizar pedido" + "Revisar
+  // pedido" um embaixo do outro). O clique programático (`.click()`) num
+  // elemento com display:none continua funcionando normalmente.
+  .place-order {
+    display: none !important;
+  }
+
+  ul.wc_payment_methods {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 16px;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 0 20px !important;
+
+    li.wc_payment_method {
+      // Grid (mesmo padrão dos métodos de frete): radio + título na linha
+      // 1, subtítulo na linha 2 - só nos 3 cards do seletor (não dentro do
+      // .payment_box, que tem seu próprio grid/flex herdado do WC/plugin).
+      // !important pelo mesmo motivo do #payment acima: woocommerce.css
+      // já dá padding/margin pro <li> e carrega depois do tema.
+      display: grid !important;
+      grid-template-columns: auto 1fr;
+      column-gap: 8px;
+      row-gap: 5px;
+      flex: 1 1 200px;
+      align-content: start;
+      background: #fff !important;
+      border: 1px solid $cv2-border !important;
+      border-radius: $cv2-radius !important;
+      padding: 20px !important;
+      margin: 0 !important;
+
+      &:has(> input:checked) {
+        background: $cv2-bg-soft !important;
+        border-color: $cv2-text-sage !important;
+      }
+
+      > input[type="radio"] {
+        grid-column: 1;
+        grid-row: 1;
+        margin: 0 !important;
+        margin-top: 2px !important;
+        width: 13px !important;
+        accent-color: $color-preto;
+      }
+
+      > label {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0 !important;
+        font-family: $ff-primary;
+        font-size: 16px;
+        font-weight: 700;
+        color: $cv2-text-dark;
+        line-height: 1.3;
+
+        // Alguns gateways (ex.: Rede) imprimem o próprio ícone dentro do
+        // <label> via $gateway->get_icon() - removido no override do
+        // template (payment-method.php) para o card ficar só com texto,
+        // igual ao Figma. Isso aqui é só um cinto e suspensório, caso
+        // algum gateway novo volte a imprimir um ícone ali.
+        img {
+          display: none;
+        }
+      }
+
+      .payment-method-subtitle {
+        grid-column: 2;
+        grid-row: 2;
+        font-family: $ff-primary;
+        font-size: 13px;
+        color: $cv2-text-muted;
+      }
+    }
+  }
+
+  // O conteúdo específico de cada gateway (campos de cartão, texto do
+  // Pix/COD) vem, por padrão, DENTRO do <li> de cada método - preso na
+  // largura estreita do card (~214px). O script paymentMethodLayout.js
+  // (ver webpack/js/scripts/) move o .payment_box visível para virar
+  // irmão da <ul>, ocupando a largura inteira do formulário (680px) como
+  // no Figma. O toggle nativo de mostrar/esconder (assets/js/frontend/
+  // checkout.js do WC core) usa seletor por classe, não por posição no
+  // DOM, então mover esses elementos é seguro.
+  .payment_box {
+    margin-top: 20px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    color: $cv2-text-dark;
+
+    > p {
+      margin: 0;
+    }
+  }
+
+  // Pix (lkn_pix_for_woocommerce) e "Na entrega" (cod) só têm um <p> de
+  // texto explicativo - a caixa de destaque abaixo reaproveita esse texto
+  // real do gateway (não é conteúdo inventado), só estilizada como no
+  // Figma ("Rápido, simples e seguro"). As duas classes (payment_box e
+  // payment_method_xxx) ficam no MESMO elemento, não uma dentro da outra.
+  .payment_box.payment_method_lkn_pix_for_woocommerce,
+  .payment_box.payment_method_cod {
+    background: $cv2-bg-promo;
+    border-radius: $cv2-radius;
+    padding: 18px;
+  }
+
+  // Formulário de cartão (Rede/Maxipago): os campos já usam as mesmas
+  // classes do WooCommerce (form-row/input-text/label - ver
+  // .c-checkout-step .form-row mais acima), mas o plugin aplica estilo
+  // inline direto nos <input> (font-size/padding via JS), que sempre
+  // ganha de qualquer regra externa sem !important.
+  .payment_box .form-row {
+    margin: 0 0 22px;
+
+    .input-text,
+    .input-select {
+      height: 56px !important;
+      padding: 0 16px !important;
+      font-size: 16px !important;
+      border: 1px solid $cv2-border;
+      border-radius: $cv2-radius;
+    }
+
+    label {
+      display: block;
+      font-family: $ff-primary;
+      font-size: 14px;
+      font-weight: 600;
+      color: $cv2-text-dark;
+      margin-bottom: 8px;
+
+      .required {
+        display: none;
+      }
+
+      // Ícone de cada campo (Rede) - mantido (ajuda a identificar o campo
+      // rapidamente), só reposicionado pra não sobrepor o texto do label.
+      .icon-rede-input {
+        display: inline-flex;
+        margin-left: 6px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  // Preview animado do cartão (Rede/Jpanel Card) - recurso real do
+  // plugin, sem equivalente no Figma. Mantido (ajuda o cliente a
+  // conferir o número digitado), só com espaçamento pra não colar no
+  // seletor de métodos.
+  .card-wrapper {
+    margin: 4px 0 18px;
+  }
+}
+
+// ── Resumo do pedido (coluna lateral) ────────────────────────────────────
+//
+// #order_review .shop_table (em _checkout.scss, do checkout antigo) usa um
+// seletor com ID (`#order_review .shop_table th, td { border-bottom: ...;
+// &:last-child { text-align: right } }`), então qualquer override daqui só
+// com classes nunca ganha por especificidade, mesmo vindo depois na
+// cascata - por isso os overrides abaixo (borda/alinhamento) também usam
+// `#order_review` no seletor, empatando a especificidade (ID + classe +
+// elemento) e ganhando por ordem de importação (_checkout-v2 depois de
+// _checkout em _woocommerce.scss).
+//
+// border-top também precisa ser zerado explicitamente: o CSS padrão do
+// WooCommerce (.woocommerce table.shop_table th/td) já aplica
+// `border-top: 1px solid rgba(...)` em toda célula - como aqui a gente só
+// mexia no border-bottom, esse border-top de origem ficava valendo sozinho
+// e imprimia uma linha a mais debaixo de CADA linha (Subtotal, Entrega,
+// Total), não só nos 2 divisores do Figma.
+#order_review .luccifresh-summary-table {
+  border: none;
+
+  th,
+  td {
+    border-top: none;
+    border-bottom: none;
+    text-align: left;
+
+    &:last-child {
+      text-align: left;
+    }
+  }
+
+  tfoot tr:first-child th,
+  tfoot tr:first-child td {
+    border-bottom: none;
+  }
+
+  tfoot .order-total th,
+  tfoot .order-total td {
+    border-bottom: none;
+  }
+}
+
+.p-checkout-v2__summary {
+  background: $cv2-bg-soft;
+  border: 1px solid $cv2-border;
+  border-radius: $cv2-radius;
+  padding: 28px;
+
+  h3 {
+    font-family: $ff-heading;
+    font-weight: 400;
+    font-size: 26px;
+    color: $cv2-text-dark;
+    margin: 0 0 4px;
+  }
+
+  &-subtitle {
+    font-family: $ff-primary;
+    font-size: 14px;
+    color: $cv2-text-muted;
+    margin: 0 0 18px;
+  }
+
+  // Layout padrão (checkout antigo) - fallback caso essa tabela apareça
+  // fora do checkout novo (não deveria, mas evita quebrar visualmente).
+  .woocommerce-checkout-review-order-table {
+    width: 100%;
+    border: 0;
+    margin: 0 0 18px;
+
+    thead {
+      display: none;
+    }
+
+    td,
+    th {
+      border: 0;
+      padding: 0 0 12px;
+      font-family: $ff-primary;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: $cv2-text-dark;
+    }
+
+    .product-total {
+      font-size: 16px;
+      font-weight: 700;
+      color: $cv2-text-dark;
+      text-align: right;
+    }
+
+    tfoot tr {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+    }
+  }
+
+  // Layout do checkout novo (Figma): sem grade de tabela nenhuma - só 2
+  // divisores (depois dos produtos, antes do total), igual ao design.
+  .luccifresh-summary-table {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+    margin: 0 0 18px;
+
+    thead {
+      display: none;
+    }
+
+    tr,
+    td,
+    th {
+      border: none;
+      background: transparent;
+    }
+
+    tbody {
+      tr {
+        display: block;
+      }
+
+      td {
+        display: block;
+        padding: 0 0 16px;
+      }
+    }
+
+    &__item,
+    .luccifresh-summary-item__name,
+    .luccifresh-summary-item__qty,
+    .luccifresh-summary-item__total {
+      display: block;
+      font-family: $ff-primary;
+    }
+
+    .luccifresh-summary-item__name {
+      font-size: 16px;
+      font-weight: 600;
+      color: $cv2-text-dark;
+      margin-bottom: 4px;
+    }
+
+    .luccifresh-summary-item__qty {
+      font-size: 14px;
+      color: $cv2-text-muted;
+      margin-bottom: 4px;
+    }
+
+    .luccifresh-summary-item__total {
+      font-size: 16px;
+      font-weight: 700;
+      color: $cv2-text-dark;
+    }
+
+    // Divisor #1 - depois dos produtos, antes do Subtotal.
+    tfoot tr:first-child {
+      border-top: 1px solid $cv2-border;
+    }
+
+    tfoot tr {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+
+      th,
+      td {
+        padding: 0;
+        font-size: 15px;
+        color: $cv2-text-dark;
+      }
+
+      th {
+        font-weight: 400;
+      }
+
+      td {
+        font-weight: 600;
+        text-align: right;
+      }
+    }
+
+    // Divisor #2 - antes do Total.
+    tfoot .order-total {
+      border-top: 1px solid $cv2-border;
+      margin-top: 4px;
+      padding-top: 18px;
+
+      th,
+      td {
+        font-weight: 700;
+      }
+
+      th {
+        font-size: 20px;
+      }
+
+      td {
+        font-size: 24px;
+      }
+    }
+  }
+
+  &-edit-cart {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 600;
+    color: $cv2-text-sage;
+  }
+}
+
+// ── Revisão ───────────────────────────────────────────────────────────────
+.c-checkout-review {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+  margin-bottom: 22px;
+
+  .c-checkout-step__divider {
+    margin: 0;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+      font-family: $ff-primary;
+      font-size: 16px;
+      font-weight: 700;
+      color: $cv2-text-dark;
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: $ff-primary;
+      font-size: 14px;
+      font-weight: 600;
+      color: $cv2-text-sage;
+      cursor: pointer;
+    }
+  }
+
+  &__section-content {
+    font-family: $ff-primary;
+    font-size: 15px;
+    color: $cv2-text-muted;
+
+    p {
+      margin: 0;
+      line-height: 1.45;
+    }
+  }
+
+  &__total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: $ff-primary;
+    font-weight: 700;
+    color: $cv2-text-dark;
+
+    p {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    strong {
+      font-size: 24px;
+    }
+
+    // Linhas de subtotal/entrega/desconto na thank-you page (mesmo
+    // componente do Total, só que sem negrito/font-size maior).
+    &--line {
+      p {
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      strong {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+// ── Página "Pedido confirmado" (woocommerce/checkout/thankyou.php) ────────
+.c-checkout-step--confirmed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+
+  .c-checkout-step__title,
+  .c-checkout-step__subtitle {
+    margin: 0;
+  }
+
+  .c-checkout-step__section-title {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+
+  // Figma: título + as duas primeiras linhas de texto (pedido/e-mail) ficam
+  // juntos, sem o espaçamento de 22px do gap geral do card - só a caixa de
+  // previsão de entrega em diante volta a ter esse respiro.
+  .c-checkout-step__subtitle + .c-checkout-step__subtitle {
+    margin-top: -14px;
+  }
+}
+
+.c-checkout-step__success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $cv2-text-sage;
+  color: #fff;
+  font-family: $ff-primary;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.c-checkout-step__info-box {
+  width: 100%;
+  background: $cv2-bg-soft;
+  border-radius: $cv2-radius;
+  padding: 18px;
+
+  &-title {
+    margin: 0 0 5px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+
+  &-text {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+  }
+}
+
+// Itens do pedido no resumo da thank-you page (fora de tabela - o carrinho
+// já foi esvaziado nesse ponto, o resumo vem de $order, não de WC()->cart).
+.luccifresh-summary-item {
+  width: 100%;
+  margin-bottom: 16px;
+
+  &__name {
+    margin: 0 0 4px;
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 600;
+    color: $cv2-text-dark;
+  }
+
+  &__qty {
+    margin: 0 0 4px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    color: $cv2-text-muted;
+  }
+
+  &__total {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 16px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+}
+
+// ── "Aguardando Pix" (tela pós-checkout, thankyou.php) ───────────────────
+//
+// O QR/copiar-código/instruções aqui dentro (.pixforwoo-qrcode-content) são
+// o widget real do plugin Payment Gateway Pix for WooCommerce, com o
+// próprio CSS dele (LknPaymentPixForWoocommercePaymentFields.css) - só
+// ajustamos espaçamento/largura pra caber no cartão do checkout novo, sem
+// redesenhar o widget em si.
+.c-pix-wait {
+  &__qr {
+    width: 100%;
+    margin-bottom: 22px;
+
+    // Espaço entre o widget do Pix e qualquer outro bloco que também
+    // escute o mesmo hook (ex.: o aviso "Delivery Details" do YITH
+    // Delivery Date, quando o método de entrega tem data configurada).
+    > * + * {
+      margin-top: 20px;
+    }
+
+    .pixforwoo-qrcode-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .pixforwoo-qrcode-image-container img,
+    .pixforwoo-qrcode-image-container canvas {
+      max-width: 176px;
+    }
+  }
+
+  &__notice {
+    background: $cv2-bg-promo;
+    border-radius: $cv2-radius;
+    padding: 18px;
+    margin-bottom: 22px;
+  }
+
+  &__notice-title {
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+    margin: 0 0 5px;
+  }
+
+  &__notice-text {
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+    margin: 0;
+  }
+}
