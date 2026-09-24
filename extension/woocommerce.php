@@ -195,6 +195,21 @@ if (luccifresh_new_checkout_enabled()) {
      * frete em step-entrega.html.php / review-order.php).
      */
     remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 20);
+
+    // O layout do Figma não tem a caixa de avisos (.woocommerce-notices-wrapper)
+    // nem o "Tem um cupom?" (.woocommerce-form-coupon-toggle) acima do
+    // checkout. woocommerce_output_all_notices() está registrada em DOIS
+    // hooks (wc-template-hooks.php) - woocommerce_before_checkout_form_cart_notices
+    // (dispara antes de wc_get_template('checkout/form-checkout.php'), fora
+    // do template) e woocommerce_before_checkout_form (dispara dentro de
+    // wizard.html.php, dá tempo do login/"Já é cliente?" aparecer antes) -
+    // remover só uma das duas deixava o aviso "Cliente correspondeu à área
+    // X" (e qualquer outro wc_add_notice()) vazando pela outra. Erros de
+    // validação no envio continuam aparecendo: o checkout.js do WC os
+    // insere direto no <form>, não em nenhum desses dois hooks.
+    remove_action('woocommerce_before_checkout_form_cart_notices', 'woocommerce_output_all_notices', 10);
+    remove_action('woocommerce_before_checkout_form', 'woocommerce_output_all_notices', 10);
+    remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
 }
 
 /**
@@ -591,13 +606,39 @@ add_action('woocommerce_cart_calculate_fees', function ($cart) {
     if (is_admin() && !defined('DOING_AJAX')) return;
     if (!$cart || $cart->is_empty()) return;
 
-    $chosen_method = WC()->session ? WC()->session->get('chosen_payment_method') : '';
+    // Durante o processamento do pedido (finalizar compra), o método de pagamento
+    // enviado no POST é a fonte de verdade. Usar apenas a sessão aqui permite que
+    // o desconto fique "preso" quando o cliente troca de gateway e finaliza antes
+    // do AJAX nativo (update_order_review) atualizar a sessão no servidor.
+    if (isset($_POST['payment_method'])) {
+        $chosen_method = wc_clean(wp_unslash($_POST['payment_method']));
+    } else {
+        $chosen_method = WC()->session ? WC()->session->get('chosen_payment_method') : '';
+    }
+
     if (!$chosen_method || stripos($chosen_method, 'pix') === false) return;
 
     $discount = -1 * ($cart->get_subtotal() * 0.05);
 
     $cart->add_fee(__('Desconto Pix (5%)', 'arterra'), $discount, false);
 });
+
+// Trava final de segurança: garante que o pedido só é criado com o desconto Pix
+// se o gateway de pagamento efetivamente escolhido no pedido for o Pix.
+add_action('woocommerce_checkout_create_order', function ($order) {
+    $payment_method = $order->get_payment_method();
+    $has_pix = $payment_method && stripos($payment_method, 'pix') !== false;
+
+    foreach ($order->get_items('fee') as $fee_item) {
+        if (strpos($fee_item->get_name(), 'Desconto Pix') === false) continue;
+
+        if (!$has_pix) {
+            $order->remove_item($fee_item->get_id());
+        }
+    }
+
+    $order->calculate_totals(false);
+}, 20, 1);
 
 // -----------------------------------------------------------------------------
 // Emails transacionais
