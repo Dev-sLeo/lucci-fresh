@@ -4,11 +4,11 @@
  *
  * Cópia de woocommerce/templates/checkout/thankyou.php (v8.1.0). Só troca
  * de comportamento quando o checkout novo está ligado (ver
- * luccifresh_new_checkout_enabled() em extension/woocommerce.php) E o
- * pedido é Pix e ainda não foi pago - nesse caso mostra a tela "Aguardando
- * Pix" do Figma (node 2106:1420) em vez do conteúdo padrão do WooCommerce.
- * Qualquer outro caso (outro gateway, Pix já pago, checkout antigo)
- * continua exatamente igual ao core.
+ * luccifresh_new_checkout_enabled() em extension/woocommerce.php):
+ * - Pix ainda não pago: tela "Aguardando Pix" do Figma (node 2106:1420).
+ * - Qualquer outro caso com pedido válido (não falho): tela "Pedido
+ *   confirmado" do Figma (node 2106:1500).
+ * Pedido falho ou checkout antigo continuam exatamente iguais ao core.
  *
  * @var WC_Order|false $order
  */
@@ -17,13 +17,20 @@ defined('ABSPATH') || exit;
 
 global $tpl_engine;
 
+$luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') && luccifresh_new_checkout_enabled();
+
 $luccifresh_show_pix_wait = $order
-    && function_exists('luccifresh_new_checkout_enabled') && luccifresh_new_checkout_enabled()
+    && $luccifresh_new_checkout
     && $order->needs_payment()
     && false !== stripos($order->get_payment_method(), 'pix');
 
 if ($luccifresh_show_pix_wait) {
     $tpl_engine->partial('template/pages/checkout/pix-aguardando', ['order' => $order]);
+    return;
+}
+
+if ($order && $luccifresh_new_checkout && !$order->has_status('failed')) {
+    $tpl_engine->partial('template/pages/checkout/pedido-confirmado', ['order' => $order]);
     return;
 }
 ?>

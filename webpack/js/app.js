@@ -35,6 +35,8 @@ import checkoutSteps from "./scripts/checkoutSteps";
 import paymentMethodLayout from "./scripts/paymentMethodLayout";
 import shippingMethodCards from "./scripts/shippingMethodCards";
 import fluidCheckoutPaymentThrottle from "./scripts/fluidCheckoutPaymentThrottle";
+import pixCopyCode from "./scripts/pixCopyCode";
+import pixPaymentPoll from "./scripts/pixPaymentPoll";
 
 window.gsap = gsap;
 
@@ -69,3 +71,5 @@ checkoutSteps();
 paymentMethodLayout();
 shippingMethodCards();
 fluidCheckoutPaymentThrottle();
+pixCopyCode();
+pixPaymentPoll();

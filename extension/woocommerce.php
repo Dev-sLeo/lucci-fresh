@@ -47,6 +47,37 @@ function luccifresh_is_new_checkout_page(): bool
 }
 
 /**
+ * Igual a luccifresh_is_new_checkout_page(), mas também reconhece o
+ * recálculo AJAX de frete (wc-ajax=update_order_review). Esse endpoint só
+ * é chamado pelo checkout.js do próprio WooCommerce (o carrinho usa uma
+ * action diferente, update_shipping_method - ver assets/js/frontend/cart.js),
+ * então é seguro assumir contexto de checkout sempre que ele roda.
+ *
+ * Precisa dessa distinção porque is_page() não é confiável durante uma
+ * requisição wc-ajax: essa rota não passa pelo carregamento normal de
+ * página do WordPress (WP::main()), então as condicionais de página nunca
+ * chegam a ser resolvidas - qualquer filtro que dependa só de
+ * luccifresh_is_new_checkout_page() simplesmente não faz nada durante o
+ * recálculo, mesmo com o checkout novo ligado. Foi exatamente isso que
+ * fazia o "Método de entrega" no step de Entrega nunca atualizar sozinho:
+ * o fragmento (ver woocommerce_update_order_review_fragments abaixo) e a
+ * formatação do título/preço eram gerados corretamente no carregamento da
+ * página, mas silenciosamente puladas em todo recálculo via AJAX.
+ */
+function luccifresh_is_new_checkout_shipping_context(): bool
+{
+    if (!luccifresh_new_checkout_enabled()) {
+        return false;
+    }
+
+    if (luccifresh_is_new_checkout_page()) {
+        return true;
+    }
+
+    return isset($_GET['wc-ajax']) && 'update_order_review' === $_GET['wc-ajax'];
+}
+
+/**
  * O step de entrega do checkout novo (_step-entrega.html.php) chama
  * wc_cart_totals_shipping_html() pra listar os métodos de frete fora do
  * <table> padrão do WooCommerce - o Figma não tem o rótulo "Envio" que o
@@ -58,7 +89,7 @@ function luccifresh_is_new_checkout_page(): bool
  * aponta pro checkout novo.
  */
 add_filter('woocommerce_shipping_package_name', function ($package_name) {
-    return luccifresh_is_new_checkout_page() ? '' : $package_name;
+    return luccifresh_is_new_checkout_shipping_context() ? '' : $package_name;
 });
 
 /**
@@ -77,15 +108,20 @@ add_filter('woocommerce_shipping_package_name', function ($package_name) {
  * cart-shipping.php já chama pra cada método
  * (`do_action('woocommerce_after_shipping_rate', $method, $index)`,
  * logo depois do </li> abrir... na verdade antes de fechar o <li>).
+ *
+ * Métodos que não concatenam nada no título (todos, exceto o Local Pickup
+ * nativo) usam a descrição REAL do método (WC_Shipping_Rate::
+ * get_description(), preenchida pelo próprio método a partir da config do
+ * admin) em vez de tentar extrair algo do título.
  */
 add_filter('woocommerce_cart_shipping_method_full_label', function ($label, $method) {
-    if (!luccifresh_is_new_checkout_page()) {
+    if (!luccifresh_is_new_checkout_shipping_context()) {
         return $label;
     }
 
     $raw_title   = $method->get_label();
     $short_title = $raw_title;
-    $description = '';
+    $description = method_exists($method, 'get_description') ? $method->get_description() : '';
 
     if (preg_match('/^(.*?)\s*\((.*)\)\s*$/', $raw_title, $matches)) {
         $short_title = $matches[1];
@@ -109,7 +145,7 @@ add_filter('woocommerce_cart_shipping_method_full_label', function ($label, $met
 }, 20, 2);
 
 add_action('woocommerce_after_shipping_rate', function () {
-    if (!luccifresh_is_new_checkout_page()) {
+    if (!luccifresh_is_new_checkout_shipping_context()) {
         return;
     }
 
@@ -121,6 +157,39 @@ add_action('woocommerce_after_shipping_rate', function () {
     }
 
     echo '<span class="shipping-method-description">' . esc_html($description) . '</span>';
+});
+
+/**
+ * Faz o bloco "Método de entrega" do step Entrega (_step-entrega.html.php)
+ * atualizar sozinho quando o WooCommerce recalcula o frete via AJAX
+ * (update_checkout - dispara ao editar CEP/endereço, ver cepAutofill.js).
+ *
+ * Por padrão, o AJAX de recálculo do WooCommerce só substitui alguns
+ * pedaços fixos da página (a tabela de resumo do pedido, principalmente -
+ * `woocommerce_update_order_review_fragments`). Como o step de Entrega
+ * chama wc_cart_totals_shipping_html() manualmente, fora dessa tabela (pra
+ * ficar junto do endereço, como no Figma), esse bloco nunca era tocado pelo
+ * AJAX: o preço/distância ficavam sempre travados no valor calculado
+ * quando a página carregou, mesmo o WooCommerce recalculando por baixo
+ * (visível só no resumo lateral, que usa o caminho padrão). Registrar esse
+ * fragmento aqui é a forma correta/documentada de estender esse mecanismo -
+ * o próprio checkout.js do WooCommerce (`update_checkout_action`) já sabe
+ * substituir qualquer seletor que apareça neste array.
+ */
+add_filter('woocommerce_update_order_review_fragments', function ($fragments) {
+    if (!luccifresh_is_new_checkout_shipping_context()) {
+        return $fragments;
+    }
+
+    ob_start();
+    ?>
+    <div class="c-checkout-step__shipping-methods fc-shipping-method__packages">
+      <?php wc_cart_totals_shipping_html(); ?>
+    </div>
+    <?php
+    $fragments['.c-checkout-step__shipping-methods'] = ob_get_clean();
+
+    return $fragments;
 });
 
 /**
@@ -411,7 +480,15 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         // a classe padrão do WooCommerce (form-row-wide) para form-row-last,
         // pensada pro grid de 2 colunas do checkout antigo. O Figma mostra
         // Complemento sozinho, ocupando a largura toda.
-        $fields['billing']['billing_address_2']['class'] = ['form-row-wide'];
+        // 'address-field' precisa ser mantida (não só as classes de layout
+        // form-row-*): é o marcador que o checkout.js do WooCommerce core
+        // usa pra saber quais campos, ao mudar, devem disparar o recálculo
+        // de frete (update_checkout). Sobrescrever a classe inteira sem
+        // reincluir esse marcador faz o campo (visualmente normal) parar de
+        // avisar o WooCommerce que o endereço mudou - foi exatamente isso
+        // que fazia o frete "travar" no valor calculado pro endereço
+        // anterior ao editar CEP/endereço/cidade depois da primeira vez.
+        $fields['billing']['billing_address_2']['class'] = ['form-row-wide', 'address-field'];
     }
     if (isset($fields['shipping']['shipping_address_2'])) {
         $fields['shipping']['shipping_address_2']['priority'] = 110; // por último
@@ -419,21 +496,21 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     }
     if (isset($fields['billing']['billing_city'])) {
         $fields['billing']['billing_city']['label']    = __('Cidade', 'arterra');
-        $fields['billing']['billing_city']['class']    = ['form-row-wide'];
+        $fields['billing']['billing_city']['class']    = ['form-row-wide', 'address-field'];
         $fields['billing']['billing_city']['priority'] = 100;
     }
     if (isset($fields['shipping']['shipping_city'])) {
-        $fields['shipping']['shipping_city']['class']    = ['form-row-wide'];
+        $fields['shipping']['shipping_city']['class']    = ['form-row-wide', 'address-field'];
         $fields['shipping']['shipping_city']['priority'] = 100;
     }
     if (isset($fields['billing']['billing_postcode'])) {
         $fields['billing']['billing_postcode']['label']       = __('CEP', 'arterra');
         $fields['billing']['billing_postcode']['placeholder'] = '00000-000';
-        $fields['billing']['billing_postcode']['class']       = ['form-row-first'];
+        $fields['billing']['billing_postcode']['class']       = ['form-row-first', 'address-field'];
         $fields['billing']['billing_postcode']['priority']    = 80;
     }
     if (isset($fields['shipping']['shipping_postcode'])) {
-        $fields['shipping']['shipping_postcode']['class']    = ['form-row-first'];
+        $fields['shipping']['shipping_postcode']['class']    = ['form-row-first', 'address-field'];
         $fields['shipping']['shipping_postcode']['priority'] = 80;
     }
     // Bairro: nenhum plugin instalado registra esse campo, então criamos o nosso
@@ -441,7 +518,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         'label'       => __('Bairro', 'arterra'),
         'placeholder' => '',
         'required'    => true,
-        'class'       => ['form-row-last'],
+        'class'       => ['form-row-last', 'address-field'],
         'priority'    => 81, // ao lado do CEP
     ];
     if (isset($fields['shipping']['shipping_address_1'])) {
@@ -449,7 +526,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
             'label'       => __('Bairro', 'arterra'),
             'placeholder' => '',
             'required'    => true,
-            'class'       => ['form-row-last'],
+            'class'       => ['form-row-last', 'address-field'],
             'priority'    => 81,
         ];
     }
@@ -472,11 +549,11 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
     // Endereço | Número lado a lado
     if (isset($fields['billing']['billing_address_1'])) {
-        $fields['billing']['billing_address_1']['class']    = ['form-row-first'];
+        $fields['billing']['billing_address_1']['class']    = ['form-row-first', 'address-field'];
         $fields['billing']['billing_address_1']['priority'] = 90;
     }
     if (isset($fields['shipping']['shipping_address_1'])) {
-        $fields['shipping']['shipping_address_1']['class']    = ['form-row-first'];
+        $fields['shipping']['shipping_address_1']['class']    = ['form-row-first', 'address-field'];
         $fields['shipping']['shipping_address_1']['priority'] = 90;
     }
 
@@ -485,7 +562,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         'label'       => __('Número', 'arterra'),
         'placeholder' => __('Nº', 'arterra'),
         'required'    => true,
-        'class'       => ['form-row-last'],
+        'class'       => ['form-row-last', 'address-field'],
         'priority'    => 91, // logo após o endereço
     ];
 
@@ -494,29 +571,29 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
             'label'       => __('Número', 'arterra'),
             'placeholder' => __('Nº', 'arterra'),
             'required'    => true,
-            'class'       => ['form-row-last'],
+            'class'       => ['form-row-last', 'address-field'],
             'priority'    => 91,
         ];
     }
 
     // País e Estado fixos (Brasil / São Paulo): ocultos, pois não há escolha real
     if (isset($fields['billing']['billing_country'])) {
-        $fields['billing']['billing_country']['class'] = ['form-row-wide', 'fc-hidden-field'];
+        $fields['billing']['billing_country']['class'] = ['form-row-wide', 'fc-hidden-field', 'address-field', 'update_totals_on_change'];
     }
     if (isset($fields['shipping']['shipping_country'])) {
-        $fields['shipping']['shipping_country']['class'] = ['form-row-wide', 'fc-hidden-field'];
+        $fields['shipping']['shipping_country']['class'] = ['form-row-wide', 'fc-hidden-field', 'address-field', 'update_totals_on_change'];
     }
     if (isset($fields['billing']['billing_state'])) {
         $fields['billing']['billing_state']['type']     = 'hidden';
         $fields['billing']['billing_state']['default']  = 'SP';
         $fields['billing']['billing_state']['required'] = false;
-        $fields['billing']['billing_state']['class']     = ['form-row-wide', 'fc-hidden-field'];
+        $fields['billing']['billing_state']['class']     = ['form-row-wide', 'fc-hidden-field', 'address-field'];
     }
     if (isset($fields['shipping']['shipping_state'])) {
         $fields['shipping']['shipping_state']['type']     = 'hidden';
         $fields['shipping']['shipping_state']['default']  = 'SP';
         $fields['shipping']['shipping_state']['required'] = false;
-        $fields['shipping']['shipping_state']['class']     = ['form-row-wide', 'fc-hidden-field'];
+        $fields['shipping']['shipping_state']['class']     = ['form-row-wide', 'fc-hidden-field', 'address-field'];
     }
 
     return $fields;
@@ -639,6 +716,61 @@ add_action('woocommerce_checkout_create_order', function ($order) {
 
     $order->calculate_totals(false);
 }, 20, 1);
+
+// -----------------------------------------------------------------------------
+// Desliga o YITH WooCommerce Delivery Date no checkout
+// -----------------------------------------------------------------------------
+//
+// Decisão do negócio: a loja não vai mais usar data/transportadora de entrega
+// no checkout. O plugin fica instalado (outras telas/relatórios antigos podem
+// referenciar pedidos passados), mas toda a integração dele com o checkout é
+// removida - incluindo a validação de YITH_Delivery_Date_Shipping_Manager::
+// validate_checkout_width_delivery_date(), que causava o bug real
+// (woocommerce-NoticeGroup-updateOrderReview reaparecendo/dando scroll a
+// cada atualização do carrinho): ela adiciona um wc_add_notice(..., 'error')
+// genérico ("An error occurred during the checkout, please try again") toda
+// vez que o carrinho precisa de frete, o método de frete escolhido tem um
+// "Processing Method" configurado (ver seção "YITH WooCommerce Delivery Date
+// × Flexible Shipping" em docs/woocommerce-customizations.md) e os campos
+// ywcdd_carrier/ywcdd_datepicker não chegam no POST do checkout - essa
+// notice fica presa na sessão e volta em toda chamada de update_order_review
+// até ser realmente processada.
+//
+// A classe YITH_Delivery_Date_Shipping_Manager só liga os hooks abaixo (no
+// próprio __construct(), disparado por uma chamada incondicional no fim de
+// includes/shipping/class.yith-delivery-date-shipping-manager.php) quando
+// a opção 'ywcdd_processing_type' do plugin é 'checkout' - exatamente o modo
+// usado aqui. Removemos cada hook individualmente (em vez de mudar essa
+// opção para 'product') para não ativar o outro modo do plugin (tabela de
+// quantidade na página de produto), que também não é o que queremos.
+if (function_exists('YITH_Delivery_Date_Shipping_Manager')) {
+    $luccifresh_ywcdd_manager = YITH_Delivery_Date_Shipping_Manager();
+
+    if ($luccifresh_ywcdd_manager) {
+        // A validação em si (a causa do bug) e o campo de data/transportadora
+        // que aparecia no step de entrega do checkout.
+        remove_action('woocommerce_after_checkout_validation', [$luccifresh_ywcdd_manager, 'validate_checkout_width_delivery_date'], 10);
+        remove_action('woocommerce_checkout_shipping', [$luccifresh_ywcdd_manager, 'print_delivery_from'], 20);
+
+        // Gravação da data/transportadora no pedido e no Store API (bloco de
+        // checkout) - sem o campo no formulário, isso nunca teria dado nada
+        // pra salvar mesmo, mas removido por clareza (nenhum meta novo entra
+        // no pedido a partir daqui).
+        remove_action('woocommerce_checkout_create_order', [$luccifresh_ywcdd_manager, 'add_delivery_date_info_order_meta']);
+        remove_action('woocommerce_store_api_checkout_update_order_from_request', [$luccifresh_ywcdd_manager, 'add_delivery_info_api_update_order'], 10);
+
+        // JS/endpoints AJAX do datepicker/transportadora/timeslot - sem
+        // campo nenhum no checkout pra disparar isso, mas removidos pra não
+        // carregar JS morto nem deixar endpoints AJAX obsoletos expostos.
+        remove_action('wp_enqueue_scripts', [$luccifresh_ywcdd_manager, 'enqueue_frontend_scripts'], 25);
+        remove_action('wp_ajax_update_datepicker', [$luccifresh_ywcdd_manager, 'update_datepicker']);
+        remove_action('wp_ajax_nopriv_update_datepicker', [$luccifresh_ywcdd_manager, 'update_datepicker']);
+        remove_action('wp_ajax_update_timeslot', [$luccifresh_ywcdd_manager, 'update_timeslot_ajax']);
+        remove_action('wp_ajax_nopriv_update_timeslot', [$luccifresh_ywcdd_manager, 'update_timeslot_ajax']);
+        remove_action('wp_ajax_update_carrier_list', [$luccifresh_ywcdd_manager, 'update_carrier_list_by_shipping_method']);
+        remove_action('wp_ajax_nopriv_update_carrier_list', [$luccifresh_ywcdd_manager, 'update_carrier_list_by_shipping_method']);
+    }
+}
 
 // -----------------------------------------------------------------------------
 // Emails transacionais
@@ -1237,4 +1369,36 @@ function arterra_ywcdd_serve_cached_datepicker()
 
         echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }, 0);
+}
+
+// -----------------------------------------------------------------------------
+// Checkout novo: polling de status na tela "Aguardando Pix"
+// -----------------------------------------------------------------------------
+//
+// A tela "Aguardando Pix" (_pix-aguardando.html.php) decide o que mostrar só
+// no carregamento da página (ver woocommerce/checkout/thankyou.php), então
+// se o pagamento for confirmado (webhook do Asaas) enquanto o cliente está
+// parado nela, nada muda sozinho. Esse endpoint é consultado em intervalos
+// pelo JS (webpack/js/scripts/pixPaymentPoll.js) pra saber quando recarregar
+// a página e trocar pra tela "Pedido confirmado".
+add_action('wp_ajax_luccifresh_check_pix_order_status', 'luccifresh_check_pix_order_status');
+add_action('wp_ajax_nopriv_luccifresh_check_pix_order_status', 'luccifresh_check_pix_order_status');
+function luccifresh_check_pix_order_status()
+{
+    $order_id  = isset($_POST['order_id']) ? absint($_POST['order_id']) : 0;
+    $order_key = isset($_POST['order_key']) ? wc_clean(wp_unslash($_POST['order_key'])) : '';
+
+    $order = $order_id ? wc_get_order($order_id) : false;
+
+    // A chave do pedido (já exposta na própria URL da thank-you page) é a
+    // única credencial aqui - sem ela, qualquer um poderia sondar o status
+    // de qualquer número de pedido só variando o order_id.
+    if (!$order || !hash_equals($order->get_order_key(), $order_key)) {
+        wp_send_json_error(null, 403);
+    }
+
+    wp_send_json_success([
+        'needs_payment' => $order->needs_payment(),
+        'status'        => $order->get_status(),
+    ]);
 }

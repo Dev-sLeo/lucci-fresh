@@ -107,6 +107,19 @@ que o plugin realmente registra na nova versão.
 
 ## YITH WooCommerce Delivery Date × Flexible Shipping × Local Pickup nativo
 
+> ⚠️ **Desligado desde 2026-09** — a loja decidiu não usar mais data/
+> transportadora de entrega no checkout. A integração toda (a causa raiz de
+> um bug real: `validate_checkout_width_delivery_date()` do plugin disparava
+> `wc_add_notice(..., 'error')` sempre que o carrinho precisava de frete e o
+> método escolhido tinha "Processing Method" configurado, mesmo em uso
+> normal — a notice ficava presa na sessão e reaparecia
+> (`.woocommerce-NoticeGroup-updateOrderReview`, com scroll) em toda
+> atualização do carrinho) foi removida via `remove_action()` em
+> `extension/woocommerce.php` (seção "Desliga o YITH WooCommerce Delivery
+> Date no checkout"). O resto desta seção documenta a integração como ela
+> era ANTES dessa remoção — histórico útil se a loja decidir usar o plugin de
+> novo no futuro, mas não reflete o comportamento atual do checkout.
+
 Esta é a seção mais frágil do arquivo — três correções empilhadas, cada uma
 resolvendo uma causa raiz diferente do mesmo sintoma ("campo de data de
 entrega não aparece, ou aparece vazio sem calendário"). Documentado em detalhe

@@ -80,6 +80,65 @@ export default function cepAutofill() {
     input.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
+  // Zera um campo (sem exigir valor truthy, ao contrário de setValue) -
+  // usado para limpar dados presos ao CEP anterior (número, complemento,
+  // bairro/cidade se a busca do novo CEP falhar).
+  function clearValue(input) {
+    if (!input) return;
+
+    const proto =
+      input.tagName === "SELECT"
+        ? window.HTMLSelectElement.prototype
+        : window.HTMLInputElement.prototype;
+    const nativeSetter = Object.getOwnPropertyDescriptor(proto, "value")?.set;
+
+    if (nativeSetter) {
+      nativeSetter.call(input, "");
+    } else {
+      input.value = "";
+    }
+
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  // Força o recálculo do frete (mesmo evento global que o próprio
+  // WooCommerce dispara ao editar um campo de endereço - ver
+  // assets/js/frontend/checkout.js, `trigger_update_checkout`).
+  //
+  // Não dá pra confiar só no mecanismo nativo do WooCommerce aqui: ele só
+  // arma o recálculo depois de um "keydown" real no campo (pra saber que o
+  // valor está "sujo" - variável dirtyInput no core), e o preenchimento do
+  // CEP normalmente vem de colar (Ctrl+V) ou autofill do navegador, que não
+  // disparam keydown nenhum. Sem esse trigger manual, o frete ficaria
+  // travado no valor calculado antes da troca de CEP sempre que o cliente
+  // não digitar o CEP caractere por caractere.
+  function triggerShippingRecalculation() {
+    if (window.jQuery) {
+      window.jQuery(document.body).trigger("update_checkout");
+    }
+  }
+
+  // Número e complemento não vêm do ViaCEP (são específicos do endereço
+  // anterior) e o método de entrega escolhido pode não fazer mais sentido
+  // pro endereço novo (ex.: outra distância, outro ponto de retirada) - ao
+  // trocar o CEP, zera os dois em vez de deixar dado do endereço antigo
+  // "grudado" no formulário.
+  function resetAddressDetails(prefix) {
+    clearValue(findField(prefix, "number"));
+
+    const complement = document.querySelector(
+      `#${prefix}-address_2, #${prefix}_address_2, input[name="${prefix}-address_2"], input[name="${prefix}_address_2"]`
+    );
+    clearValue(complement);
+
+    document
+      .querySelectorAll('.c-checkout-step__shipping-methods input[type="radio"]:checked')
+      .forEach((input) => {
+        input.checked = false;
+      });
+  }
+
   function setLoading(cepInput, state) {
     cepInput
       .closest(".form-row, .wc-block-components-text-input")
@@ -119,6 +178,9 @@ export default function cepAutofill() {
 
       if (data.erro) {
         showError(cepInput, "CEP não encontrado.");
+        clearValue(findField(prefix, "address"));
+        clearValue(findField(prefix, "city"));
+        clearValue(findField(prefix, "neighborhood"));
         return;
       }
 
@@ -141,6 +203,7 @@ export default function cepAutofill() {
       showError(cepInput, "Não foi possível buscar o CEP. Tente novamente.");
     } finally {
       setLoading(cepInput, false);
+      triggerShippingRecalculation();
     }
   }
 
@@ -155,6 +218,7 @@ export default function cepAutofill() {
       const cep = cepInput.value.replace(/\D/g, "");
       if (cep.length === 8 && cep !== lastFetchedCep) {
         lastFetchedCep = cep;
+        resetAddressDetails(prefix);
         fetchAddress(prefix, cepInput);
       }
     };

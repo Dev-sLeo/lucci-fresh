@@ -25,6 +25,7 @@ $cv2-radius: 8px;
 
   &__logo {
     display: inline-flex;
+
     span {
       font-family: $ff-heading;
       font-size: 24px;
@@ -337,12 +338,15 @@ $cv2-radius: 8px;
     &--address .form-row:first-child {
       flex-grow: 500;
     }
+
     &--address .form-row:last-child {
       flex-grow: 160;
     }
+
     &--cep .form-row:first-child {
       flex-grow: 240;
     }
+
     &--cep .form-row:last-child {
       flex-grow: 420;
     }
@@ -501,6 +505,11 @@ $cv2-radius: 8px;
     padding: 0 !important;
     margin: 0 0 20px !important;
 
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
     li.wc_payment_method {
       // Grid (mesmo padrão dos métodos de frete): radio + título na linha
       // 1, subtítulo na linha 2 - só nos 3 cards do seletor (não dentro do
@@ -524,7 +533,7 @@ $cv2-radius: 8px;
         border-color: $cv2-text-sage !important;
       }
 
-      > input[type="radio"] {
+      >input[type="radio"] {
         grid-column: 1;
         grid-row: 1;
         margin: 0 !important;
@@ -533,7 +542,7 @@ $cv2-radius: 8px;
         accent-color: $color-preto;
       }
 
-      > label {
+      >label {
         grid-column: 2;
         grid-row: 1;
         margin: 0 !important;
@@ -571,13 +580,24 @@ $cv2-radius: 8px;
   // no Figma. O toggle nativo de mostrar/esconder (assets/js/frontend/
   // checkout.js do WC core) usa seletor por classe, não por posição no
   // DOM, então mover esses elementos é seguro.
+  // O WooCommerce core (assets/css/woocommerce.css, `.payment_box`) pinta
+  // essa caixa com --wc-secondary (roxo/lilás) e desenha uma setinha
+  // (::before) apontando pro método selecionado - nenhum dos dois existe
+  // no Figma. Carrega depois do tema, então precisa de !important.
   .payment_box {
-    margin-top: 20px;
+    margin-top: 20px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
     font-family: $ff-primary;
     font-size: 14px;
     color: $cv2-text-dark;
 
-    > p {
+    &::before {
+      display: none !important;
+    }
+
+    >p {
       margin: 0;
     }
   }
@@ -589,56 +609,167 @@ $cv2-radius: 8px;
   // payment_method_xxx) ficam no MESMO elemento, não uma dentro da outra.
   .payment_box.payment_method_lkn_pix_for_woocommerce,
   .payment_box.payment_method_cod {
-    background: $cv2-bg-promo;
-    border-radius: $cv2-radius;
-    padding: 18px;
+    background: $cv2-bg-promo !important;
+    border-radius: $cv2-radius !important;
+    padding: 18px !important;
+  }
+
+  // Fieldset nativo do formulário de cartão (Rede/Maxipago:
+  // #rede-payment-form/#rede-debit-payment-form/#maxipago-payment-form) -
+  // <fieldset> tem borda/padding/margin próprios do navegador, e nenhum
+  // CSS do tema tocava nisso porque o seletor mais específico do plugin
+  // (lknIntegrationRedeForWoocommercePublic.css, carregado depois) sempre
+  // ganhava sem !important.
+  .rede-payment-form,
+  .maxipago-payment-form {
+    all: unset !important;
+    display: block !important;
   }
 
   // Formulário de cartão (Rede/Maxipago): os campos já usam as mesmas
   // classes do WooCommerce (form-row/input-text/label - ver
   // .c-checkout-step .form-row mais acima), mas o plugin aplica estilo
-  // inline direto nos <input> (font-size/padding via JS), que sempre
-  // ganha de qualquer regra externa sem !important.
+  // inline direto nos <input> (font-size/padding via JS) e tem seu próprio
+  // CSS carregado depois do tema - qualquer um dos dois sempre ganha de
+  // uma regra externa sem !important.
   .payment_box .form-row {
-    margin: 0 0 22px;
+    margin: 0 0 22px !important;
 
     .input-text,
     .input-select {
       height: 56px !important;
       padding: 0 16px !important;
       font-size: 16px !important;
-      border: 1px solid $cv2-border;
-      border-radius: $cv2-radius;
+      border: 1px solid $cv2-border !important;
+      border-radius: $cv2-radius !important;
+      background: #fff !important;
+      color: $cv2-text-dark !important;
+      font-family: $ff-primary !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     label {
-      display: block;
-      font-family: $ff-primary;
-      font-size: 14px;
-      font-weight: 600;
-      color: $cv2-text-dark;
-      margin-bottom: 8px;
+      display: block !important;
+      font-family: $ff-primary !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: $cv2-text-dark !important;
+      margin-bottom: 8px !important;
 
       .required {
-        display: none;
+        display: none !important;
       }
 
-      // Ícone de cada campo (Rede) - mantido (ajuda a identificar o campo
-      // rapidamente), só reposicionado pra não sobrepor o texto do label.
+      // Ícone de cada campo (Rede) não existe no Figma (nó 2106:1093) -
+      // escondido pra bater exatamente com o layout.
       .icon-rede-input {
-        display: inline-flex;
-        margin-left: 6px;
-        vertical-align: middle;
+        display: none !important;
       }
     }
   }
 
-  // Preview animado do cartão (Rede/Jpanel Card) - recurso real do
-  // plugin, sem equivalente no Figma. Mantido (ajuda o cliente a
-  // conferir o número digitado), só com espaçamento pra não colar no
-  // seletor de métodos.
-  .card-wrapper {
-    margin: 4px 0 18px;
+  // Pixel-matched ao Figma (nó 2106:1093): a ORDEM real dos campos no
+  // template do plugin Rede é Nome → Número → Validade → CVV, cada um
+  // em sua própria linha; o Figma pede Número → Nome → (Validade e CVV
+  // lado a lado, 330/330). Reordenado só via CSS (flex + :has()), sem
+  // tocar no HTML/JS do plugin - os ids/names dos campos (ex.:
+  // #rede-card-number) são lidos pelo próprio JS de validação/tokenização
+  // do gateway e pelo process_payment() no PHP, não podem mudar.
+  //
+  // Existem hoje 3 variações do mesmo formulário no plugin woo-rede/
+  // maxipago, cada uma com seu próprio prefixo de id, mas todas usando a
+  // mesma classe `.wc-payment-rede-form-fields`:
+  // - rede-card-* / maxipago-card-*      (cartão de crédito único)
+  // - rede-debit-card-*                  (gateway "rede_debit" - débito ou
+  //   crédito no mesmo formulário, com o seletor "Tipo de cartão" abaixo)
+  // Todos os seletores abaixo cobrem os três prefixos.
+  .wc-payment-rede-form-fields {
+    display: flex !important;
+    flex-wrap: wrap;
+    column-gap: 20px;
+
+    .form-row {
+      flex: 1 1 100% !important;
+    }
+
+    .form-row:has(#rede-card-number),
+    .form-row:has(#maxipago-card-number),
+    .form-row:has(#rede-debit-card-number) {
+      order: 1;
+    }
+
+    .form-row:has(#rede-card-holder-name),
+    .form-row:has(#maxipago-card-holder-name),
+    .form-row:has(#rede-debit-card-holder-name) {
+      order: 2;
+    }
+
+    .form-row:has(#rede-card-expiry),
+    .form-row:has(#maxipago-card-expiry),
+    .form-row:has(#rede-debit-card-expiry) {
+      order: 3;
+      flex-basis: calc(50% - 10px) !important;
+    }
+
+    .form-row:has(#rede-card-cvc),
+    .form-row:has(#maxipago-card-cvc),
+    .form-row:has(#rede-debit-card-cvc) {
+      order: 4;
+      flex-basis: calc(50% - 10px) !important;
+    }
+
+    // Seletor "Tipo de cartão" (só existe no gateway rede_debit, quando a
+    // loja aceita débito E crédito no mesmo formulário - ver
+    // redePaymentDebitForm.php, $card_type_restriction === 'both'). Sem
+    // equivalente no Figma (lá "Crédito / Débito" já é só um card), mas
+    // não dá pra remover: é o campo que o cliente usa pra escolher entre
+    // os dois, lido em process_payment() no PHP. Estilizado igual aos
+    // outros campos do formulário pra não destoar.
+    .form-row:has(#rede-debit-card-type) {
+      order: 5;
+      flex-basis: 100% !important;
+    }
+
+    // Seletor de parcelas (só aparece com >1 opção de parcelamento) - sem
+    // equivalente próprio no Figma, que só mostra a caixa estática
+    // "Pagamento à vista". Reaproveitado como essa caixa quando existe.
+    .form-row:has(#rede-card-installments),
+    .form-row:has(#maxipago-card-installments),
+    #rede-debit-installments-wrapper {
+      order: 6;
+      flex-basis: 100% !important;
+      background: $cv2-bg-soft !important;
+      border-radius: $cv2-radius !important;
+      padding: 18px !important;
+      margin: 0 0 22px !important;
+
+      label {
+        font-size: 14px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .input-select {
+        height: auto !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: $cv2-text-muted !important;
+      }
+    }
+  }
+
+  // Logo do gateway e preview animado do cartão (Rede/Jpanel Card) não
+  // existem no Figma (nó 2106:1093) - escondidos pra bater exatamente
+  // com o layout. !important: são renderizados dentro de
+  // .rede-debit-fields-wrapper/.rede-payment-form, que carregam CSS
+  // próprio do plugin (lknIntegrationRedeForWoocommercePublic.css /
+  // LknIntegrationRedeForWoocommerceModernTemplate.css) depois do tema.
+  .payment-method-description,
+  .card-wrapper,
+  #logo-rede,
+  #rede-debit-card-animation {
+    display: none !important;
   }
 }
 
@@ -902,13 +1033,14 @@ $cv2-radius: 8px;
   }
 
   &__section-content {
-    font-family: $ff-primary;
-    font-size: 15px;
-    color: $cv2-text-muted;
 
     p {
       margin: 0;
       line-height: 1.45;
+      font-family: $ff-primary;
+      font-size: 15px;
+      color: $cv2-text-muted;
+
     }
   }
 
@@ -967,7 +1099,7 @@ $cv2-radius: 8px;
   // Figma: título + as duas primeiras linhas de texto (pedido/e-mail) ficam
   // juntos, sem o espaçamento de 22px do gap geral do card - só a caixa de
   // previsão de entrega em diante volta a ter esse respiro.
-  .c-checkout-step__subtitle + .c-checkout-step__subtitle {
+  .c-checkout-step__subtitle+.c-checkout-step__subtitle {
     margin-top: -14px;
   }
 }
@@ -1040,32 +1172,81 @@ $cv2-radius: 8px;
 
 // ── "Aguardando Pix" (tela pós-checkout, thankyou.php) ───────────────────
 //
-// O QR/copiar-código/instruções aqui dentro (.pixforwoo-qrcode-content) são
-// o widget real do plugin Payment Gateway Pix for WooCommerce, com o
-// próprio CSS dele (LknPaymentPixForWoocommercePaymentFields.css) - só
-// ajustamos espaçamento/largura pra caber no cartão do checkout novo, sem
-// redesenhar o widget em si.
+// O QR/payload/botão de copiar vêm de dados reais do gateway Asaas Pix
+// (plugin woo-asaas), renderizados por um override de tema do template do
+// plugin (woocommerce/asaas/order/pix-thankyou.php) - aqui só estilizamos
+// o HTML desse override pra bater com o Figma.
 .c-pix-wait {
   &__qr {
     width: 100%;
     margin-bottom: 22px;
+  }
 
-    // Espaço entre o widget do Pix e qualquer outro bloco que também
-    // escute o mesmo hook (ex.: o aviso "Delivery Details" do YITH
-    // Delivery Date, quando o método de entrega tem data configurada).
-    > * + * {
-      margin-top: 20px;
+  &__widget {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__widget-top {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  &__qr-image {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+  }
+
+  &__widget-info {
+    min-width: 0;
+  }
+
+  &__amount-label {
+    margin: 0 0 2px;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+  }
+
+  &__amount {
+    margin: 0 0 6px;
+    font-family: $ff-primary;
+    font-size: 22px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+
+  &__widget-hint {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+  }
+
+  &__copy-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 600px;
+    padding: 16px;
+    background: $color-laranja-cta;
+    color: #fff;
+    font-family: $ff-primary;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: darken($color-laranja-cta, 5%);
     }
 
-    .pixforwoo-qrcode-content {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .pixforwoo-qrcode-image-container img,
-    .pixforwoo-qrcode-image-container canvas {
-      max-width: 176px;
+    // Feedback visual ao copiar (ver webpack/js/scripts/pixCopyCode.js) -
+    // fica verde por 3s pra confirmar que o código foi copiado.
+    &.is-copied {
+      background: $cv2-text-sage;
     }
   }
 
@@ -1089,5 +1270,96 @@ $cv2-radius: 8px;
     font-size: 13px;
     color: $cv2-text-muted;
     margin: 0;
+  }
+
+  &__steps {
+    margin: 0 0 22px;
+    padding-left: 20px;
+    list-style: decimal;
+    font-family: $ff-primary;
+    font-size: 14px;
+    color: $cv2-text-dark;
+
+    li {
+      list-style: decimal;
+      padding-left: 4px;
+    }
+
+    li+li {
+      margin-top: 8px;
+    }
+  }
+}
+
+// ── "Pedido confirmado" (tela pós-checkout, thankyou.php) ────────────────
+.c-order-confirmed {
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: $cv2-text-sage;
+    color: #fff;
+    font-size: 20px;
+  }
+
+  &__text {
+    margin: 0 0 22px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    color: $cv2-text-dark;
+  }
+
+  &__box {
+    background: $cv2-bg-soft;
+    border-radius: $cv2-radius;
+    padding: 18px;
+    margin-bottom: 22px;
+  }
+
+  &__box-title {
+    margin: 0 0 5px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+
+  &__box-text {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+  }
+
+  &__address-title {
+    margin: 0 0 8px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    font-weight: 700;
+    color: $cv2-text-dark;
+  }
+
+  &__address {
+    margin: 0 0 22px;
+    font-family: $ff-primary;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $cv2-text-dark;
+  }
+
+  &__help {
+    margin: 16px 0 0;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+
+    a {
+      color: $cv2-text-sage;
+      font-weight: 600;
+    }
   }
 }

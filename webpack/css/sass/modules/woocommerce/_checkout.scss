@@ -469,9 +469,14 @@
     list-style: none;
     padding: 0;
     margin: 0 0 16px;
-    border: 1px solid $wc-border;
+    border: none !important;
     border-radius: $wc-radius-sm;
     overflow: hidden;
+
+    &::before,
+    &::after {
+      display: none !important;
+    }
 
     li {
       padding: 14px 16px;
