@@ -339,6 +339,7 @@ $cv2-radius: 8px;
     .form-row {
       flex: 1 1 0;
       margin: 0 !important;
+      width: 100% !important;
     }
 
     // Endereço/Número e CEP/Bairro não são 50/50 no Figma - os números
@@ -1409,6 +1410,124 @@ $cv2-radius: 8px;
     a {
       color: $cv2-text-sage;
       font-weight: 600;
+    }
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────
+//
+// O layout inteiro (colunas, cards de método, indicador de etapas) foi
+// pensado pro desktop (744px de step + 424px de resumo lado a lado, como no
+// Figma). Sozinho, `&__cols { grid-template-columns: 1fr }` (900px, mais
+// acima no arquivo) só empilha as DUAS colunas - o conteúdo DENTRO de cada
+// uma continua com o mesmo padding/tamanho de fonte de desktop e alguns
+// elementos específicos (indicador de 4 etapas em linha, os 3 cards de
+// método de pagamento, os campos de validade/CVV lado a lado) têm largura
+// mínima que não cabe numa tela de celular sem espremer texto. Este bloco
+// cobre exatamente esses pontos, mantendo o restante (que já é 1 coluna via
+// `.form-row { width: 100% }`, `.c-checkout-step__row` já empilhando a
+// 600px etc.) como está.
+@media (max-width: 600px) {
+  .p-checkout-v2 {
+    padding: 20px 0 40px;
+
+    &__intro {
+      margin-bottom: 20px;
+
+      h1 {
+        font-size: 26px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    &__cols {
+      gap: 24px;
+    }
+
+    &__back {
+      margin-bottom: 16px;
+    }
+  }
+
+  // Indicador de 4 etapas: em uma linha só, "Pagamento"/"Revisão" ficam
+  // espremidos contra o próximo item numa tela de celular. Quebra em 2
+  // linhas de 2 itens (2x2), com números e texto um pouco menores.
+  .c-checkout-progress {
+    flex-wrap: wrap;
+    row-gap: 16px;
+
+    &__item {
+      flex: 1 1 50%;
+    }
+
+    &__number {
+      width: 26px;
+      height: 26px;
+      font-size: 13px;
+    }
+
+    &__label {
+      font-size: 13px;
+    }
+  }
+
+  .c-checkout-step {
+    padding: 20px;
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__section-title {
+      font-size: 18px;
+    }
+  }
+
+  // Os 3 cards de forma de pagamento (Pix/Cartão/Na entrega) usam
+  // `flex: 1 1 200px` pra ficar lado a lado no desktop - 3x 200px não cabe
+  // numa tela de celular sem quebrar de um jeito estranho (2 numa linha, 1
+  // sozinho embaixo). Força 1 por linha, ocupando a largura toda.
+  .c-checkout-step__payment ul.wc_payment_methods li.wc_payment_method {
+    flex: 1 1 100%;
+  }
+
+  // Validade/CVV do cartão (Figma pede lado a lado, 330/330 no desktop) e
+  // o "Tipo de cartão"/parcelas ficam apertados demais lado a lado num
+  // celular - empilha só esses dois, mantendo Número/Nome (já 100%) como
+  // estava.
+  //
+  // Precisa do mesmo prefixo `.c-checkout-step__payment` da regra de
+  // desktop (mais acima no arquivo) - sem ele, esta regra tem MENOS
+  // especificidade que a de desktop (2 classes vs 3), e como as duas usam
+  // !important, quem tem mais especificidade ganha independente de qual
+  // vem depois no arquivo ou de estar dentro de @media.
+  .c-checkout-step__payment .wc-payment-rede-form-fields {
+
+    .form-row:has(#rede-card-expiry),
+    .form-row:has(#maxipago-card-expiry),
+    .form-row:has(#rede-debit-card-expiry),
+    .form-row:has(#rede-card-cvc),
+    .form-row:has(#maxipago-card-cvc),
+    .form-row:has(#rede-debit-card-cvc) {
+      flex-basis: 100% !important;
+    }
+  }
+
+  // QR Code + valor/instruções lado a lado (tela "Aguardando Pix") não
+  // cabem numa linha só num celular sem espremer o texto ao lado do QR.
+  .c-pix-wait__widget-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .p-checkout-v2__summary {
+    padding: 20px;
+
+    h3 {
+      font-size: 22px;
     }
   }
 }
