@@ -72,4 +72,29 @@ foreach ($order->get_items() as $order_item) {
       </tfoot>
     </table>
   </div>
+
+  <?php
+  /**
+   * Figma (nó 2106:1032): "Entrega na {bairro} • {cidade}" logo abaixo do
+   * Total, igual ao resumo do checkout ao vivo (ver woocommerce/checkout/
+   * review-order.php), só que lida do $order já criado em vez do
+   * carrinho/sessão. O selo de "5% de desconto no Pix" que aparece ali
+   * NÃO se repete aqui: o pedido já foi feito (com o gateway que for),
+   * não faz sentido continuar tentando convencer o cliente a trocar pra
+   * Pix numa tela de "pedido confirmado".
+   */
+  $luccifresh_summary_neighborhood = $order->get_meta('_billing_neighborhood');
+  $luccifresh_summary_city         = $order->get_billing_city();
+  ?>
+
+  <?php if ($luccifresh_summary_neighborhood && $luccifresh_summary_city) : ?>
+    <p class="p-checkout-v2__summary-delivery">
+      <?= esc_html(sprintf(
+        /* translators: 1: bairro, 2: cidade */
+        __('Entrega na %1$s • %2$s', 'lucci-fresh'),
+        $luccifresh_summary_neighborhood,
+        $luccifresh_summary_city
+      )); ?>
+    </p>
+  <?php endif; ?>
 </aside>

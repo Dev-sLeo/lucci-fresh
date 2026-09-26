@@ -425,22 +425,15 @@ add_action('woocommerce_init', function () {
     ]);
 });
 
-// Salva o "Número" também na linha de endereço (pedidos via Checkout Block)
-add_filter('woocommerce_order_formatted_billing_address', function ($address, $order) {
-    $number = $order->get_meta('arterra/address_number') ?: $order->get_meta('_billing_number');
-    if ($number && !empty($address['address_1'])) {
-        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
-    }
-    return $address;
-}, 10, 2);
-
-add_filter('woocommerce_order_formatted_shipping_address', function ($address, $order) {
-    $number = $order->get_meta('arterra/address_number') ?: $order->get_meta('_shipping_number');
-    if ($number && !empty($address['address_1'])) {
-        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
-    }
-    return $address;
-}, 10, 2);
+// NOTA: o número/bairro NÃO são mais anexados manualmente ao endereço
+// formatado aqui - o plugin woocommerce-extra-checkout-fields-for-brazil
+// (já instalado e ativo) já faz exatamente isso nativamente, com seu
+// próprio formato de endereço BR ("{address_1}, {number}\n{address_2}\n
+// {neighborhood}\n...", ver class-extra-checkout-fields-for-brazil-front-
+// end.php) lendo das MESMAS chaves de meta que usamos aqui embaixo
+// (_billing_number, _shipping_number, _billing_neighborhood,
+// _shipping_neighborhood). Ter esse código duplicado aqui também
+// (removido) fazia o endereço mostrar o número e o bairro repetidos.
 
 // Estado fixo (São Paulo): oculta o campo no Checkout Block via locale do país
 // Renomeia "Código postal" para "CEP" no Checkout Block
@@ -624,32 +617,31 @@ add_action('woocommerce_checkout_update_order_meta', function ($order_id) {
     if (!empty($_POST['shipping_neighborhood'])) {
         update_post_meta($order_id, '_shipping_neighborhood', sanitize_text_field(wp_unslash($_POST['shipping_neighborhood'])));
     }
+    if (!empty($_POST['cod_receiver_name'])) {
+        update_post_meta($order_id, '_cod_receiver_name', sanitize_text_field(wp_unslash($_POST['cod_receiver_name'])));
+    }
 });
 
-// Exibe "Número" e "Bairro" junto ao endereço (admin, emails, detalhes do pedido)
-add_filter('woocommerce_order_formatted_billing_address', function ($address, $order) {
-    $number = $order->get_meta('_billing_number');
-    if ($number) {
-        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+/**
+ * Campo "Nome de quem vai receber" (Figma nó 2106:1190, checkout novo,
+ * gateway "Na entrega"/cod) - não existe nativamente no COD, então exige
+ * validação manual aqui (o WooCommerce só valida campos registrados via
+ * woocommerce_checkout_fields/billing/shipping).
+ */
+add_action('woocommerce_checkout_process', function () {
+    if (!function_exists('luccifresh_new_checkout_enabled') || !luccifresh_new_checkout_enabled()) {
+        return;
     }
-    $neighborhood = $order->get_meta('_billing_neighborhood');
-    if ($neighborhood) {
-        $address['address_2'] = trim($address['address_2'] . ($address['address_2'] ? ' - ' : '') . 'Bairro: ' . $neighborhood);
-    }
-    return $address;
-}, 10, 2);
 
-add_filter('woocommerce_order_formatted_shipping_address', function ($address, $order) {
-    $number = $order->get_meta('_shipping_number');
-    if ($number) {
-        $address['address_1'] = trim($address['address_1'] . ', ' . $number);
+    $posted_payment_method = isset($_POST['payment_method']) ? wc_clean(wp_unslash($_POST['payment_method'])) : '';
+    if ('cod' !== $posted_payment_method) {
+        return;
     }
-    $neighborhood = $order->get_meta('_shipping_neighborhood');
-    if ($neighborhood) {
-        $address['address_2'] = trim($address['address_2'] . ($address['address_2'] ? ' - ' : '') . 'Bairro: ' . $neighborhood);
+
+    if (empty($_POST['cod_receiver_name'])) {
+        wc_add_notice(__('Por favor, informe o nome de quem vai receber o pedido.', 'lucci-fresh'), 'error');
     }
-    return $address;
-}, 10, 2);
+});
 
 // Estado fixo: força São Paulo independentemente do envio
 add_filter('default_checkout_billing_state', function () {

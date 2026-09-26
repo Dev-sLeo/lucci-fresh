@@ -163,7 +163,7 @@ export default function checkoutSteps() {
     const total = document.querySelector("[data-checkout-review-total]")?.textContent?.trim() || "";
     const gatewayId = checked.value;
 
-    if (gatewayId === "lkn_pix_for_woocommerce") {
+    if (gatewayId === "asaas-pix" || gatewayId === "lkn_pix_for_woocommerce") {
       return [
         `Pix${total ? " • " + total : ""}`,
         "O código será gerado ao confirmar o pedido.",
@@ -171,10 +171,12 @@ export default function checkoutSteps() {
     }
 
     if (gatewayId === "cod") {
-      const description = form
-        .querySelector(".payment_box.payment_method_cod p")
-        ?.textContent?.trim();
-      return ["Pagamento na entrega", description].filter(Boolean);
+      const receiverName = form.querySelector("#cod_receiver_name")?.value?.trim();
+      return [
+        "Pagamento na entrega",
+        receiverName ? `Recebe: ${receiverName}` : "",
+        total ? `1× de ${total} • sem juros` : "",
+      ].filter(Boolean);
     }
 
     // Cartão (Rede/Maxipago): mostra os últimos 4 dígitos só se o cliente já

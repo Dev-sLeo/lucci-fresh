@@ -13,6 +13,13 @@ $cv2-bg-promo: #ffedd0;
 $cv2-radius: 8px;
 
 // ── Cabeçalho e rodapé "distraction-free" (só na página de checkout) ────────
+
+.page-checkout {
+  .main {
+    padding: 0 !important;
+  }
+}
+
 .o-header-checkout {
   background: #fff;
 
@@ -270,7 +277,7 @@ $cv2-radius: 8px;
 
   // Campos do WooCommerce (form-row/input-text) restilizados no padrão do Figma
   .form-row {
-    margin: 0;
+    margin: 0 !important;
     padding: 0;
 
     label {
@@ -331,6 +338,7 @@ $cv2-radius: 8px;
 
     .form-row {
       flex: 1 1 0;
+      margin: 0 !important;
     }
 
     // Endereço/Número e CEP/Bairro não são 50/50 no Figma - os números
@@ -540,6 +548,11 @@ $cv2-radius: 8px;
         margin-top: 2px !important;
         width: 13px !important;
         accent-color: $color-preto;
+
+        // O <li> inteiro fica clicável via JS (paymentMethodCards.js) -
+        // sem isso, o clique nativo do radio (que já funciona sozinho)
+        // briga com o dispatch do evento "change" feito pelo JS.
+        pointer-events: none;
       }
 
       >label {
@@ -551,6 +564,7 @@ $cv2-radius: 8px;
         font-weight: 700;
         color: $cv2-text-dark;
         line-height: 1.3;
+        cursor: pointer;
 
         // Alguns gateways (ex.: Rede) imprimem o próprio ícone dentro do
         // <label> via $gateway->get_icon() - removido no override do
@@ -561,6 +575,8 @@ $cv2-radius: 8px;
           display: none;
         }
       }
+
+      cursor: pointer;
 
       .payment-method-subtitle {
         grid-column: 2;
@@ -602,16 +618,14 @@ $cv2-radius: 8px;
     }
   }
 
-  // Pix (lkn_pix_for_woocommerce) e "Na entrega" (cod) só têm um <p> de
-  // texto explicativo - a caixa de destaque abaixo reaproveita esse texto
-  // real do gateway (não é conteúdo inventado), só estilizada como no
-  // Figma ("Rápido, simples e seguro"). As duas classes (payment_box e
-  // payment_method_xxx) ficam no MESMO elemento, não uma dentro da outra.
-  .payment_box.payment_method_lkn_pix_for_woocommerce,
-  .payment_box.payment_method_cod {
-    background: $cv2-bg-promo !important;
-    border-radius: $cv2-radius !important;
-    padding: 18px !important;
+  // Rodapé pequeno abaixo da lista de instruções do Pix (nó 2106:1008:
+  // "O pedido é confirmado após a aprovação do pagamento.") - ver
+  // woocommerce/checkout/payment-method.php.
+  .c-checkout-step__footnote {
+    margin: 0;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
   }
 
   // Fieldset nativo do formulário de cartão (Rede/Maxipago:
@@ -634,6 +648,7 @@ $cv2-radius: 8px;
   // uma regra externa sem !important.
   .payment_box .form-row {
     margin: 0 0 22px !important;
+    padding: 0 !important;
 
     .input-text,
     .input-select {
@@ -798,6 +813,7 @@ $cv2-radius: 8px;
     border-top: none;
     border-bottom: none;
     text-align: left;
+    padding: 0 !important;
 
     &:last-child {
       text-align: left;
@@ -896,6 +912,7 @@ $cv2-radius: 8px;
     tbody {
       tr {
         display: block;
+        margin-bottom: 18px;
       }
 
       td {
@@ -939,7 +956,7 @@ $cv2-radius: 8px;
     tfoot tr {
       display: flex;
       justify-content: space-between;
-      padding: 10px 0;
+      padding: 18px 0 0;
 
       th,
       td {
@@ -961,7 +978,7 @@ $cv2-radius: 8px;
     // Divisor #2 - antes do Total.
     tfoot .order-total {
       border-top: 1px solid $cv2-border;
-      margin-top: 4px;
+      margin-top: 18px;
       padding-top: 18px;
 
       th,
@@ -977,6 +994,23 @@ $cv2-radius: 8px;
         font-size: 24px;
       }
     }
+
+    // Linha extra (Entrega na .../selo Pix - ver review-order.php) tem que
+    // ficar DENTRO do <tfoot> pro AJAX de recálculo não duplicar (ver
+    // comentário lá), mas não é um par th/td de label+valor como as outras
+    // linhas - é só um <td colspan="2"> com texto solto, então sai do
+    // layout flex/space-between genérico do `tfoot tr` acima.
+    tfoot .luccifresh-summary-extra {
+      display: block;
+      padding-top: 18px;
+
+      td {
+        display: block;
+        padding: 0;
+        text-align: left;
+        font-weight: 400;
+      }
+    }
   }
 
   &-edit-cart {
@@ -986,6 +1020,21 @@ $cv2-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     color: $cv2-text-sage;
+  }
+
+  // Figma (nó 2106:1032): "Entrega na {bairro} • {cidade}" logo abaixo do
+  // Total, e o selo de desconto Pix abaixo dela - ver
+  // woocommerce/checkout/review-order.php e
+  // _order-summary-thankyou.html.php.
+  &-delivery {
+    margin: 0 0 18px;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: $cv2-text-muted;
+  }
+
+  &-pix-badge {
+    margin-bottom: 0;
   }
 }
 

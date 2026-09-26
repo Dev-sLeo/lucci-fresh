@@ -167,5 +167,71 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 
 		<?php do_action('woocommerce_review_order_after_order_total'); ?>
 
+		<?php if ($luccifresh_new_checkout) : ?>
+			<?php
+			/**
+			 * Figma (nó 2106:1032): duas linhas extras logo abaixo do Total -
+			 * "Entrega na {bairro} • {cidade}" (endereço de cobrança já
+			 * preenchido no step 1/2, lido via WC()->checkout()->get_value()
+			 * pra refletir o que o cliente digitou nesta mesma sessão, sem
+			 * precisar de um pedido criado) e o selo de "5% de desconto no
+			 * Pix" (escondido se o desconto já está aplicado - ver taxa
+			 * "Desconto Pix" registrada em extension/woocommerce.php).
+			 *
+			 * PRECISA ficar dentro do <table>/<tfoot>: o AJAX de recálculo
+			 * do WooCommerce (update_checkout, ver WC_AJAX::
+			 * update_order_review) substitui o conteúdo pelo seletor
+			 * `.woocommerce-checkout-review-order-table` inteiro a cada
+			 * chamada (troca de método de frete/pagamento, CEP editado
+			 * etc.) - conteúdo colocado DEPOIS do `</table>` nunca é
+			 * removido pelas chamadas seguintes, só acumulado (cada
+			 * recálculo soma uma cópia nova em cima da anterior).
+			 */
+			$luccifresh_summary_neighborhood = WC()->checkout()->get_value('billing_neighborhood');
+			$luccifresh_summary_city         = WC()->checkout()->get_value('billing_city');
+
+			$luccifresh_summary_has_pix_fee = false;
+			foreach (WC()->cart->get_fees() as $luccifresh_summary_fee) {
+				if (false !== strpos($luccifresh_summary_fee->name, 'Desconto Pix')) {
+					$luccifresh_summary_has_pix_fee = true;
+					break;
+				}
+			}
+
+			$luccifresh_summary_show_delivery = $luccifresh_summary_neighborhood && $luccifresh_summary_city;
+			$luccifresh_summary_show_pix_badge = !$luccifresh_summary_has_pix_fee && WC()->cart->get_subtotal() > 0;
+			?>
+
+			<?php if ($luccifresh_summary_show_delivery || $luccifresh_summary_show_pix_badge) : ?>
+				<tr class="luccifresh-summary-extra">
+					<td colspan="2">
+						<?php if ($luccifresh_summary_show_delivery) : ?>
+							<p class="p-checkout-v2__summary-delivery">
+								<?= esc_html(sprintf(
+									/* translators: 1: bairro, 2: cidade */
+									__('Entrega na %1$s • %2$s', 'lucci-fresh'),
+									$luccifresh_summary_neighborhood,
+									$luccifresh_summary_city
+								)); ?>
+							</p>
+						<?php endif; ?>
+
+						<?php if ($luccifresh_summary_show_pix_badge) : ?>
+							<div class="c-pix-wait__notice p-checkout-v2__summary-pix-badge">
+								<p class="c-pix-wait__notice-title"><?= esc_html__('5% de desconto no Pix', 'lucci-fresh'); ?></p>
+								<p class="c-pix-wait__notice-text">
+									<?= esc_html(sprintf(
+										/* translators: %s: valor do desconto */
+										__('Escolha Pix no pagamento e economize %s.', 'lucci-fresh'),
+										wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
+									)); ?>
+								</p>
+							</div>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+		<?php endif; ?>
+
 	</tfoot>
 </table>
