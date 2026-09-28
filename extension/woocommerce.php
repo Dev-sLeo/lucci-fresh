@@ -1373,6 +1373,34 @@ function arterra_ywcdd_serve_cached_datepicker()
 // parado nela, nada muda sozinho. Esse endpoint é consultado em intervalos
 // pelo JS (webpack/js/scripts/pixPaymentPoll.js) pra saber quando recarregar
 // a página e trocar pra tela "Pedido confirmado".
+/**
+ * Na tela "Escolher outra forma de pagamento" (checkout/form-pay.php,
+ * order-pay) só o Pix aparecia, mesmo com Rede e "Na entrega" disponíveis.
+ * Causa: o plugin woo-asaas (Includes/cart/class-cart.php, WC_Asaas\Cart\
+ * Cart::check_available_payment_gateways(), hookado em
+ * woocommerce_available_payment_gateways) trava o cliente no MESMO gateway
+ * que o pedido já usava sempre que a URL é uma página order-pay - feito
+ * pra renovação de assinatura (manter o mesmo cartão salvo), mas aplica
+ * pra QUALQUER pedido pago por essa página, mesmo sem assinatura nenhuma
+ * envolvida. Essa loja não vende assinatura (confirmado: nenhuma trava faz
+ * sentido aqui), então removemos só nessa página - sem isso, o link
+ * "Escolher outra forma de pagamento" (_pix-aguardando.html.php) nunca
+ * mostra as outras formas, o que é o oposto do que ele promete.
+ */
+add_action('wp', function () {
+    if (!function_exists('is_wc_endpoint_url') || !is_wc_endpoint_url('order-pay')) {
+        return;
+    }
+    if (!class_exists('WC_Asaas\Cart\Cart')) {
+        return;
+    }
+    remove_filter(
+        'woocommerce_available_payment_gateways',
+        [\WC_Asaas\Cart\Cart::get_instance(), 'check_available_payment_gateways'],
+        10
+    );
+});
+
 add_action('wp_ajax_luccifresh_check_pix_order_status', 'luccifresh_check_pix_order_status');
 add_action('wp_ajax_nopriv_luccifresh_check_pix_order_status', 'luccifresh_check_pix_order_status');
 function luccifresh_check_pix_order_status()

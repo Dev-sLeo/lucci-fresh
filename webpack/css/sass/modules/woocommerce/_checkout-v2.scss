@@ -20,6 +20,22 @@ $cv2-radius: 8px;
   }
 }
 
+// Avisos automáticos do WooCommerce ("Cliente correspondeu à área X" e
+// qualquer erro de update_checkout/envio) não são impressos no HTML da
+// página - o próprio checkout.js do WC core os insere via JS, dando
+// PREPEND direto no <form> (.woocommerce-NoticeGroup/-updateOrderReview/
+// -checkout, ver assets/js/frontend/checkout.js), fora de qualquer step -
+// por isso aparecem soltos no topo do wizard independente da etapa ativa.
+// O Figma não tem esse tipo de aviso em nenhuma tela do checkout novo.
+//
+// Nota: isso também esconde a mensagem de erro que aparece se o pagamento
+// falhar no envio final (submit_error usa a mesma classe) - a validação
+// de campo a campo (bordas vermelhas em .woocommerce-invalid) continua
+// funcionando normalmente, só não há mais um resumo de erro no topo.
+[data-checkout-wizard] .woocommerce-NoticeGroup {
+  display: none !important;
+}
+
 .o-header-checkout {
   background: #fff;
 
@@ -1037,6 +1053,13 @@ $cv2-radius: 8px;
   &-pix-badge {
     margin-bottom: 0;
   }
+}
+
+// Botão "Confirmar pedido" (step 4, Revisão) - encostava direto no texto
+// de termos/privacidade acima dele (.c-checkout-step__privacy só tem
+// margin-top, sem margin-bottom).
+[data-checkout-step="4"] .c-btn--checkout-next {
+  margin-top: 22px;
 }
 
 // ── Revisão ───────────────────────────────────────────────────────────────

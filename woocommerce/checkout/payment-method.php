@@ -44,7 +44,21 @@ $luccifresh_payment_subtitles = [
 $luccifresh_payment_subtitle = $luccifresh_payment_subtitles[$gateway->id] ?? '';
 
 $luccifresh_card_gateway_ids = ['rede_debit', 'rede_credit', 'maxipago_debit', 'maxipago_credit'];
-$luccifresh_cart_total       = WC()->cart ? WC()->cart->get_total() : wc_price(0);
+
+/**
+ * Na tela "Escolher outra forma de pagamento" (checkout/form-pay.php,
+ * pedido já existente) não tem carrinho - WC()->cart existe mas está
+ * vazio (o pedido já foi criado e o carrinho, esvaziado), então
+ * WC()->cart->get_total() sempre daria R$0,00 ali. Nesse contexto o
+ * valor certo é o total do PEDIDO, lido pelo id na query var nativa do
+ * endpoint "order-pay" do WooCommerce.
+ */
+$luccifresh_order_pay_id = absint(get_query_var('order-pay'));
+$luccifresh_order_pay    = $luccifresh_order_pay_id ? wc_get_order($luccifresh_order_pay_id) : false;
+
+$luccifresh_cart_total = $luccifresh_order_pay
+    ? $luccifresh_order_pay->get_formatted_order_total()
+    : (WC()->cart ? WC()->cart->get_total() : wc_price(0));
 ?>
 <li class="wc_payment_method payment_method_<?php echo esc_attr($gateway->id); ?>">
 	<input id="payment_method_<?php echo esc_attr($gateway->id); ?>" type="radio" class="input-radio" name="payment_method" value="<?php echo esc_attr($gateway->id); ?>" <?php checked($gateway->chosen, true); ?> data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>" />

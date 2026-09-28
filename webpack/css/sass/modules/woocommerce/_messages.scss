@@ -19,22 +19,26 @@
   }
 }
 
+// Sucesso, informativo e erro usam a mesma cor de marca (laranja padrão,
+// $color-laranja-cta) em vez do verde/azul/vermelho padrão do WooCommerce -
+// só o tom de fundo muda (mais claro pro erro) pra não perder a
+// hierarquia visual entre os três.
 .woocommerce-message {
-  background: lighten($wc-primary, 60%);
-  border-left: 4px solid $wc-primary;
+  background: lighten($color-laranja-cta, 35%);
+  border-left: 4px solid $color-laranja-cta;
   color: $wc-text;
 }
 
 .woocommerce-info {
-  background: #EFF6FF;
-  border-left: 4px solid #3B82F6;
+  background: lighten($color-laranja-cta, 35%);
+  border-left: 4px solid $color-laranja-cta;
   color: $wc-text;
 }
 
 .woocommerce-error {
-  background: #FEF2F2;
-  border-left: 4px solid #EF4444;
-  color: #991B1B;
+  background: lighten($color-laranja-cta, 38%);
+  border-left: 4px solid $color-laranja-cta;
+  color: darken($color-laranja-cta, 25%);
 }
 
 // -----------------------------------------------------------------------------
@@ -118,4 +122,43 @@ a.added_to_cart {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
+}
+
+// -----------------------------------------------------------------------------
+// Botões WooCommerce (site inteiro, incluindo Minha conta)
+// -----------------------------------------------------------------------------
+//
+// Todo botão .button que o WooCommerce imprime sozinho (carrinho, Minha
+// conta - "Ver pedido", "Repetir compra", "Cancelar", formulários de
+// endereço/senha etc.) usa o laranja padrão da marca ($color-laranja-cta),
+// não o roxo/rosa padrão do plugin. !important necessário: o CSS do WC
+// core e de alguns plugins (My Account, order-again) carregam depois do
+// tema e têm suas próprias regras de cor pra .button.
+.button,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.wp-element-button {
+  background-color: $color-laranja-cta !important;
+  border-color: $color-laranja-cta !important;
+  color: #fff !important;
+
+  &:hover,
+  &:focus {
+    background-color: darken($color-laranja-cta, 8%) !important;
+    border-color: darken($color-laranja-cta, 8%) !important;
+    color: #fff !important;
+  }
+
+  &.disabled,
+  &:disabled,
+  &.disabled:hover,
+  &:disabled:hover {
+    background-color: $color-laranja-cta !important;
+    border-color: $color-laranja-cta !important;
+    color: #fff !important;
+    opacity: 0.6 !important;
+    cursor: not-allowed;
+  }
 }

@@ -175,8 +175,11 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 			 * preenchido no step 1/2, lido via WC()->checkout()->get_value()
 			 * pra refletir o que o cliente digitou nesta mesma sessão, sem
 			 * precisar de um pedido criado) e o selo de "5% de desconto no
-			 * Pix" (escondido se o desconto já está aplicado - ver taxa
-			 * "Desconto Pix" registrada em extension/woocommerce.php).
+			 * Pix" - aparece em toda etapa do checkout (mesmo com Pix já
+			 * selecionado e a taxa "Desconto Pix" já aplicada, ver
+			 * extension/woocommerce.php), só troca o texto: convite pra
+			 * trocar de método quando Pix NÃO está selecionado, confirmação
+			 * do desconto já garantido quando está.
 			 *
 			 * PRECISA ficar dentro do <table>/<tfoot>: o AJAX de recálculo
 			 * do WooCommerce (update_checkout, ver WC_AJAX::
@@ -199,7 +202,7 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 			}
 
 			$luccifresh_summary_show_delivery = $luccifresh_summary_neighborhood && $luccifresh_summary_city;
-			$luccifresh_summary_show_pix_badge = !$luccifresh_summary_has_pix_fee && WC()->cart->get_subtotal() > 0;
+			$luccifresh_summary_show_pix_badge = WC()->cart->get_subtotal() > 0;
 			?>
 
 			<?php if ($luccifresh_summary_show_delivery || $luccifresh_summary_show_pix_badge) : ?>
@@ -220,11 +223,19 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 							<div class="c-pix-wait__notice p-checkout-v2__summary-pix-badge">
 								<p class="c-pix-wait__notice-title"><?= esc_html__('5% de desconto no Pix', 'lucci-fresh'); ?></p>
 								<p class="c-pix-wait__notice-text">
-									<?= esc_html(sprintf(
-										/* translators: %s: valor do desconto */
-										__('Escolha Pix no pagamento e economize %s.', 'lucci-fresh'),
-										wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
-									)); ?>
+									<?php if ($luccifresh_summary_has_pix_fee) : ?>
+										<?= esc_html(sprintf(
+											/* translators: %s: valor do desconto */
+											__('Você economizou %s pagando com Pix.', 'lucci-fresh'),
+											wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
+										)); ?>
+									<?php else : ?>
+										<?= esc_html(sprintf(
+											/* translators: %s: valor do desconto */
+											__('Escolha Pix no pagamento e economize %s.', 'lucci-fresh'),
+											wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
+										)); ?>
+									<?php endif; ?>
 								</p>
 							</div>
 						<?php endif; ?>
