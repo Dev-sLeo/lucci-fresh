@@ -184,7 +184,22 @@ add_filter('woocommerce_update_order_review_fragments', function ($fragments) {
     ob_start();
     ?>
     <div class="c-checkout-step__shipping-methods fc-shipping-method__packages">
-      <?php wc_cart_totals_shipping_html(); ?>
+      <?php
+      wc_cart_totals_shipping_html();
+
+      /**
+       * Mesmo motivo do do_action('woocommerce_review_order_after_shipping')
+       * em _step-entrega.html.php: esse hook é o ponto de extensão onde
+       * plugins como o "Agendar Entregas" (wp-content/plugins/agendar-
+       * entregas/includes/checkout/class-ae-checkout-fields.php) imprimem
+       * campos extra (data/turno de entrega) depois do método de frete.
+       * Como esse fragmento SUBSTITUI o container inteiro a cada
+       * recálculo de frete via AJAX, precisa disparar o hook de novo aqui
+       * também - senão os campos aparecem no carregamento inicial da
+       * página e somem assim que o cliente edita o CEP/endereço.
+       */
+      do_action('woocommerce_review_order_after_shipping');
+      ?>
     </div>
     <?php
     $fragments['.c-checkout-step__shipping-methods'] = ob_get_clean();

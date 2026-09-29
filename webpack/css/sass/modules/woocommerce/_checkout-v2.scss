@@ -461,6 +461,28 @@ $cv2-radius: 8px;
         line-height: 1.45;
       }
     }
+
+    // Campos "Data de entrega" / "Turno de entrega" do plugin Agendar
+    // Entregas (wp-content/plugins/agendar-entregas) - impressos aqui via
+    // do_action('woocommerce_review_order_after_shipping') em
+    // _step-entrega.html.php e no fragmento AJAX correspondente em
+    // extension/woocommerce.php. Ficam ocultos por padrão (o próprio JS do
+    // plugin mostra depois que um método de frete é selecionado) - aqui só
+    // o layout: 2 colunas no desktop, 1 coluna no mobile.
+    .ae-linha-agendamento {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 12px;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        margin: 0 !important;
+      }
+    }
   }
 
   // Botão "Continuar" (pill, laranja)

@@ -75,6 +75,19 @@ $billing_email = $checkout->get_value('billing_email');
      * chegaria tarde demais.
      */
     wc_cart_totals_shipping_html();
+
+    /**
+     * Plugin "Agendar Entregas" (wp-content/plugins/agendar-entregas):
+     * AE_Checkout_Fields::exibir_campos() imprime os campos de data/turno
+     * de entrega no hook padrão woocommerce_review_order_after_shipping -
+     * que é disparado dentro do <tfoot> de review-order.php, mas SÓ no
+     * ramo do checkout ANTIGO (`elseif` mais abaixo naquele arquivo). O
+     * checkout novo usa o ramo `if ($luccifresh_new_checkout)`, que nunca
+     * chama esse hook - por isso os campos nunca apareciam. Disparado aqui
+     * manualmente, no lugar certo do layout (depois do método de entrega),
+     * igual já fazemos com woocommerce_checkout_shipping logo acima.
+     */
+    do_action('woocommerce_review_order_after_shipping');
     ?>
   </div>
 
