@@ -541,6 +541,19 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     &:hover {
       background: darken($color-laranja-cta, 5%);
     }
+
+    // Desabilitado enquanto o step ainda tem campo obrigatório vazio/
+    // inválido (ver checkoutSteps.js, updateNextButtonState) - cinza e
+    // sem hover, pra não parecer clicável.
+    &:disabled {
+      background: $cv2-border;
+      color: $cv2-text-muted;
+      cursor: not-allowed;
+
+      &:hover {
+        background: $cv2-border;
+      }
+    }
   }
 }
 

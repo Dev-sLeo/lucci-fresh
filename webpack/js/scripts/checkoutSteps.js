@@ -29,22 +29,59 @@ export default function checkoutSteps() {
     return active ? Number(active.dataset.checkoutStep) : 1;
   }
 
+  // O WooCommerce NUNCA imprime o atributo HTML `required` nos campos -
+  // só `aria-required="true"` (ver woocommerce_form_field() em
+  // wc-template-functions.php: só seta aria-required, a obrigatoriedade
+  // de verdade é validada no PHP, no submit). Sem isso, checkValidity()
+  // considera QUALQUER campo vazio como válido, porque pro navegador ele
+  // nunca foi marcado como obrigatório - o botão nunca ficaria desabilitado
+  // de verdade. Sincroniza o `required` de verdade a partir do
+  // aria-required já existente, assim a validação nativa (checkValidity/
+  // reportValidity) passa a refletir a obrigatoriedade real do WooCommerce.
+  // Chamado de novo a cada updateAllButtonsState() porque os fragmentos de
+  // frete/pagamento são substituídos via AJAX com campos novos.
+  function syncRequiredAttributes() {
+    form.querySelectorAll('[aria-required="true"]:not([required])').forEach((field) => {
+      field.required = true;
+    });
+  }
+
   // Cada step só bloqueia o avanço com os campos que ele mesmo contém -
   // usa a validação nativa do HTML5 (o atributo `required` já vem do
   // WooCommerce/woocommerce_checkout_fields, não duplicamos regra nenhuma).
-  function isStepValid(step) {
+  //
+  // getFirstInvalidField() é a versão "silenciosa" (sem reportValidity/
+  // focus) - usada tanto pelo clique no botão (isStepValid, que aí sim
+  // avisa o usuário) quanto pelo botão ficar desabilitado em tempo real
+  // enquanto o cliente ainda está preenchendo (updateNextButtonState) -
+  // chamar reportValidity() a cada tecla digitada seria bem irritante.
+  function getFirstInvalidField(step) {
     const section = getStepSection(step);
-    if (!section) return true;
+    if (!section) return null;
 
     const fields = section.querySelectorAll("input, select, textarea");
-    let firstInvalid = null;
+    for (const field of fields) {
+      if (field.offsetParent === null) continue; // campo escondido (ex: billing_state fixo)
+      if (!field.checkValidity()) return field;
+    }
 
-    fields.forEach((field) => {
-      if (field.offsetParent === null) return; // campo escondido (ex: billing_state fixo)
-      if (!field.checkValidity()) {
-        firstInvalid = firstInvalid || field;
+    // O radio de forma de pagamento (step 3) não tem o atributo `required`
+    // no HTML (o WooCommerce valida isso só no PHP, no submit) - sem essa
+    // checagem extra, o botão "Revisar pedido" ficaria liberado mesmo no
+    // instante entre o step carregar e o fragmento de pagamento (AJAX)
+    // terminar de renderizar as opções.
+    if (step === 3) {
+      const paymentRadios = section.querySelectorAll('input[name="payment_method"]');
+      if (paymentRadios.length && !section.querySelector('input[name="payment_method"]:checked')) {
+        return paymentRadios[0];
       }
-    });
+    }
+
+    return null;
+  }
+
+  function isStepValid(step) {
+    const firstInvalid = getFirstInvalidField(step);
 
     if (firstInvalid) {
       firstInvalid.reportValidity();
@@ -53,6 +90,28 @@ export default function checkoutSteps() {
     }
 
     return true;
+  }
+
+  // Deixa o botão "Continuar"/"Revisar pedido" de cada step desabilitado
+  // até todos os campos daquele step estarem preenchidos corretamente -
+  // atualizado a cada input/change no form e a cada recálculo AJAX do
+  // WooCommerce (evento "updated_checkout", disparado depois que o
+  // fragmento de frete/pagamento termina de re-renderizar).
+  function updateNextButtonState(step) {
+    const section = getStepSection(step);
+    if (!section) return;
+
+    const button = section.querySelector("[data-checkout-next], [data-checkout-place-order]");
+    if (!button) return;
+
+    button.disabled = Boolean(getFirstInvalidField(step));
+  }
+
+  function updateAllButtonsState() {
+    syncRequiredAttributes();
+    for (let step = 1; step <= TOTAL_STEPS; step += 1) {
+      updateNextButtonState(step);
+    }
   }
 
   // A barra de progresso (data-checkout-progress) fica FORA do <form> (ver
@@ -126,6 +185,30 @@ export default function checkoutSteps() {
       form.querySelector("#place_order")?.click();
     }
   });
+
+  // "input" cobre digitação em tempo real; "change" cobre radio/select/
+  // checkbox e o disparo manual de change que paymentMethodCards.js/
+  // shippingMethodCards.js fazem ao clicar num card inteiro.
+  form.addEventListener("input", updateAllButtonsState);
+  form.addEventListener("change", updateAllButtonsState);
+
+  // Troca de step (ex.: state fixo SP ficando visível/invisível conforme
+  // o campo de bairro) também pode mudar quais campos contam como
+  // "visíveis" pra validação - reavalia tudo de novo.
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-checkout-progress-item].is-done, [data-checkout-edit]")) {
+      updateAllButtonsState();
+    }
+  });
+
+  // O fragmento de frete (.c-checkout-step__shipping-methods) e o de
+  // pagamento (.woocommerce-checkout-payment) são substituídos via AJAX
+  // pelo próprio WooCommerce - isso não dispara "input"/"change" nenhum
+  // nos elementos novos, só o evento "updated_checkout" depois que a
+  // troca termina.
+  if (window.jQuery) {
+    window.jQuery(document.body).on("updated_checkout", updateAllButtonsState);
+  }
 
   function fieldValue(name) {
     const field = form.querySelector(`[name="${name}"]`);
@@ -232,4 +315,5 @@ export default function checkoutSteps() {
   }
 
   goToStep(getCurrentStep());
+  updateAllButtonsState();
 }
