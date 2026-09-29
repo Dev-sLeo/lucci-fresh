@@ -12,6 +12,17 @@ $cv2-bg-soft: #f6f7f3;
 $cv2-bg-promo: #ffedd0;
 $cv2-radius: 8px;
 
+// O botão flutuante do plugin "WhatsApp Lead Widget" (#wlw-float-btn,
+// position: fixed, canto inferior direito) sobrepõe o formulário em
+// vários breakpoints mobile comuns (ex.: 375×812 cobre o canto do campo
+// "Endereço de e-mail" já na primeira dobra, sem precisar rolar a página)
+// - é um widget de captação de lead, sem função nenhuma dentro do
+// checkout em si. Escondido só nesta página (body.woocommerce-checkout,
+// classe nativa do WooCommerce).
+body.woocommerce-checkout #wlw-float-btn {
+  display: none !important;
+}
+
 // ── Cabeçalho e rodapé "distraction-free" (só na página de checkout) ────────
 
 .page-checkout {
@@ -256,13 +267,26 @@ $cv2-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 4px;
     font-family: $ff-primary;
     font-size: 14px;
     font-weight: 500;
     color: $cv2-text-sage;
     margin: 0 0 22px;
 
+    // E-mail é uma string sem espaço nenhum pra quebrar - sem isso, um
+    // e-mail um pouco mais longo (comum na vida real, ex. sobrenome
+    // composto + provedor corporativo) empurra o botão "Alterar" pra fora
+    // da tela em telas estreitas (min-width:0 é necessário pro item
+    // flex aceitar encolher/quebrar abaixo do tamanho do próprio conteúdo).
+    span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
     button {
+      flex-shrink: 0;
       background: none;
       border: none;
       font-weight: 600;
