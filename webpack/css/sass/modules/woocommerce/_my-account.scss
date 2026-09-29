@@ -2,6 +2,23 @@
 // Minha conta
 // -----------------------------------------------------------------------------
 
+// Cor padrão de todo link de texto em "Minha conta" (todas as telas: painel,
+// pedidos, endereços, detalhes da conta, e as telas de login/cadastro de
+// visitante deslogado) - #1f2818, com underline só no hover. Os botões em
+// formato de pílula (Salvar endereços, Repetir compra, Ver pedido etc.) NÃO
+// são "links" nesse sentido - já têm cor própria (branco sobre fundo
+// colorido) e ficam de fora via :not().
+.p-my-account,
+.woocommerce-account .singular-page.is-logged-out {
+  a:not(.button):not(.u-button):not(.woocommerce-Button) {
+    color: #1f2818;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 // Fallback caso o botão "Repetir compra" seja renderizado pelo template padrão do WooCommerce
 .order-again .button {
   display: flex !important;
@@ -400,11 +417,12 @@
     }
   }
 
+  // Cor (#1f2818) e underline só no hover vêm da regra geral de links de
+  // "Minha conta" mais acima no arquivo - aqui só o que é específico desse
+  // link (fonte/tamanho).
   .lost_password a {
     font-family: $ff-primary;
     font-size: rem(14px);
-    color: $wc-primary;
-    text-decoration: underline;
   }
 
   .form-row {

@@ -329,6 +329,12 @@ remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
 // Remove a sidebar padrão do WooCommerce
 remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
 
+// Remove a .woocommerce-notices-wrapper de "Minha conta" (endereço salvo,
+// senha alterada, etc.) - hook específico dessa página (wc-template-hooks.php),
+// separado dos hooks de notice do checkout/carrinho/loja (esses continuam
+// normais, só "Minha conta" não deve mostrar essa caixa).
+remove_action('woocommerce_account_content', 'woocommerce_output_all_notices', 5);
+
 // Número de produtos por linha e por página
 add_filter('loop_shop_columns', function () {
     return 3;
