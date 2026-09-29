@@ -5,6 +5,8 @@
  * (header-top) continua igual à do site inteiro - só o menu principal some.
  */
 defined('ABSPATH') || exit;
+
+global $tpl_engine;
 ?>
 <header class="o-header-checkout">
   <div class="s-container">
@@ -22,3 +24,14 @@ defined('ABSPATH') || exit;
   </div>
 </header>
 <div class="o-header-checkout__divider"></div>
+
+<?php
+/**
+ * O cabeçalho "distraction-free" do checkout não tem o botão de carrinho
+ * do header normal (de propósito, ver comentário acima) - mas o link
+ * "← Editar carrinho" do resumo do pedido (_order-summary.html.php) precisa
+ * do mesmo sidebar (#cart-sidebar) pra abrir em vez de navegar pra
+ * /carrinho/. O componente já checa sozinho se WC()->cart existe.
+ */
+$tpl_engine->partial('components/cart-sidebar');
+?>

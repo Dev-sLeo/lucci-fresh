@@ -25,7 +25,20 @@ $item_count = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
   </div>
   <?php do_action('woocommerce_checkout_after_order_review'); ?>
 
-  <a href="<?= esc_url(wc_get_cart_url()); ?>" class="p-checkout-v2__summary-edit-cart">
+  <?php
+  /**
+   * Abre o mesmo sidebar de carrinho do header normal (#cart-sidebar,
+   * ver webpack/js/scripts/cartSidebar.js) em vez de navegar para
+   * /carrinho/ - o markup do sidebar é incluído no cabeçalho do checkout
+   * (_header-checkout.html.php) só por causa deste botão.
+   *
+   * <button>, não <a href>: o open() do cartSidebar.js não dá
+   * preventDefault() (mesmo padrão do botão de carrinho do header normal,
+   * _header.html.php) - com href, o clique navegaria pra /carrinho/ antes
+   * (ou ao mesmo tempo) do sidebar abrir.
+   */
+  ?>
+  <button type="button" class="p-checkout-v2__summary-edit-cart js-cart-open" aria-controls="cart-sidebar" aria-expanded="false">
     <?= esc_html__('← Editar carrinho', 'lucci-fresh'); ?>
-  </a>
+  </button>
 </aside>

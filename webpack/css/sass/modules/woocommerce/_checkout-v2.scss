@@ -23,6 +23,14 @@ body.woocommerce-checkout #wlw-float-btn {
   display: none !important;
 }
 
+// O sidebar de carrinho (components/cart-sidebar) é incluído no cabeçalho
+// do checkout só pra dar suporte ao botão "← Editar carrinho" do resumo
+// (ver _order-summary.html.php) - o CTA "Finalizar Pedido" dele não faz
+// sentido aqui dentro (levaria de volta pra esta mesma página).
+body.woocommerce-checkout .c-cart-sidebar__checkout {
+  display: none !important;
+}
+
 // ── Cabeçalho e rodapé "distraction-free" (só na página de checkout) ────────
 
 .page-checkout {
@@ -1077,12 +1085,23 @@ body.woocommerce-checkout #wlw-float-btn {
   }
 
   &-edit-cart {
+    // Agora é um <button> (abre o sidebar do carrinho, ver
+    // _order-summary.html.php), não mais um <a> - reset do estilo nativo
+    // de botão pra continuar idêntico visualmente ao link de antes.
     display: inline-block;
+    background: none;
+    border: 0;
+    padding: 0;
     margin-top: 8px;
     font-family: $ff-primary;
     font-size: 14px;
     font-weight: 600;
     color: $cv2-text-sage;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   // Figma (nó 2106:1032): "Entrega na {bairro} • {cidade}" logo abaixo do
