@@ -336,8 +336,12 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
       color: $cv2-text-dark;
       margin-bottom: 8px;
 
+      // <abbr class="required">*</abbr> - o WooCommerce já imprime isso
+      // sozinho em todo campo obrigatório, só precisava parar de escondê-lo.
       .required {
-        display: none;
+        color: $color-laranja-cta;
+        text-decoration: none;
+        margin-left: 2px;
       }
     }
 
@@ -524,6 +528,7 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     justify-content: center;
     width: 100%;
     height: 53px;
+    margin-top: 22px;
     background: $color-laranja-cta;
     border-radius: 600px;
     border: 0;
@@ -744,7 +749,9 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
       margin-bottom: 8px !important;
 
       .required {
-        display: none !important;
+        color: $color-laranja-cta !important;
+        text-decoration: none !important;
+        margin-left: 2px !important;
       }
 
       // Ícone de cada campo (Rede) não existe no Figma (nó 2106:1093) -
@@ -1120,13 +1127,6 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
   }
 }
 
-// Botão "Confirmar pedido" (step 4, Revisão) - encostava direto no texto
-// de termos/privacidade acima dele (.c-checkout-step__privacy só tem
-// margin-top, sem margin-bottom).
-[data-checkout-step="4"] .c-btn--checkout-next {
-  margin-top: 22px;
-}
-
 // ── Revisão ───────────────────────────────────────────────────────────────
 .c-checkout-review {
   display: flex;
@@ -1498,6 +1498,46 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     a {
       color: $cv2-text-sage;
       font-weight: 600;
+    }
+  }
+
+  // "Continuar comprando" + "Minha Conta" - uma coluna só (empilhados) no
+  // mobile, lado a lado no desktop (a partir do mesmo breakpoint usado no
+  // resto do checkout - ver `@media (max-width: 600px)` mais abaixo no
+  // arquivo).
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px;
+
+    @media (min-width: 601px) {
+      flex-direction: row;
+    }
+  }
+
+  // Reaproveita o botão pill do "Aguardando Pix" (.c-pix-wait__copy-btn),
+  // só que como <a>, não <button>, e dentro de um flex (não mais
+  // width:100% sozinho - flex:1 pra dividir o espaço com o botão vizinho
+  // no desktop).
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  // "Minha Conta": ação secundária, contorno em vez de preenchido, pra não
+  // competir com "Continuar comprando" (CTA principal).
+  &__action--secondary {
+    background: #fff;
+    border: 1px solid $cv2-border;
+    color: $cv2-text-dark;
+
+    &:hover {
+      background: $cv2-bg-soft;
     }
   }
 }

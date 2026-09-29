@@ -75,9 +75,14 @@ $shipping_address = $order->get_formatted_shipping_address();
           </p>
         <?php endif; ?>
 
-        <a href="<?= esc_url(home_url('/')); ?>" class="c-pix-wait__copy-btn" style="display:block; text-align:center; text-decoration:none;">
-          <?= esc_html__('Continuar comprando', 'lucci-fresh'); ?>
-        </a>
+        <div class="c-order-confirmed__actions">
+          <a href="<?= esc_url(home_url('/')); ?>" class="c-pix-wait__copy-btn c-order-confirmed__action">
+            <?= esc_html__('Continuar comprando', 'lucci-fresh'); ?>
+          </a>
+          <a href="<?= esc_url(wc_get_page_permalink('myaccount')); ?>" class="c-pix-wait__copy-btn c-order-confirmed__action c-order-confirmed__action--secondary">
+            <?= esc_html__('Minha Conta', 'lucci-fresh'); ?>
+          </a>
+        </div>
 
         <p class="c-order-confirmed__help">
           <?= esc_html__('Precisa de ajuda com o pedido?', 'lucci-fresh'); ?>

@@ -48,7 +48,7 @@ $luccifresh_account_fields = (!is_user_logged_in() && $checkout->is_registration
   </p>
 
   <button type="button" class="c-btn--checkout-next" data-checkout-next="2">
-    <?= esc_html__('Continuar para entrega', 'lucci-fresh'); ?>
+    <?= esc_html__('Prosseguir', 'lucci-fresh'); ?>
   </button>
 
   <p class="c-checkout-step__privacy">

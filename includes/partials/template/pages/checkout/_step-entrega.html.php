@@ -1,6 +1,6 @@
 <?php
 /**
- * Step 2 - Entrega (endereço + método de frete + data YITH + observações).
+ * Step 2 - Entrega (endereço + método de frete + data YITH).
  *
  * O método de frete normalmente é renderizado dentro do resumo do pedido
  * (order review), mas o Figma pede a lista de fretes aqui, junto ao
@@ -14,22 +14,19 @@
  * diferente do de cobrança).
  *
  * O template nativo carregado por esse hook (woocommerce/checkout/
- * form-shipping.php, sem override no tema) também imprime os campos do
- * grupo "order" (order_comments) dentro de .woocommerce-additional-fields -
- * duplicando o campo "Observações para entrega" que este arquivo já
- * renderiza manualmente mais abaixo, no lugar certo do layout do Figma
- * (depois do método de entrega, não entre o endereço e o frete). Suprimimos
- * esse campo só durante essa chamada específica.
+ * form-shipping.php, sem override no tema) também imprime o campo do grupo
+ * "order" (order_comments) dentro de .woocommerce-additional-fields - a
+ * loja não usa mais campo de observações, então ele é suprimido aqui (só
+ * durante essa chamada específica) em vez de renderizado.
  */
 defined('ABSPATH') || exit;
 
-$checkout     = WC()->checkout();
-$order_fields = $checkout->get_checkout_fields('order');
+$checkout      = WC()->checkout();
 $billing_email = $checkout->get_value('billing_email');
 ?>
 
 <section class="c-checkout-step" data-checkout-step="2" aria-label="<?= esc_attr__('Entrega', 'lucci-fresh'); ?>">
-  <h2 class="c-checkout-step__title"><?= esc_html__('Onde vamos entregar?', 'lucci-fresh'); ?></h2>
+  <h2 class="c-checkout-step__title"><?= esc_html__('Endereço', 'lucci-fresh'); ?></h2>
 
   <?php if ($billing_email) : ?>
     <p class="c-checkout-step__confirmed">
@@ -90,14 +87,6 @@ $billing_email = $checkout->get_value('billing_email');
     do_action('woocommerce_review_order_after_shipping');
     ?>
   </div>
-
-  <hr class="c-checkout-step__divider" />
-
-  <?php if (isset($order_fields['order_comments'])) : ?>
-    <div class="c-checkout-step__fields">
-      <?php woocommerce_form_field('order_comments', $order_fields['order_comments'], $checkout->get_value('order_comments')); ?>
-    </div>
-  <?php endif; ?>
 
   <button type="button" class="c-btn--checkout-next" data-checkout-next="3">
     <?= esc_html__('Continuar para pagamento', 'lucci-fresh'); ?>
