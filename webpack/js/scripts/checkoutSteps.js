@@ -65,11 +65,22 @@ export default function checkoutSteps() {
       if (!field.checkValidity()) return field;
     }
 
-    // O radio de forma de pagamento (step 3) não tem o atributo `required`
-    // no HTML (o WooCommerce valida isso só no PHP, no submit) - sem essa
-    // checagem extra, o botão "Revisar pedido" ficaria liberado mesmo no
-    // instante entre o step carregar e o fragmento de pagamento (AJAX)
-    // terminar de renderizar as opções.
+    // O radio de método de entrega (step 2) e o de forma de pagamento
+    // (step 3) não têm o atributo `required` no HTML (o WooCommerce só
+    // valida isso no PHP, no submit) - sem essa checagem extra, dava pra
+    // clicar em "Continuar para pagamento"/"Revisar pedido" sem escolher
+    // nenhum método visível, com o pedido seguindo com o que estava
+    // marcado por padrão. Loja não pode ter frete pré-selecionado (ver
+    // extension/woocommerce.php - filtro woocommerce_shipping_chosen_method
+    // já força nenhum método escolhido até o cliente clicar), então aqui
+    // o step 2 só libera depois que o cliente realmente marcar um.
+    if (step === 2) {
+      const shippingRadios = section.querySelectorAll('input[name^="shipping_method"]');
+      if (shippingRadios.length && !section.querySelector('input[name^="shipping_method"]:checked')) {
+        return shippingRadios[0];
+      }
+    }
+
     if (step === 3) {
       const paymentRadios = section.querySelectorAll('input[name="payment_method"]');
       if (paymentRadios.length && !section.querySelector('input[name="payment_method"]:checked')) {

@@ -116,7 +116,21 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 					<th><?php esc_html_e('Entrega', 'lucci-fresh'); ?></th>
 					<td>
 						<?php
-						$luccifresh_chosen_methods = function_exists('wc_get_chosen_shipping_method_ids') ? wc_get_chosen_shipping_method_ids() : [];
+						/**
+						 * wc_get_chosen_shipping_method_ids() sempre devolve um
+						 * item por pacote de frete - mesmo quando esse item é
+						 * uma string vazia (nosso filtro woocommerce_shipping_
+						 * chosen_method, em extension/woocommerce.php, força
+						 * isso de propósito pra não vir nada pré-selecionado).
+						 * Um array como [''] é TRUTHY em PHP mesmo só com uma
+						 * string vazia dentro, então checar o array direto
+						 * ($luccifresh_chosen_methods ? ...) sempre achava que
+						 * um método tinha sido escolhido - por isso a mostra
+						 * do valor calculado em vez de "A calcular" mesmo com
+						 * nenhum frete marcado. array_filter() remove essas
+						 * strings vazias antes de checar.
+						 */
+						$luccifresh_chosen_methods = function_exists('wc_get_chosen_shipping_method_ids') ? array_filter(wc_get_chosen_shipping_method_ids()) : [];
 						echo $luccifresh_chosen_methods
 							? wp_kses_post(WC()->cart->get_cart_shipping_total())
 							: esc_html__('A calcular', 'lucci-fresh');
