@@ -119,7 +119,7 @@ export default function checkoutSteps() {
   // interferir no POST). Por isso a busca é a partir de `document`, não de
   // `form`: um `form.querySelectorAll` aqui sempre retorna vazio, e é
   // exatamente por isso que a barra nunca atualizava o estágio atual.
-  function goToStep(step) {
+  function goToStep(step, { scroll = true } = {}) {
     step = Math.min(Math.max(step, 1), TOTAL_STEPS);
 
     form.querySelectorAll("[data-checkout-step]").forEach((section) => {
@@ -147,7 +147,9 @@ export default function checkoutSteps() {
       populateReview();
     }
 
-    getStepSection(step)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (scroll) {
+      getStepSection(step)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   // Clique em qualquer etapa já concluída da barra de progresso volta pra
@@ -314,6 +316,31 @@ export default function checkoutSteps() {
     }
   }
 
-  goToStep(getCurrentStep());
+  // scroll: false aqui - isto só sincroniza classes/barra de progresso com o
+  // step já ativo no HTML, não é uma navegação de verdade. Sem essa opção, a
+  // página podia pular sozinha logo no carregamento (ex.: se o navegador já
+  // tinha restaurado uma posição de scroll diferente do topo do step 1).
+  goToStep(getCurrentStep(), { scroll: false });
   updateAllButtonsState();
+
+  // O WooCommerce sempre chama scroll_to_notices() depois de um
+  // update_checkout (recálculo de frete, etc.), mesmo sem nenhum erro real -
+  // quando não há aviso de verdade (.woocommerce-NoticeGroup-*), ele cai no
+  // fallback de rolar até o <form> inteiro, o que aqui equivale ao topo do
+  // step 1, mesmo com o cliente parado no step 2/3. Sobrescreve para só
+  // rolar quando existir mesmo um aviso a mostrar.
+  if (window.jQuery && typeof window.jQuery.scroll_to_notices === "function") {
+    const originalScrollToNotices = window.jQuery.scroll_to_notices;
+
+    window.jQuery.scroll_to_notices = function (scrollElement) {
+      const temAvisoReal =
+        scrollElement && scrollElement.is(".woocommerce-NoticeGroup-updateOrderReview, .woocommerce-NoticeGroup-checkout");
+
+      if (!temAvisoReal) {
+        return;
+      }
+
+      originalScrollToNotices.apply(this, arguments);
+    };
+  }
 }
