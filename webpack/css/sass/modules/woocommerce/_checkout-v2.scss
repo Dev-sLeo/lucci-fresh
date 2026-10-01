@@ -625,9 +625,31 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
       padding: 20px !important;
       margin: 0 !important;
 
-      &:has(> input:checked) {
+      &:has(> input:checked),
+      &.c-payment-method--card-type-active {
         background: $cv2-bg-soft !important;
         border-color: $cv2-text-sage !important;
+      }
+
+      // Quando o cliente escolhe "Débito" no <select>, quem fica
+      // realmente marcado é o radio do <li> escondido - o <input> DESTE
+      // card (crédito) fica desmarcado, e o ponto preenchido nativo do
+      // radio some, mesmo com o card continuando destacado/selecionado
+      // (classe acima). <input> é um replaced element e não aceita
+      // ::before/::after, então o ponto é desenhado aqui no <li>,
+      // ocupando a mesma célula do grid que o radio real.
+      &.c-payment-method--card-type-active:not(:has(> input:checked))::after {
+        content: "";
+        grid-column: 1;
+        grid-row: 1;
+        align-self: start;
+        justify-self: center;
+        margin-top: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: $color-preto;
+        pointer-events: none;
       }
 
       >input[type="radio"] {

@@ -143,6 +143,18 @@ export default function checkoutSteps() {
   // paymentMethodCards.js) - só marcar o atributo sem disparar esse
   // evento deixa o WooCommerce "sem saber" da troca, e ele reverte
   // sozinho no próximo update_checkout.
+  const cardTypeGroupSyncs = [];
+
+  // O <li> do débito fica escondido (CSS), então quando ele é o radio
+  // realmente marcado, o card "visível" (o de crédito) não tem mais
+  // `> input:checked` nenhum - sem essa classe, nenhum card aparecia
+  // destacado/com o radio preenchido na tela. Reavaliado toda vez que
+  // QUALQUER método de pagamento muda (Pix, na entrega etc. também
+  // desmarcam os dois radios do e.Rede, não só o select).
+  function syncCardTypeActiveStates() {
+    cardTypeGroupSyncs.forEach((sync) => sync());
+  }
+
   function initCardTypeSelects() {
     const groups = new Map();
     form.querySelectorAll(".c-payment-method__card-type").forEach((select) => {
@@ -151,12 +163,23 @@ export default function checkoutSteps() {
       groups.get(key).push(select);
     });
 
+    cardTypeGroupSyncs.length = 0;
+
     groups.forEach((selects) => {
       const creditId = selects[0].dataset.cardTypeCredit;
       const debitId = selects[0].dataset.cardTypeDebit;
       const creditRadio = form.querySelector(`#payment_method_${creditId}`);
       const debitRadio = form.querySelector(`#payment_method_${debitId}`);
-      if (!creditRadio || !debitRadio) return;
+      const creditLi = creditRadio?.closest("li.wc_payment_method");
+      if (!creditRadio || !debitRadio || !creditLi) return;
+
+      // Card de crédito fica destacado sempre que QUALQUER um dos dois
+      // radios reais (crédito OU débito) estiver marcado (ver
+      // _checkout-v2.scss).
+      function syncCardState() {
+        creditLi.classList.toggle("c-payment-method--card-type-active", creditRadio.checked || debitRadio.checked);
+      }
+      cardTypeGroupSyncs.push(syncCardState);
 
       // O título do card (payment-method.php) fica fixo em "Crédito /
       // Débito" - não troca com a opção marcada no select.
@@ -164,6 +187,7 @@ export default function checkoutSteps() {
         selects.forEach((select) => {
           select.value = value;
         });
+        syncCardState();
       }
 
       syncGroup(debitRadio.checked ? debitId : creditId);
@@ -262,6 +286,11 @@ export default function checkoutSteps() {
   // shippingMethodCards.js fazem ao clicar num card inteiro.
   form.addEventListener("input", updateAllButtonsState);
   form.addEventListener("change", updateAllButtonsState);
+  form.addEventListener("change", (event) => {
+    if (event.target.matches('input[name="payment_method"]')) {
+      syncCardTypeActiveStates();
+    }
+  });
 
   // Troca de step (ex.: state fixo SP ficando visível/invisível conforme
   // o campo de bairro) também pode mudar quais campos contam como
