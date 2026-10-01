@@ -46,6 +46,23 @@ $luccifresh_payment_subtitle = $luccifresh_payment_subtitles[$gateway->id] ?? ''
 $luccifresh_card_gateway_ids = ['rede_debit', 'rede_credit', 'maxipago_debit', 'maxipago_credit'];
 
 /**
+ * loja5_woo_novo_erede (crédito) e loja5_woo_novo_erede_debito (débito) são
+ * dois gateways reais, mas visualmente viram UM único radio "Cartão -
+ * e.Rede" com um <select> por dentro para trocar entre crédito/débito -
+ * pedido do Figma de não duplicar a opção de cartão na lista. O <li> do
+ * débito continua sendo renderizado normalmente (CSS esconde ele, ver
+ * _checkout-v2.scss, classe c-payment-method--card-type-merged) só pra
+ * manter seu <input> e seu payment_box funcionando como sempre - quem
+ * troca o rádio marcado é o <select>, via checkoutSteps.js
+ * (initCardTypeSelects()), que simula um clique no rádio real
+ * correspondente.
+ */
+$luccifresh_card_type_pairs = [
+    'loja5_woo_novo_erede' => 'loja5_woo_novo_erede_debito',
+];
+$luccifresh_card_type_debit_ids = array_values($luccifresh_card_type_pairs);
+
+/**
  * Na tela "Escolher outra forma de pagamento" (checkout/form-pay.php,
  * pedido já existente) não tem carrinho - WC()->cart existe mas está
  * vazio (o pedido já foi criado e o carrinho, esvaziado), então
@@ -60,7 +77,7 @@ $luccifresh_cart_total = $luccifresh_order_pay
     ? $luccifresh_order_pay->get_formatted_order_total()
     : (WC()->cart ? WC()->cart->get_total() : wc_price(0));
 ?>
-<li class="wc_payment_method payment_method_<?php echo esc_attr($gateway->id); ?>">
+<li class="wc_payment_method payment_method_<?php echo esc_attr($gateway->id); ?><?php echo in_array($gateway->id, $luccifresh_card_type_debit_ids, true) ? ' c-payment-method--card-type-merged' : ''; ?>">
 	<input id="payment_method_<?php echo esc_attr($gateway->id); ?>" type="radio" class="input-radio" name="payment_method" value="<?php echo esc_attr($gateway->id); ?>" <?php checked($gateway->chosen, true); ?> data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>" />
 
 	<label for="payment_method_<?php echo esc_attr($gateway->id); ?>">
@@ -68,6 +85,12 @@ $luccifresh_cart_total = $luccifresh_order_pay
 	</label>
 	<?php if ($luccifresh_payment_subtitle) : ?>
 		<span class="payment-method-subtitle"><?php echo esc_html($luccifresh_payment_subtitle); ?></span>
+	<?php endif; ?>
+	<?php if (array_key_exists($gateway->id, $luccifresh_card_type_pairs)) : ?>
+		<select class="c-payment-method__card-type" data-card-type-credit="<?php echo esc_attr($gateway->id); ?>" data-card-type-debit="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>" aria-label="<?php esc_attr_e('Tipo de cartão', 'lucci-fresh'); ?>">
+			<option value="<?php echo esc_attr($gateway->id); ?>"><?php esc_html_e('Crédito', 'lucci-fresh'); ?></option>
+			<option value="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>"><?php esc_html_e('Débito', 'lucci-fresh'); ?></option>
+		</select>
 	<?php endif; ?>
 
 	<?php if ('asaas-pix' === $gateway->id) : ?>

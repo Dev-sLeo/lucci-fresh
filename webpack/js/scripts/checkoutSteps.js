@@ -125,6 +125,49 @@ export default function checkoutSteps() {
     }
   }
 
+  // Crédito e débito do e.Rede (loja5_woo_novo_erede/_debito) são dois
+  // gateways reais, mas aparecem como um único card com um <select> por
+  // dentro (ver payment-method.php) - o <li> do débito continua no DOM,
+  // só escondido via CSS, pra seu radio/payment_box seguirem funcionando
+  // normalmente. Escolher uma opção aqui só simula um clique no radio
+  // real correspondente (.click(), não .checked = true direto), porque o
+  // WooCommerce liga a troca de forma de pagamento a um listener de CLICK
+  // (ver paymentMethodCards.js) - só marcar o atributo sem disparar esse
+  // evento deixa o WooCommerce "sem saber" da troca, e ele reverte sozinho
+  // no próximo update_checkout.
+  function initCardTypeSelects() {
+    form.querySelectorAll(".c-payment-method__card-type").forEach((select) => {
+      if (select.dataset.cardTypeBound) return;
+      select.dataset.cardTypeBound = "true";
+
+      const creditId = select.dataset.cardTypeCredit;
+      const debitId = select.dataset.cardTypeDebit;
+      const creditRadio = form.querySelector(`#payment_method_${creditId}`);
+      const debitRadio = form.querySelector(`#payment_method_${debitId}`);
+      const creditLabel = form.querySelector(`label[for="payment_method_${creditId}"]`);
+      const debitLabel = form.querySelector(`label[for="payment_method_${debitId}"]`);
+      if (!creditRadio || !debitRadio || !creditLabel) return;
+
+      const creditLabelText = creditLabel.textContent;
+      const debitLabelText = debitLabel ? debitLabel.textContent : creditLabelText;
+
+      function syncLabel() {
+        creditLabel.textContent = select.value === debitId ? debitLabelText : creditLabelText;
+      }
+
+      select.value = debitRadio.checked ? debitId : creditId;
+      syncLabel();
+
+      select.addEventListener("change", () => {
+        const radio = select.value === debitId ? debitRadio : creditRadio;
+        if (!radio.checked) {
+          radio.click();
+        }
+        syncLabel();
+      });
+    });
+  }
+
   // A barra de progresso (data-checkout-progress) fica FORA do <form> (ver
   // wizard.html.php - o partial é incluído antes do <form> abrir, pra não
   // interferir no POST). Por isso a busca é a partir de `document`, não de
@@ -220,7 +263,10 @@ export default function checkoutSteps() {
   // nos elementos novos, só o evento "updated_checkout" depois que a
   // troca termina.
   if (window.jQuery) {
-    window.jQuery(document.body).on("updated_checkout", updateAllButtonsState);
+    window.jQuery(document.body).on("updated_checkout", () => {
+      initCardTypeSelects();
+      updateAllButtonsState();
+    });
   }
 
   function fieldValue(name) {
@@ -332,6 +378,7 @@ export default function checkoutSteps() {
   // página podia pular sozinha logo no carregamento (ex.: se o navegador já
   // tinha restaurado uma posição de scroll diferente do topo do step 1).
   goToStep(getCurrentStep(), { scroll: false });
+  initCardTypeSelects();
   updateAllButtonsState();
 
   // O WooCommerce sempre chama scroll_to_notices() depois de um

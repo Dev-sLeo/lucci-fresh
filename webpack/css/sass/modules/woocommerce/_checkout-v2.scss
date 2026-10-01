@@ -674,6 +674,29 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
         font-size: 13px;
         color: $cv2-text-muted;
       }
+
+      // Radio do débito (loja5_woo_novo_erede_debito) escondido - ver
+      // payment-method.php: ele continua no DOM (radio + payment_box
+      // seguem funcionando normalmente), só não aparece como um card
+      // separado porque virou uma opção do <select> dentro do card de
+      // crédito (initCardTypeSelects(), em checkoutSteps.js).
+      &.c-payment-method--card-type-merged {
+        display: none !important;
+      }
+
+      .c-payment-method__card-type {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+        font-family: $ff-primary;
+        font-size: 13px;
+        color: $cv2-text-dark;
+        border: 1px solid $cv2-border;
+        border-radius: 6px;
+        padding: 4px 8px;
+        background: #fff;
+        cursor: pointer;
+      }
     }
   }
 

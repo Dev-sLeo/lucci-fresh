@@ -31,8 +31,12 @@ export default function paymentMethodCards() {
       li.addEventListener("click", (event) => {
         // Cliques em campos DENTRO do payment_box (número do cartão,
         // nome de quem vai receber etc.) não devem re-selecionar o
-        // radio - só o clique no card/label em si.
-        if (event.target.closest(".payment_box")) return;
+        // radio - só o clique no card/label em si. O <select> de tipo
+        // de cartão (crédito/débito, ver payment-method.php) também fica
+        // de fora: quem decide qual radio marcar ali é o próprio select
+        // (checkoutSteps.js, initCardTypeSelects()), já que ele pode
+        // apontar pro radio ESCONDIDO do débito, não o deste <li>.
+        if (event.target.closest(".payment_box, .c-payment-method__card-type")) return;
 
         const input = li.querySelector('input[type="radio"]');
         if (!input || input.checked) return;
