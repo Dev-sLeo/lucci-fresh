@@ -633,22 +633,30 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
 
       // Quando o cliente escolhe "Débito" no <select>, quem fica
       // realmente marcado é o radio do <li> escondido - o <input> DESTE
-      // card (crédito) fica desmarcado, e o ponto preenchido nativo do
-      // radio some, mesmo com o card continuando destacado/selecionado
-      // (classe acima). <input> é um replaced element e não aceita
-      // ::before/::after, então o ponto é desenhado aqui no <li>,
-      // ocupando a mesma célula do grid que o radio real.
+      // card (crédito) fica desmarcado, e o indicador nativo do radio
+      // some, mesmo com o card continuando destacado/selecionado (classe
+      // acima). <input> é um replaced element e não aceita ::before/
+      // ::after, então esse indicador "de mentira" é desenhado aqui no
+      // <li>, na MESMA célula do grid e com EXATAMENTE as mesmas
+      // medidas/cores do indicador "de verdade" logo abaixo (>input[type
+      // ="radio"]:checked) - os dois usam os mesmos valores de
+      // width/height/border/box-shadow de propósito, pra ficarem
+      // visualmente idênticos (não dá pra reproduzir perfeitamente a
+      // aparência NATIVA do navegador via CSS, então o radio real também
+      // usa esse desenho customizado em vez do accent-color nativo).
       &.c-payment-method--card-type-active:not(:has(> input:checked))::after {
         content: "";
         grid-column: 1;
         grid-row: 1;
         align-self: start;
-        justify-self: center;
-        margin-top: 4px;
-        width: 7px;
-        height: 7px;
+        justify-self: start;
+        margin-top: 2px;
+        width: 13px;
+        height: 13px;
         border-radius: 50%;
+        border: 1px solid $color-preto;
         background: $color-preto;
+        box-shadow: inset 0 0 0 3px #fff;
         pointer-events: none;
       }
 
@@ -658,7 +666,22 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
         margin: 0 !important;
         margin-top: 2px !important;
         width: 13px !important;
-        accent-color: $color-preto;
+        height: 13px;
+
+        // appearance:none pra desenhar o indicador nós mesmos (ver
+        // comentário acima) - garante que o radio "de verdade" marcado
+        // fique IDÊNTICO ao indicador "de mentira" usado quando o
+        // marcado de verdade é o radio escondido do débito.
+        appearance: none;
+        border-radius: 50%;
+        border: 1px solid $cv2-border;
+        background: #fff;
+
+        &:checked {
+          border-color: $color-preto;
+          background: $color-preto;
+          box-shadow: inset 0 0 0 3px #fff;
+        }
 
         // O <li> inteiro fica clicável via JS (paymentMethodCards.js) -
         // sem isso, o clique nativo do radio (que já funciona sozinho)
