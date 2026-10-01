@@ -63,6 +63,15 @@ $luccifresh_card_type_pairs = [
 $luccifresh_card_type_debit_ids = array_values($luccifresh_card_type_pairs);
 
 /**
+ * O <select> é duplicado nos dois payment_box (crédito e débito) - só um
+ * fica visível por vez (o toggle nativo do WooCommerce troca entre eles
+ * conforme o radio marcado), mas o cliente precisa continuar enxergando
+ * o <select> pra poder voltar de débito pra crédito. checkoutSteps.js
+ * (initCardTypeSelects()) mantém as duas cópias sincronizadas.
+ */
+$luccifresh_card_type_debit_to_credit = array_flip($luccifresh_card_type_pairs);
+
+/**
  * Na tela "Escolher outra forma de pagamento" (checkout/form-pay.php,
  * pedido já existente) não tem carrinho - WC()->cart existe mas está
  * vazio (o pedido já foi criado e o carrinho, esvaziado), então
@@ -85,12 +94,6 @@ $luccifresh_cart_total = $luccifresh_order_pay
 	</label>
 	<?php if ($luccifresh_payment_subtitle) : ?>
 		<span class="payment-method-subtitle"><?php echo esc_html($luccifresh_payment_subtitle); ?></span>
-	<?php endif; ?>
-	<?php if (array_key_exists($gateway->id, $luccifresh_card_type_pairs)) : ?>
-		<select class="c-payment-method__card-type" data-card-type-credit="<?php echo esc_attr($gateway->id); ?>" data-card-type-debit="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>" aria-label="<?php esc_attr_e('Tipo de cartão', 'lucci-fresh'); ?>">
-			<option value="<?php echo esc_attr($gateway->id); ?>"><?php esc_html_e('Crédito', 'lucci-fresh'); ?></option>
-			<option value="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>"><?php esc_html_e('Débito', 'lucci-fresh'); ?></option>
-		</select>
 	<?php endif; ?>
 
 	<?php if ('asaas-pix' === $gateway->id) : ?>
@@ -160,6 +163,35 @@ $luccifresh_cart_total = $luccifresh_order_pay
 					?>
 				</p>
 			</div>
+		</div>
+
+	<?php elseif (array_key_exists($gateway->id, $luccifresh_card_type_pairs)) : ?>
+		<?php
+		/**
+		 * O <select> de crédito/débito fica AQUI - abaixo da grade de
+		 * métodos de pagamento (.payment_box já é renderizado como irmão
+		 * do <ul>, ocupando a largura inteira, não preso no card estreito)
+		 * - dentro do <li>/card ficava com pouco espaço pro dropdown.
+		 * Mesmo esquema de sempre: o <select> só simula clique no radio
+		 * real (ver checkoutSteps.js, initCardTypeSelects()).
+		 */
+		?>
+		<div class="payment_box payment_method_<?php echo esc_attr($gateway->id); ?>" <?php if (!$gateway->chosen) : ?>style="display:none;"<?php endif; ?>>
+			<select class="c-payment-method__card-type" data-card-type-credit="<?php echo esc_attr($gateway->id); ?>" data-card-type-debit="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>" aria-label="<?php esc_attr_e('Tipo de cartão', 'lucci-fresh'); ?>">
+				<option value="<?php echo esc_attr($gateway->id); ?>"><?php esc_html_e('Crédito', 'lucci-fresh'); ?></option>
+				<option value="<?php echo esc_attr($luccifresh_card_type_pairs[$gateway->id]); ?>"><?php esc_html_e('Débito', 'lucci-fresh'); ?></option>
+			</select>
+			<?php $gateway->payment_fields(); ?>
+		</div>
+
+	<?php elseif (array_key_exists($gateway->id, $luccifresh_card_type_debit_to_credit)) : ?>
+		<?php $luccifresh_card_type_credit_id = $luccifresh_card_type_debit_to_credit[$gateway->id]; ?>
+		<div class="payment_box payment_method_<?php echo esc_attr($gateway->id); ?>" <?php if (!$gateway->chosen) : ?>style="display:none;"<?php endif; ?>>
+			<select class="c-payment-method__card-type" data-card-type-credit="<?php echo esc_attr($luccifresh_card_type_credit_id); ?>" data-card-type-debit="<?php echo esc_attr($gateway->id); ?>" aria-label="<?php esc_attr_e('Tipo de cartão', 'lucci-fresh'); ?>">
+				<option value="<?php echo esc_attr($luccifresh_card_type_credit_id); ?>"><?php esc_html_e('Crédito', 'lucci-fresh'); ?></option>
+				<option value="<?php echo esc_attr($gateway->id); ?>"><?php esc_html_e('Débito', 'lucci-fresh'); ?></option>
+			</select>
+			<?php $gateway->payment_fields(); ?>
 		</div>
 
 	<?php elseif ($gateway->has_fields() || $gateway->get_description()) : ?>

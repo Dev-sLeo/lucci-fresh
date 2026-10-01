@@ -129,41 +129,63 @@ export default function checkoutSteps() {
   // gateways reais, mas aparecem como um único card com um <select> por
   // dentro (ver payment-method.php) - o <li> do débito continua no DOM,
   // só escondido via CSS, pra seu radio/payment_box seguirem funcionando
-  // normalmente. Escolher uma opção aqui só simula um clique no radio
-  // real correspondente (.click(), não .checked = true direto), porque o
-  // WooCommerce liga a troca de forma de pagamento a um listener de CLICK
-  // (ver paymentMethodCards.js) - só marcar o atributo sem disparar esse
-  // evento deixa o WooCommerce "sem saber" da troca, e ele reverte sozinho
-  // no próximo update_checkout.
+  // normalmente. O <select> em si vive DENTRO de cada .payment_box (abaixo
+  // da grade de métodos, não dentro do <li>/card estreito) - e existe uma
+  // cópia em CADA um dos dois payment_box (crédito e débito), porque o
+  // WooCommerce troca qual .payment_box fica visível conforme o radio
+  // marcado, e o cliente precisa continuar vendo o <select> pra poder
+  // voltar de débito pra crédito - por isso as duas cópias são mantidas
+  // sincronizadas aqui, agrupadas pelo par credit/debit.
+  //
+  // Escolher uma opção só simula um clique no radio real correspondente
+  // (.click(), não .checked = true direto), porque o WooCommerce liga a
+  // troca de forma de pagamento a um listener de CLICK (ver
+  // paymentMethodCards.js) - só marcar o atributo sem disparar esse
+  // evento deixa o WooCommerce "sem saber" da troca, e ele reverte
+  // sozinho no próximo update_checkout.
   function initCardTypeSelects() {
+    const groups = new Map();
     form.querySelectorAll(".c-payment-method__card-type").forEach((select) => {
-      if (select.dataset.cardTypeBound) return;
-      select.dataset.cardTypeBound = "true";
+      const key = `${select.dataset.cardTypeCredit}|${select.dataset.cardTypeDebit}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(select);
+    });
 
-      const creditId = select.dataset.cardTypeCredit;
-      const debitId = select.dataset.cardTypeDebit;
+    groups.forEach((selects) => {
+      const creditId = selects[0].dataset.cardTypeCredit;
+      const debitId = selects[0].dataset.cardTypeDebit;
       const creditRadio = form.querySelector(`#payment_method_${creditId}`);
       const debitRadio = form.querySelector(`#payment_method_${debitId}`);
       const creditLabel = form.querySelector(`label[for="payment_method_${creditId}"]`);
       const debitLabel = form.querySelector(`label[for="payment_method_${debitId}"]`);
       if (!creditRadio || !debitRadio || !creditLabel) return;
 
-      const creditLabelText = creditLabel.textContent;
+      if (!creditLabel.dataset.cardTypeOriginalText) {
+        creditLabel.dataset.cardTypeOriginalText = creditLabel.textContent;
+      }
+      const creditLabelText = creditLabel.dataset.cardTypeOriginalText;
       const debitLabelText = debitLabel ? debitLabel.textContent : creditLabelText;
 
-      function syncLabel() {
-        creditLabel.textContent = select.value === debitId ? debitLabelText : creditLabelText;
+      function syncGroup(value) {
+        selects.forEach((select) => {
+          select.value = value;
+        });
+        creditLabel.textContent = value === debitId ? debitLabelText : creditLabelText;
       }
 
-      select.value = debitRadio.checked ? debitId : creditId;
-      syncLabel();
+      syncGroup(debitRadio.checked ? debitId : creditId);
 
-      select.addEventListener("change", () => {
-        const radio = select.value === debitId ? debitRadio : creditRadio;
-        if (!radio.checked) {
-          radio.click();
-        }
-        syncLabel();
+      selects.forEach((select) => {
+        if (select.dataset.cardTypeBound) return;
+        select.dataset.cardTypeBound = "true";
+
+        select.addEventListener("change", () => {
+          const radio = select.value === debitId ? debitRadio : creditRadio;
+          if (!radio.checked) {
+            radio.click();
+          }
+          syncGroup(select.value);
+        });
       });
     });
   }
