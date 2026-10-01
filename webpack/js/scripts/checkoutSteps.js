@@ -156,21 +156,14 @@ export default function checkoutSteps() {
       const debitId = selects[0].dataset.cardTypeDebit;
       const creditRadio = form.querySelector(`#payment_method_${creditId}`);
       const debitRadio = form.querySelector(`#payment_method_${debitId}`);
-      const creditLabel = form.querySelector(`label[for="payment_method_${creditId}"]`);
-      const debitLabel = form.querySelector(`label[for="payment_method_${debitId}"]`);
-      if (!creditRadio || !debitRadio || !creditLabel) return;
+      if (!creditRadio || !debitRadio) return;
 
-      if (!creditLabel.dataset.cardTypeOriginalText) {
-        creditLabel.dataset.cardTypeOriginalText = creditLabel.textContent;
-      }
-      const creditLabelText = creditLabel.dataset.cardTypeOriginalText;
-      const debitLabelText = debitLabel ? debitLabel.textContent : creditLabelText;
-
+      // O título do card (payment-method.php) fica fixo em "Crédito /
+      // Débito" - não troca com a opção marcada no select.
       function syncGroup(value) {
         selects.forEach((select) => {
           select.value = value;
         });
-        creditLabel.textContent = value === debitId ? debitLabelText : creditLabelText;
       }
 
       syncGroup(debitRadio.checked ? debitId : creditId);

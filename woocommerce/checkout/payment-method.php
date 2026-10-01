@@ -39,7 +39,20 @@ $luccifresh_payment_subtitles = [
     'rede_credit'             => __('Pague com seu cartão', 'lucci-fresh'),
     'maxipago_debit'          => __('Pague com seu cartão', 'lucci-fresh'),
     'maxipago_credit'         => __('Pague com seu cartão', 'lucci-fresh'),
+    'loja5_woo_novo_erede'    => __('Pague com o seu cartão', 'lucci-fresh'),
     'cod'                     => __('Pagamento na entrega', 'lucci-fresh'),
+];
+
+/**
+ * O título do gateway real (loja5_woo_novo_erede) é "Cartão de Crédito -
+ * e-Rede" - não dá pra usar esse texto aqui porque o <select> por baixo
+ * deixa claro que o cliente pode escolher crédito OU débito; o título
+ * fica fixo em "Crédito / Débito" independente da opção marcada no
+ * select (ver checkoutSteps.js - initCardTypeSelects() não troca mais
+ * esse texto).
+ */
+$luccifresh_payment_titles = [
+    'loja5_woo_novo_erede' => __('Crédito / Débito', 'lucci-fresh'),
 ];
 $luccifresh_payment_subtitle = $luccifresh_payment_subtitles[$gateway->id] ?? '';
 
@@ -90,7 +103,7 @@ $luccifresh_cart_total = $luccifresh_order_pay
 	<input id="payment_method_<?php echo esc_attr($gateway->id); ?>" type="radio" class="input-radio" name="payment_method" value="<?php echo esc_attr($gateway->id); ?>" <?php checked($gateway->chosen, true); ?> data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>" />
 
 	<label for="payment_method_<?php echo esc_attr($gateway->id); ?>">
-		<?php echo $gateway->get_title(); /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?>
+		<?php echo isset($luccifresh_payment_titles[$gateway->id]) ? esc_html($luccifresh_payment_titles[$gateway->id]) : $gateway->get_title(); /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?>
 	</label>
 	<?php if ($luccifresh_payment_subtitle) : ?>
 		<span class="payment-method-subtitle"><?php echo esc_html($luccifresh_payment_subtitle); ?></span>

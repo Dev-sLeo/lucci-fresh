@@ -720,8 +720,8 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     // topo do payment_box, não dentro do card estreito da grade acima.
     .c-payment-method__card-type {
       display: block;
-      width: auto;
-      min-width: 160px;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0 0 16px;
       font-family: $ff-primary;
       font-size: 14px;
