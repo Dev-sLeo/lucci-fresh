@@ -38,6 +38,7 @@ import paymentMethodCards from "./scripts/paymentMethodCards";
 import fluidCheckoutPaymentThrottle from "./scripts/fluidCheckoutPaymentThrottle";
 import pixCopyCode from "./scripts/pixCopyCode";
 import pixPaymentPoll from "./scripts/pixPaymentPoll";
+import checkoutCoupon from "./scripts/checkoutCoupon";
 
 window.gsap = gsap;
 
@@ -75,3 +76,4 @@ paymentMethodCards();
 fluidCheckoutPaymentThrottle();
 pixCopyCode();
 pixPaymentPoll();
+checkoutCoupon();

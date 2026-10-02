@@ -994,6 +994,124 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
   }
 }
 
+// Coluna lateral inteira (cupom + resumo do pedido) - antes era só o
+// <aside> do resumo direto como 2º filho do grid `.p-checkout-v2__cols`;
+// agora tem o cupom acima, então os dois ficam empilhados dentro de um
+// wrapper, que é quem realmente ocupa a 2ª coluna do grid.
+.p-checkout-v2__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Campo de cupom - mesma cor/borda/raio do card "Seu pedido" logo abaixo
+// (ver .p-checkout-v2__summary), só que sem título/subtítulo, pra ficar
+// claramente ligado a ele mas como um bloco próprio.
+.p-checkout-v2__coupon {
+  background: $cv2-bg-soft;
+  border: 1px solid $cv2-border;
+  border-radius: $cv2-radius;
+  padding: 20px;
+
+  &-form {
+    display: flex;
+    gap: 12px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+  }
+
+  // Mesmo input-text usado no resto do checkout (.c-checkout-step .form-row
+  // .input-text), mas aqui não tem container .form-row/label visível em
+  // volta (só screen-reader-text) - precisa repetir o essencial do estilo.
+  input.input-text {
+    flex: 1;
+    min-width: 0;
+    height: 56px;
+    padding: 0 16px;
+    border: 1px solid $cv2-border;
+    border-radius: $cv2-radius;
+    background: #fff;
+    font-family: $ff-primary;
+    font-size: 16px;
+    color: $cv2-text-dark;
+
+    &::placeholder {
+      color: $cv2-text-muted;
+    }
+
+    // Erro de cupom inválido (wc_checkout_coupons.show_coupon_error, mesmo
+    // JS do core) marca o campo com essa classe.
+    &.has-error {
+      border-color: #c0392b;
+    }
+  }
+
+  &-apply {
+    flex-shrink: 0;
+    height: 56px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: $cv2-radius;
+    background: $cv2-text-sage;
+    color: #fff;
+    font-family: $ff-primary;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: darken($cv2-text-sage, 8%);
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+  }
+
+  // Mensagem de erro (cupom inválido/expirado) - mesmo span que o core
+  // injeta via wc_checkout_coupons.show_coupon_error().
+  .coupon-error-notice {
+    display: block;
+    margin-top: 8px;
+    font-family: $ff-primary;
+    font-size: 13px;
+    color: #c0392b;
+  }
+}
+
+// Link "[Remover]" do cupom aplicado (wc_cart_totals_coupon_html, WC core -
+// ver includes/wc-cart-functions.php) dentro da linha de desconto do
+// resumo do pedido (#order_review) - texto escondido visualmente (mantido
+// pro leitor de tela) e trocado por um "×" vermelho.
+#order_review .woocommerce-remove-coupon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  font-size: 0;
+  color: transparent;
+  text-decoration: none;
+  vertical-align: middle;
+
+  &::before {
+    content: "\2715";
+    font-family: $ff-primary;
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+  }
+
+  &:hover::before {
+    color: darken(#c0392b, 10%);
+  }
+}
+
 .p-checkout-v2__summary {
   background: $cv2-bg-soft;
   border: 1px solid $cv2-border;

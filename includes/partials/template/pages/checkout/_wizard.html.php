@@ -53,7 +53,10 @@ defined('ABSPATH') || exit;
 
         </div>
 
-        <?php $tpl_engine->partial('template/pages/checkout/order-summary'); ?>
+        <div class="p-checkout-v2__sidebar">
+          <?php $tpl_engine->partial('template/pages/checkout/coupon'); ?>
+          <?php $tpl_engine->partial('template/pages/checkout/order-summary'); ?>
+        </div>
 
       </div>
 
