@@ -8,6 +8,7 @@ $title      = get_the_title();
 $short_desc = $product->get_short_description();
 $price_html = $product->get_price_html();
 $cart_url   = $product->add_to_cart_url();
+$product_id = $product->get_id();
 
 // Galeria de imagens
 $gallery_ids  = $product->get_gallery_image_ids();
@@ -71,12 +72,35 @@ $has_gallery  = count($image_ids) > 1;
           </div>
         <?php endif; ?>
 
+        <?php
+        /**
+         * Os dois CTAs adicionam o produto ao carrinho (mesmo $cart_url,
+         * que é add_to_cart_url() - só uma URL "?add-to-cart=ID", sem
+         * AJAX nenhum). Sem a classe `ajax_add_to_cart` (+ data-product_id),
+         * o clique navega pra essa URL e recarrega a página inteira -
+         * WooCommerce adiciona o item no carrinho durante esse reload
+         * (template_redirect), mas o evento `added_to_cart` nunca dispara,
+         * e o sidebar do carrinho (cartSidebar.js, que só abre nesse
+         * evento) nunca abre. Mesma classe já usada no loop de produtos
+         * (ver content-product.php) - o próprio JS do WooCommerce core
+         * (assets/js/frontend/add-to-cart.js) já sabe lidar com ela,
+         * sem precisar de nenhum JS extra do tema.
+         */
+        ?>
         <div class="s-sp-hero__cta-group">
-          <a href="<?= esc_url($cart_url) ?>" class="u-button u-button__white s-sp-hero__price-btn">
+          <a
+            href="<?= esc_url($cart_url) ?>"
+            class="u-button u-button__white s-sp-hero__price-btn add_to_cart_button ajax_add_to_cart"
+            data-product_id="<?= esc_attr($product_id) ?>"
+            data-quantity="1">
             <span class="s-sp-hero__price-prefix"><?= esc_html__('partir de', 'lucci-fresh') ?></span>
             <?= $price_html ?>
           </a>
-          <a href="<?= esc_url($cart_url) ?>" class="u-button u-button__wood s-sp-hero__cta">
+          <a
+            href="<?= esc_url($cart_url) ?>"
+            class="u-button u-button__wood s-sp-hero__cta add_to_cart_button ajax_add_to_cart"
+            data-product_id="<?= esc_attr($product_id) ?>"
+            data-quantity="1">
             <?= esc_html__('Fazer pedido', 'lucci-fresh') ?>
           </a>
         </div>

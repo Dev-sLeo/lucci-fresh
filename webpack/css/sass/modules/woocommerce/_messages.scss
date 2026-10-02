@@ -42,6 +42,37 @@
 }
 
 // -----------------------------------------------------------------------------
+// Minha conta - sem avisos (ex: geolocalização de área de entrega)
+// -----------------------------------------------------------------------------
+body.woocommerce-account .woocommerce-message {
+  display: none !important;
+}
+
+// -----------------------------------------------------------------------------
+// Aviso "Já é cliente?" (toggle de login no checkout)
+// -----------------------------------------------------------------------------
+// WC core aplica um border-top azul padrão nesse aviso; sobrescrevemos pra
+// seguir a paleta do site (verde/laranja) e removemos o azul.
+.woocommerce-form-login-toggle {
+  .woocommerce-info {
+    border-top: none !important;
+    background: lighten(#70845f, 42%);
+    border-left: 4px solid #70845f;
+    color: $wc-text;
+
+    a.showlogin {
+      color: $color-preto;
+      font-weight: bold;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
 // Breadcrumb
 // -----------------------------------------------------------------------------
 .woocommerce-breadcrumb {

@@ -49,7 +49,7 @@
     padding: 4rem 0;
 
     .woocommerce {
-      max-width: 600px;
+      max-width: 100%;
       margin: 0 auto;
     }
 
@@ -290,7 +290,8 @@
 // -----------------------------------------------------------------------------
 // Formulário de login (shortcode [woocommerce_my_account])
 // -----------------------------------------------------------------------------
-.woocommerce-form-login {
+.woocommerce-form-login,
+.woocommerce-form-register {
   background: #fff;
   border: 1px solid rgba(#1e593a, 0.3);
   border-radius: 16px;
@@ -352,7 +353,9 @@
   }
 
   &.login .input-text,
-  &.login input.input-text {
+  &.login input.input-text,
+  &.register .input-text,
+  &.register input.input-text {
     width: 100% !important;
     padding: 16px 18px !important;
     border: 1px solid rgba(#70845f, 0.3) !important;
@@ -394,7 +397,9 @@
   }
 
   &.login .woocommerce-button.woocommerce-form-login__submit,
-  button[type="submit"].woocommerce-form-login__submit {
+  &.register .woocommerce-button.woocommerce-form-register__submit,
+  button[type="submit"].woocommerce-form-login__submit,
+  button[type="submit"].woocommerce-form-register__submit {
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
