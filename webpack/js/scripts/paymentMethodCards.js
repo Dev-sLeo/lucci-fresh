@@ -48,6 +48,25 @@ export default function paymentMethodCards() {
         // core ou de gateway) que dependa de um ou de outro.
         input.dispatchEvent(new Event("click", { bubbles: true }));
         input.dispatchEvent(new Event("change", { bubbles: true }));
+
+        // O core do WooCommerce NÃO recalcula o carrinho ao trocar de
+        // método de pagamento (só em frete/endereço - ver checkout.js,
+        // trigger_update_checkout só está ligado a shipping_method/
+        // endereço/.update_totals_on_change, nunca a input[name=
+        // payment_method]). Essa loja tem um desconto de 5% que depende do
+        // método escolhido (woocommerce_cart_calculate_fees, ver
+        // extension/woocommerce.php) - sem forçar esse recálculo aqui, o
+        // resumo do pedido continua mostrando o desconto do Pix mesmo
+        // depois de trocar para cartão, E os campos ocultos de total do
+        // gateway de cartão (ex.: erede_api[total_rede]/hash_total_rede,
+        // embutidos no HTML do método de pagamento, recalculados só
+        // quando o fragmento é re-renderizado) ficam com o valor ERRADO
+        // (o total com desconto Pix) - a gateway rejeita a cobrança por
+        // isso não bater com o total real do pedido, e a compra no cartão
+        // nunca finaliza.
+        if (window.jQuery) {
+          window.jQuery(document.body).trigger("update_checkout");
+        }
       });
     });
   }
