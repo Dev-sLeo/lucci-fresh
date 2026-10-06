@@ -255,13 +255,71 @@ export default function checkoutSteps() {
     }
   });
 
+  // Pagamento → Revisão: força o WooCommerce a recalcular (update_checkout)
+  // e ESPERA terminar antes de mostrar a Revisão - trocar de método de
+  // pagamento (Pix → Cartão, por exemplo) não recalcula o carrinho sozinho
+  // no WooCommerce core (só frete/endereço disparam isso nativamente - ver
+  // trigger_update_checkout em assets/js/frontend/checkout.js do
+  // WooCommerce). paymentMethodCards.js já dispara esse recálculo no
+  // momento da troca, mas se o cliente clicar em "Revisar pedido" rápido
+  // demais (ou numa conexão lenta), a resposta pode não ter voltado ainda -
+  // sem essa segunda checagem aqui, a Revisão mostra o total/desconto do
+  // método ANTERIOR, e o pedido pode ser enviado com o campo oculto de
+  // total de cada gateway de cartão (ex.: erede_api[total_rede])
+  // desatualizado, fazendo a gateway rejeitar a cobrança.
+  //
+  // Importante: esse recálculo extra SÓ acontece aqui (na transição pra
+  // Revisão), não no clique de "Confirmar pedido" (place_order) - fizemos
+  // isso lá antes e causou uma regressão: o plugin "Agendar Entregas"
+  // reage a QUALQUER update_checkout limpando o <select> de turno (volta
+  // pro placeholder vazio) enquanto busca os horários de novo via AJAX
+  // separado: se o clique em "Confirmar pedido" caísse bem nessa janela,
+  // o pedido saía com ae_turno vazio e o WooCommerce rejeitava TODOS os
+  // métodos de pagamento com "Selecione uma data e turno de entrega".
+  // Disparando aqui, bem antes, o cliente ainda vai ler a tela de Revisão
+  // antes de confirmar - tempo de sobra pra esse recálculo encadeado do
+  // Agendar Entregas terminar antes do clique real em "Confirmar pedido".
+  function forceRecalculateThenGoToStep(step, button) {
+    if (!window.jQuery) {
+      goToStep(step);
+      return;
+    }
+
+    const $ = window.jQuery;
+    let settled = false;
+    button.disabled = true;
+
+    function finish() {
+      if (settled) return;
+      settled = true;
+      $(document.body).off("updated_checkout", finish);
+      button.disabled = false;
+      goToStep(step);
+    }
+
+    // Timeout de segurança: se a resposta nunca chegar (erro de rede,
+    // AJAX travado), o cliente não fica preso pra sempre no botão - segue
+    // pra Revisão com o que já está no formulário.
+    setTimeout(finish, 4000);
+
+    $(document.body).one("updated_checkout", finish);
+    $(document.body).trigger("update_checkout");
+  }
+
   form.addEventListener("click", (event) => {
     const nextBtn = event.target.closest("[data-checkout-next]");
     if (nextBtn) {
       const current = getCurrentStep();
-      if (isStepValid(current)) {
-        goToStep(Number(nextBtn.dataset.checkoutNext));
+      if (!isStepValid(current)) return;
+
+      const targetStep = Number(nextBtn.dataset.checkoutNext);
+
+      if (current === 3 && targetStep === 4) {
+        forceRecalculateThenGoToStep(targetStep, nextBtn);
+        return;
       }
+
+      goToStep(targetStep);
       return;
     }
 
@@ -273,58 +331,30 @@ export default function checkoutSteps() {
 
     const placeOrderBtn = event.target.closest("[data-checkout-place-order]");
     if (placeOrderBtn) {
-      confirmAndPlaceOrder(placeOrderBtn);
+      // O botão real (#place_order) é renderizado pelo WooCommerce dentro
+      // do step de Pagamento (checkout/payment.php); aqui só disparamos o
+      // clique nele para reaproveitar o fluxo padrão de submit/validação
+      // do WooCommerce sem duplicar lógica nenhuma.
+      //
+      // Chegamos a forçar mais um update_checkout aqui (pra garantir que
+      // o total exibido refletisse o método de pagamento atual - ver
+      // paymentMethodCards.js), mas isso CAUSAVA uma regressão pior:
+      // o plugin "Agendar Entregas" (ver webpack/js/scripts ou
+      // docs/woocommerce-customizations.md) reage a QUALQUER
+      // update_checkout limpando o <select> de turno (volta pro
+      // placeholder vazio) enquanto busca os turnos de novo via AJAX
+      // separado - se o clique em "Confirmar pedido" disparasse esse
+      // update_checkout extra bem na janela entre o reset e a resposta
+      // dessa segunda busca, o pedido era enviado com ae_turno="" e o
+      // WooCommerce rejeitava com "Selecione uma data e turno de
+      // entrega", em QUALQUER método de pagamento (bug reproduzido e
+      // confirmado via o payload real do wc-ajax=checkout). O recálculo
+      // de total ao trocar o método já é feito uma vez, no momento da
+      // troca (paymentMethodCards.js) - não precisa (e não deve) se
+      // repetir aqui.
+      form.querySelector("#place_order")?.click();
     }
   });
-
-  // O botão real (#place_order) é renderizado pelo WooCommerce dentro do
-  // step de Pagamento (checkout/payment.php) - clicar nele reaproveita o
-  // fluxo padrão de submit/validação do WooCommerce sem duplicar lógica
-  // nenhuma.
-  //
-  // Antes de clicar, força mais um recálculo (update_checkout) e ESPERA
-  // ele terminar: trocar de método de pagamento (Pix → Cartão, por
-  // exemplo) não recalcula o carrinho sozinho no WooCommerce core (só
-  // frete/endereço disparam isso nativamente - ver trigger_update_checkout
-  // em assets/js/frontend/checkout.js do WooCommerce). Essa loja tem um
-  // desconto de 5% só no Pix (woocommerce_cart_calculate_fees, ver
-  // extension/woocommerce.php), então sem esse recálculo o resumo e os
-  // campos ocultos de total de cada gateway de cartão (ex.:
-  // erede_api[total_rede]) continuam refletindo o método ANTERIOR -
-  // causando rejeição da cobrança no cartão por valor divergente do total
-  // real do pedido (o motivo de "não finaliza no cartão"). Também cobre o
-  // caso de paymentMethodCards.js já ter disparado esse recálculo mas a
-  // resposta ainda não ter voltado - produção costuma ser mais lenta que
-  // local pra isso.
-  function confirmAndPlaceOrder(reviewButton) {
-    const realPlaceOrder = form.querySelector("#place_order");
-    if (!realPlaceOrder) return;
-
-    if (!window.jQuery) {
-      realPlaceOrder.click();
-      return;
-    }
-
-    const $ = window.jQuery;
-    let settled = false;
-    reviewButton.disabled = true;
-
-    function finish() {
-      if (settled) return;
-      settled = true;
-      $(document.body).off("updated_checkout", finish);
-      reviewButton.disabled = false;
-      realPlaceOrder.click();
-    }
-
-    // Timeout de segurança: se a resposta nunca chegar (erro de rede,
-    // AJAX travado), o cliente não fica preso pra sempre no botão - segue
-    // com o que já está no formulário, igual ao comportamento anterior.
-    setTimeout(finish, 4000);
-
-    $(document.body).one("updated_checkout", finish);
-    $(document.body).trigger("update_checkout");
-  }
 
   // "input" cobre digitação em tempo real; "change" cobre radio/select/
   // checkbox e o disparo manual de change que paymentMethodCards.js/

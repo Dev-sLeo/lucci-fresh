@@ -71,6 +71,15 @@ export default function cartSidebar() {
         );
     }
 
+    // Recalcula totais do checkout (frete, Pix, etc.) quando o carrinho muda
+    // por fora do form nativo do WooCommerce - sem isso o resumo do pedido
+    // fica desatualizado até o cliente mexer em outro campo do checkout.
+    function refreshCheckoutIfNeeded() {
+        if (typeof jQuery === "undefined") return;
+        if (!document.querySelector("form.woocommerce-checkout")) return;
+        jQuery(document.body).trigger("update_checkout");
+    }
+
     // ── AJAX: remover item ────────────────────────────────────────────────────
 
     function removeItem(cartItemKey) {
@@ -87,7 +96,10 @@ export default function cartSidebar() {
         })
             .then((r) => r.json())
             .then((res) => {
-                if (res.success) applyFragments(res.data);
+                if (res.success) {
+                    applyFragments(res.data);
+                    refreshCheckoutIfNeeded();
+                }
             })
             .catch(console.error)
             .finally(() => setLoading(false));
@@ -110,7 +122,10 @@ export default function cartSidebar() {
         })
             .then((r) => r.json())
             .then((res) => {
-                if (res.success) applyFragments(res.data);
+                if (res.success) {
+                    applyFragments(res.data);
+                    refreshCheckoutIfNeeded();
+                }
             })
             .catch(console.error)
             .finally(() => setLoading(false));
