@@ -115,19 +115,20 @@
     margin-top: 2.5rem;
   }
 
-  .sub-menu .menu-item a {
+  .sub-menu .menu-item a,
+  .sub-menu a {
     display: block;
     padding: 14px 24px;
     font-family: 'Manrope', sans-serif;
     font-size: 16px;
     font-weight: 500;
-    color: #fff;
+    color: #fff !important;
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.15s ease;
 
     &:hover {
-      color: $color-laranja-cta;
+      color: $color-laranja-cta !important;
     }
   }
 

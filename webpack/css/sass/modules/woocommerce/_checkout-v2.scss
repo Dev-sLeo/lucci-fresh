@@ -535,7 +535,10 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     font-family: $ff-primary;
     font-size: 18px;
     font-weight: 600;
-    color: #fff;
+    // !important: botão laranja sempre com texto branco, mesmo se algum
+    // CSS do WooCommerce/plugin tentar herdar/forçar outra cor de texto
+    // no formulário de checkout.
+    color: #fff !important;
     cursor: pointer;
 
     &:hover {
@@ -1573,7 +1576,10 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
     border-radius: 600px;
     padding: 16px;
     background: $color-laranja-cta;
-    color: #fff;
+    // !important: mesmo motivo do .c-btn--checkout-next acima - texto
+    // branco garantido sobre o fundo laranja, mesmo que algo tente
+    // sobrescrever a cor do texto no checkout.
+    color: #fff !important;
     font-family: $ff-primary;
     font-size: 15px;
     font-weight: 600;

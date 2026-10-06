@@ -148,7 +148,6 @@
     font-family: $ff-heading;
     font-size: rem(32px);
     line-height: 1.15;
-    color: #fff;
     margin: 0;
 
     @include mq(tablet) {
@@ -244,4 +243,15 @@
     padding: 20px 32px;
     font-size: rem(18px);
   }
+}
+
+// A página de produto roda dentro do wrapper <div class="woocommerce"> do
+// WooCommerce, e _theme-force.scss força `.woocommerce h1..h6
+// { color: $color-preto !important }` - essa regra (classe + elemento,
+// especificidade 1,1) empata em !important com `.s-sp-hero__title` sozinho
+// (classe, especificidade 1,0) e, como tem um seletor a mais (o `h1`),
+// ganha mesmo vindo antes no arquivo. Precisa de uma especificidade maior
+// de verdade (2 classes), não só !important, pra garantir branco aqui.
+.s-sp-hero .s-sp-hero__title {
+  color: #fff !important;
 }

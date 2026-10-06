@@ -34,7 +34,6 @@
     font-size: rem(28px);
     font-weight: 400;
     font-style: normal;
-    color: #fff;
     margin: 0;
 
     @include mq(desktop-low) {
@@ -163,6 +162,18 @@
     letter-spacing: -0.32px;
     line-height: 1.6;
   }
+}
+
+// Essa seção pode aparecer em páginas WooCommerce (produto, loja), onde o
+// conteúdo roda dentro do wrapper <div class="woocommerce">, e
+// _theme-force.scss força `.woocommerce h1..h6
+// { color: $color-preto !important }`. Essa regra (classe + elemento,
+// especificidade 1,1) empata em !important com `.o-testimonials__title`
+// sozinho (classe, especificidade 1,0) e, como tem um seletor a mais (o
+// `h2`), ganha mesmo vindo antes no arquivo. Precisa de uma especificidade
+// maior de verdade (2 classes), não só !important, pra garantir branco.
+.o-testimonials .o-testimonials__title {
+  color: #fff !important;
 }
 
 .c-testimonial {
