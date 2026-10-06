@@ -5,31 +5,49 @@ global $tpl_engine;
 $block  = get_field('mais_pedidos');
 $titulo = $block['title'] ?? __('Os mais pedidos', 'lucci-fresh');
 
-$args = [
+$limit = 8;
+
+// Mais pedidos: produtos com vendas, ordenados pela quantidade vendida
+$bestsellers_query = new WP_Query([
   'post_type'      => 'product',
-  'posts_per_page' => 8,
+  'posts_per_page' => $limit,
   'post_status'    => 'publish',
+  'orderby'        => 'meta_value_num',
+  'meta_key'       => 'total_sales',
+  'order'          => 'DESC',
   'meta_query'     => [
     [
-      'key'   => '_featured',
-      'value' => 'yes',
+      'key'     => 'total_sales',
+      'value'   => 0,
+      'compare' => '>',
+      'type'    => 'NUMERIC',
     ],
   ],
-];
+]);
 
-$products = new WP_Query($args);
+$product_ids = wp_list_pluck($bestsellers_query->posts, 'ID');
 
-// Fallback: se não houver produtos em destaque, busca os mais recentes
-if (!$products->have_posts()) {
-  $args = [
+// Completa com os mais recentes até atingir o total, sem repetir produtos
+if (count($product_ids) < $limit) {
+  $recent_query = new WP_Query([
     'post_type'      => 'product',
-    'posts_per_page' => 8,
+    'posts_per_page' => $limit - count($product_ids),
     'post_status'    => 'publish',
     'orderby'        => 'date',
     'order'          => 'DESC',
-  ];
-  $products = new WP_Query($args);
+    'post__not_in'   => $product_ids,
+  ]);
+
+  $product_ids = array_merge($product_ids, wp_list_pluck($recent_query->posts, 'ID'));
 }
+
+$products = $product_ids ? new WP_Query([
+  'post_type'      => 'product',
+  'post_status'    => 'publish',
+  'post__in'       => $product_ids,
+  'orderby'        => 'post__in',
+  'posts_per_page' => $limit,
+]) : new WP_Query(['post__in' => [0]]);
 ?>
 <?php if ($products->have_posts()) : ?>
   <section class="s-featured-products">

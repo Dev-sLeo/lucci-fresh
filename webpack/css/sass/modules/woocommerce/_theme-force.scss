@@ -1,0 +1,200 @@
+// =============================================================================
+// WooCommerce - Força cores e fontes do tema em todo elemento do plugin
+// =============================================================================
+// O WooCommerce (core + blocks) carrega seu próprio CSS depois do tema e traz
+// cor/fonte padrão (roxo, verde-claro, fonte do sistema). Este arquivo força
+// a paleta e a tipografia do tema (Manrope / DM Serif Display, preto/laranja/
+// verde) em qualquer elemento do plugin, sobrescrevendo o CSS core e o dos
+// blocks (checkout em blocos, mini-cart, etc.).
+
+.woocommerce,
+.wc-block-components-wrapper,
+.wp-block-woocommerce-cart,
+.wp-block-woocommerce-checkout {
+  font-family: $ff-primary !important;
+  color: $wc-text !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $ff-heading !important;
+    color: $color-preto !important;
+  }
+
+  // Links de texto (menções, "veja o carrinho", tabs, etc.) - excluindo
+  // botões, que já têm cor própria (branco sobre laranja).
+  a:not(.button):not(.u-button):not(.added_to_cart) {
+    color: $color-preto;
+
+    &:hover {
+      color: $color-preto;
+      text-decoration: underline;
+    }
+  }
+
+  // Preço
+  .price {
+    font-family: $ff-primary !important;
+    color: $color-preto !important;
+
+    del {
+      color: $wc-muted !important;
+    }
+
+    ins {
+      color: $color-laranja-cta !important;
+      text-decoration: none;
+    }
+  }
+
+  // Selo de promoção
+  .onsale {
+    background-color: $color-laranja-cta !important;
+    color: #fff !important;
+    font-family: $ff-primary !important;
+  }
+
+  // Avaliação por estrelas
+  .star-rating {
+    color: $color-laranja-cta !important;
+
+    &::before {
+      color: rgba($color-preto, 0.15) !important;
+    }
+
+    span::before {
+      color: $color-laranja-cta !important;
+    }
+  }
+
+  // Estoque
+  .stock {
+    font-family: $ff-primary !important;
+
+    &.in-stock {
+      color: map-get($color-verde, 500) !important;
+    }
+
+    &.out-of-stock {
+      color: #c0392b !important;
+    }
+  }
+
+  // Abas (descrição, avaliações)
+  .woocommerce-tabs {
+    ul.tabs li {
+      font-family: $ff-primary !important;
+
+      &.active,
+      &.active a {
+        color: $color-laranja-cta !important;
+        border-color: $color-laranja-cta !important;
+      }
+
+      a {
+        color: $wc-muted !important;
+      }
+    }
+  }
+
+  // Campos de formulário (cupom, quantidade, login/cadastro, endereços etc.)
+  input.input-text,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    font-family: $ff-primary !important;
+    color: $color-preto !important;
+    border-color: map-get($color-verde, 100) !important;
+    border-radius: $wc-radius-sm !important;
+
+    &:focus {
+      border-color: map-get($color-verde, 500) !important;
+    }
+  }
+
+  // Checkbox / radio (termos, frete, pagamento)
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: $color-laranja-cta;
+  }
+
+  table {
+    font-family: $ff-primary !important;
+    color: $wc-text !important;
+
+    th {
+      color: $color-preto !important;
+    }
+  }
+}
+
+// WooCommerce Blocks (checkout/carrinho em blocos) usam variáveis CSS
+// próprias (--wc-blue, --wc-green etc.) - sobrescrevemos as que definem cor
+// de destaque/erro pra seguir a paleta da marca.
+.wp-block-woocommerce-checkout,
+.wp-block-woocommerce-cart {
+  --wc-blue: #{$color-laranja-cta};
+  --wc-green: #{map-get($color-verde, 500)};
+  --wc-red: #c0392b;
+
+  font-family: $ff-primary !important;
+
+  .wc-block-components-button:not(.is-link) {
+    font-family: $ff-primary !important;
+    background-color: $color-laranja-cta !important;
+    border-color: $color-laranja-cta !important;
+    color: #fff !important;
+
+    &:hover {
+      background-color: darken($color-laranja-cta, 8%) !important;
+      border-color: darken($color-laranja-cta, 8%) !important;
+    }
+  }
+
+  .wc-block-components-totals-item__value,
+  .wc-block-components-product-price,
+  .price {
+    font-family: $ff-primary !important;
+    color: $color-preto !important;
+  }
+}
+
+// Botões "Adicionar ao carrinho" (loop da loja, página de produto e blocks)
+// sempre com texto branco, independente do estado (padrão, hover, loading).
+.add_to_cart_button:not(.u-button__white),
+.ajax_add_to_cart:not(.u-button__white),
+.single_add_to_cart_button:not(.u-button__white),
+.wc-block-components-product-button__button {
+  color: #fff !important;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.loading,
+  &.added {
+    color: #fff !important;
+  }
+}
+
+// Widgets (mini-carrinho, filtro de preço, produtos recentes, etc.)
+.widget_shopping_cart,
+.widget_price_filter,
+.widget_products,
+.widget_layered_nav {
+  font-family: $ff-primary !important;
+
+  a {
+    color: $color-preto !important;
+  }
+
+  .price {
+    color: $color-preto !important;
+  }
+
+  .ui-slider .ui-slider-range,
+  .ui-slider .ui-slider-handle {
+    background-color: $color-laranja-cta !important;
+  }
+}
