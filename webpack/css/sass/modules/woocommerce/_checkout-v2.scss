@@ -1743,7 +1743,7 @@ body.woocommerce-checkout .c-cart-sidebar__checkout {
   &__action--secondary {
     background: #fff;
     border: 1px solid $cv2-border;
-    color: $cv2-text-dark;
+    color: $cv2-text-dark !important;
 
     &:hover {
       background: $cv2-bg-soft;

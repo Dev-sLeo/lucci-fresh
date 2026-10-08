@@ -11,7 +11,21 @@ defined('ABSPATH') || exit;
 
 global $tpl_engine;
 
-$delivery_date   = $order->get_meta('ywcdd_order_delivery_date');
+/**
+ * Data/turno de entrega reais vêm do plugin "Agendar Entregas"
+ * (_ae_data_entrega/_ae_turno_id, ver includes/order/class-ae-order-hooks.php
+ * do plugin) - não do YITH Delivery Date (ywcdd_order_delivery_date), cuja
+ * integração com o checkout foi removida (ver "Desliga o YITH WooCommerce
+ * Delivery Date no checkout" em extension/woocommerce.php). Só existem
+ * quando esse plugin estiver ativo E o método de entrega escolhido exigir
+ * agendamento (ex.: retirada na loja não pede data/turno) - nesse caso a
+ * frase genérica "nossa equipe entrará em contato" não faz sentido, já que
+ * o cliente escolheu o horário.
+ */
+$ae_data_entrega = $order->get_meta('_ae_data_entrega', true);
+$ae_turno_id     = $order->get_meta('_ae_turno_id', true);
+$ae_turno        = ($ae_turno_id && class_exists('AE_CPT_Turno')) ? AE_CPT_Turno::obter_turno($ae_turno_id) : null;
+
 $shipping_address = $order->get_formatted_shipping_address();
 ?>
 
@@ -56,11 +70,13 @@ $shipping_address = $order->get_formatted_shipping_address();
         <div class="c-order-confirmed__box">
           <p class="c-order-confirmed__box-title"><?= esc_html__('Previsão de entrega', 'lucci-fresh'); ?></p>
           <p class="c-order-confirmed__box-text">
-            <?php if ($delivery_date) : ?>
+            <?php if ($ae_data_entrega && $ae_turno) : ?>
               <?= esc_html(sprintf(
-                /* translators: %s: data prevista de entrega */
-                __('Prevista para %s.', 'lucci-fresh'),
-                wc_format_datetime(new WC_DateTime($delivery_date, new DateTimeZone('UTC')))
+                /* translators: 1: data prevista de entrega, 2: hora de início do turno, 3: hora de fim do turno */
+                __('Prevista para %1$s, das %2$s às %3$s.', 'lucci-fresh'),
+                wc_format_datetime(new WC_DateTime($ae_data_entrega)),
+                $ae_turno->hora_inicio,
+                $ae_turno->hora_fim
               )); ?>
             <?php else : ?>
               <?= esc_html__('Prazo médio de até 2 dias úteis. Nossa equipe entrará em contato para combinar o melhor horário.', 'lucci-fresh'); ?>

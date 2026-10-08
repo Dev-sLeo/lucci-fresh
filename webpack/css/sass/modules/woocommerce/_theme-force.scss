@@ -163,9 +163,11 @@
 
 // Botões "Adicionar ao carrinho" (loop da loja, página de produto e blocks)
 // sempre com texto branco, independente do estado (padrão, hover, loading).
-.add_to_cart_button:not(.u-button__white),
-.ajax_add_to_cart:not(.u-button__white),
-.single_add_to_cart_button:not(.u-button__white),
+// Exceto o CTA do card de produto (.c-product-card__cta), que no hover fica
+// com fundo transparente e texto laranja (ver modules/components/_product-card.scss).
+.add_to_cart_button:not(.u-button__white):not(.c-product-card__cta),
+.ajax_add_to_cart:not(.u-button__white):not(.c-product-card__cta),
+.single_add_to_cart_button:not(.u-button__white):not(.c-product-card__cta),
 .wc-block-components-product-button__button {
   color: #fff !important;
 
