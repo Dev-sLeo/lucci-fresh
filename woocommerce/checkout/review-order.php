@@ -215,7 +215,7 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 				}
 			}
 
-			$luccifresh_summary_show_delivery = $luccifresh_summary_neighborhood && $luccifresh_summary_city;
+			$luccifresh_summary_show_delivery = $luccifresh_summary_neighborhood && $luccifresh_summary_city && !luccifresh_cart_is_pickup();
 			$luccifresh_summary_show_pix_badge = WC()->cart->get_subtotal() > 0;
 			?>
 

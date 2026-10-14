@@ -87,7 +87,7 @@ foreach ($order->get_items() as $order_item) {
   $luccifresh_summary_city         = $order->get_billing_city();
   ?>
 
-  <?php if ($luccifresh_summary_neighborhood && $luccifresh_summary_city) : ?>
+  <?php if ($luccifresh_summary_neighborhood && $luccifresh_summary_city && !luccifresh_order_pickup_info($order)) : ?>
     <p class="p-checkout-v2__summary-delivery">
       <?= esc_html(sprintf(
         /* translators: 1: bairro, 2: cidade */

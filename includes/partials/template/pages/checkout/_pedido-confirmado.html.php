@@ -27,6 +27,7 @@ $ae_turno_id     = $order->get_meta('_ae_turno_id', true);
 $ae_turno        = ($ae_turno_id && class_exists('AE_CPT_Turno')) ? AE_CPT_Turno::obter_turno($ae_turno_id) : null;
 
 $shipping_address = $order->get_formatted_shipping_address();
+$pickup           = luccifresh_order_pickup_info($order);
 ?>
 
 <div class="p-checkout-v2">
@@ -84,7 +85,12 @@ $shipping_address = $order->get_formatted_shipping_address();
           </p>
         </div>
 
-        <?php if ($shipping_address) : ?>
+        <?php if ($pickup) : ?>
+          <h3 class="c-order-confirmed__address-title"><?= esc_html__('Retirada na loja', 'lucci-fresh'); ?></h3>
+          <p class="c-order-confirmed__address">
+            <?= esc_html($pickup['address'] ?: $pickup['title']); ?>
+          </p>
+        <?php elseif ($shipping_address) : ?>
           <h3 class="c-order-confirmed__address-title"><?= esc_html__('Endereço de entrega', 'lucci-fresh'); ?></h3>
           <p class="c-order-confirmed__address">
             <?= wp_kses_post($shipping_address); ?>

@@ -143,6 +143,10 @@ $luccifresh_cart_total = $luccifresh_order_pay
 					class="input-text"
 					name="cod_receiver_name"
 					id="cod_receiver_name"
+					required
+					aria-required="true"
+					pattern=".*\S.*"
+					title="<?php esc_attr_e('Informe o nome de quem vai receber', 'lucci-fresh'); ?>"
 					placeholder="<?php esc_attr_e('Nome', 'lucci-fresh'); ?>"
 					value="<?php echo esc_attr(wc_clean(wp_unslash($_POST['cod_receiver_name'] ?? ''))); /* phpcs:ignore WordPress.Security.NonceVerification.Missing */ ?>"
 				/>

@@ -44,6 +44,18 @@ export default function checkoutSteps() {
     form.querySelectorAll('[aria-required="true"]:not([required])').forEach((field) => {
       field.required = true;
     });
+
+    // Campos do cartão (e.Rede) vêm do plugin sem `required` nem aria-required
+    // (a gateway só valida no PHP, no submit) - sem isso dava pra ir pra
+    // Revisão com o cartão em branco. Só entram os campos de dado digitado
+    // (os hidden do plugin ficam de fora).
+    form
+      .querySelectorAll(
+        '.payment_box [name^="erede_api"]:not([type="hidden"]):not([required])'
+      )
+      .forEach((field) => {
+        field.required = true;
+      });
   }
 
   // Cada step só bloqueia o avanço com os campos que ele mesmo contém -
@@ -460,13 +472,25 @@ export default function checkoutSteps() {
         .join(" • "),
     ]);
 
-    setReviewLines(2, [
-      [fieldValue("billing_address_1"), fieldValue("billing_number")].filter(Boolean).join(", "),
-      [fieldValue("billing_neighborhood"), fieldValue("billing_city") && `${fieldValue("billing_city")} / SP`]
-        .filter(Boolean)
-        .join(", ") + (fieldValue("billing_postcode") ? ` • ${fieldValue("billing_postcode")}` : ""),
-      getSelectedShippingDescription(),
-    ]);
+    const checkedShipping = form.querySelector('#customer_details input[name^="shipping_method"]:checked');
+    const isPickup = Boolean(checkedShipping && /^(local_pickup|pickup_location)/.test(checkedShipping.value));
+
+    if (isPickup) {
+      // Retirada na loja: só o endereço da loja, nunca o do cliente.
+      const shippingLi = checkedShipping.closest("li");
+      setReviewLines(2, [
+        shippingLi?.querySelector(".shipping-method-title")?.textContent?.trim() || "Retirar na loja",
+        getSelectedShippingDescription(),
+      ]);
+    } else {
+      setReviewLines(2, [
+        [fieldValue("billing_address_1"), fieldValue("billing_number")].filter(Boolean).join(", "),
+        [fieldValue("billing_neighborhood"), fieldValue("billing_city") && `${fieldValue("billing_city")} / SP`]
+          .filter(Boolean)
+          .join(", ") + (fieldValue("billing_postcode") ? ` • ${fieldValue("billing_postcode")}` : ""),
+        getSelectedShippingDescription(),
+      ]);
+    }
 
     // O total já é calculado pelo próprio WooCommerce (não recalculamos
     // nada aqui) - só lemos o valor que já está certo no resumo do pedido.

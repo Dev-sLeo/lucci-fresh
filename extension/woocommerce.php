@@ -128,6 +128,13 @@ add_filter('woocommerce_cart_shipping_method_full_label', function ($label, $met
         $description = $matches[2];
     }
 
+    // Frase configurada no admin do método de entrega; não deve aparecer em nenhum tipo de entrega.
+    $description = trim(str_ireplace(
+        'Após a confirmação da compra, nossa equipe entrará em contato para combinar o melhor horário para a entrega.',
+        '',
+        (string) $description
+    ));
+
     $GLOBALS['luccifresh_shipping_method_description'] = $description;
 
     $price_html = '';
@@ -143,6 +150,35 @@ add_filter('woocommerce_cart_shipping_method_full_label', function ($label, $met
 
     return '<span class="shipping-method-title">' . esc_html($short_title) . '</span>' . $price_html;
 }, 20, 2);
+
+/**
+ * Retirada na loja: devolve ['title' => ..., 'address' => ...] (endereço da
+ * loja, lido do nome do método de entrega "Título (endereço - prazo)") ou
+ * null se o pedido não for retirada.
+ */
+function luccifresh_order_pickup_info($order)
+{
+    foreach ($order->get_shipping_methods() as $item) {
+        if (!in_array($item->get_method_id(), ['local_pickup', 'pickup_location'], true)) {
+            continue;
+        }
+        $name  = $item->get_name();
+        $title = $name;
+        $addr  = '';
+        if (preg_match('/^(.*?)\s*\((.*)\)\s*$/', $name, $m)) {
+            $title = $m[1];
+            $addr  = $m[2];
+        }
+        return ['title' => $title, 'address' => $addr];
+    }
+    return null;
+}
+
+function luccifresh_cart_is_pickup()
+{
+    $chosen = WC()->session ? (array) WC()->session->get('chosen_shipping_methods') : [];
+    return !empty($chosen[0]) && preg_match('/^(local_pickup|pickup_location)/', $chosen[0]);
+}
 
 add_action('woocommerce_after_shipping_rate', function () {
     if (!luccifresh_is_new_checkout_shipping_context()) {
