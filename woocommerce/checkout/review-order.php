@@ -207,19 +207,10 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 			$luccifresh_summary_neighborhood = WC()->checkout()->get_value('billing_neighborhood');
 			$luccifresh_summary_city         = WC()->checkout()->get_value('billing_city');
 
-			$luccifresh_summary_has_pix_fee = false;
-			foreach (WC()->cart->get_fees() as $luccifresh_summary_fee) {
-				if (false !== strpos($luccifresh_summary_fee->name, 'Desconto Pix')) {
-					$luccifresh_summary_has_pix_fee = true;
-					break;
-				}
-			}
-
 			$luccifresh_summary_show_delivery = $luccifresh_summary_neighborhood && $luccifresh_summary_city && !luccifresh_cart_is_pickup();
-			$luccifresh_summary_show_pix_badge = WC()->cart->get_subtotal() > 0;
 			?>
 
-			<?php if ($luccifresh_summary_show_delivery || $luccifresh_summary_show_pix_badge) : ?>
+			<?php if ($luccifresh_summary_show_delivery) : ?>
 				<tr class="luccifresh-summary-extra">
 					<td colspan="2">
 						<?php if ($luccifresh_summary_show_delivery) : ?>
@@ -231,27 +222,6 @@ $luccifresh_new_checkout = function_exists('luccifresh_new_checkout_enabled') &&
 									$luccifresh_summary_city
 								)); ?>
 							</p>
-						<?php endif; ?>
-
-						<?php if ($luccifresh_summary_show_pix_badge) : ?>
-							<div class="c-pix-wait__notice p-checkout-v2__summary-pix-badge">
-								<p class="c-pix-wait__notice-title"><?= esc_html__('5% de desconto no Pix', 'lucci-fresh'); ?></p>
-								<p class="c-pix-wait__notice-text">
-									<?php if ($luccifresh_summary_has_pix_fee) : ?>
-										<?= esc_html(sprintf(
-											/* translators: %s: valor do desconto */
-											__('Você economizou %s pagando com Pix.', 'lucci-fresh'),
-											wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
-										)); ?>
-									<?php else : ?>
-										<?= esc_html(sprintf(
-											/* translators: %s: valor do desconto */
-											__('Escolha Pix no pagamento e economize %s.', 'lucci-fresh'),
-											wp_strip_all_tags(wc_price(WC()->cart->get_subtotal() * 0.05))
-										)); ?>
-									<?php endif; ?>
-								</p>
-							</div>
 						<?php endif; ?>
 					</td>
 				</tr>

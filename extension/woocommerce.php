@@ -725,48 +725,6 @@ add_filter('woocommerce_checkout_posted_data', function ($data) {
 });
 
 // -----------------------------------------------------------------------------
-// Desconto de 5% para pagamento via Pix
-// -----------------------------------------------------------------------------
-
-add_action('woocommerce_cart_calculate_fees', function ($cart) {
-    if (is_admin() && !defined('DOING_AJAX')) return;
-    if (!$cart || $cart->is_empty()) return;
-
-    // Durante o processamento do pedido (finalizar compra), o método de pagamento
-    // enviado no POST é a fonte de verdade. Usar apenas a sessão aqui permite que
-    // o desconto fique "preso" quando o cliente troca de gateway e finaliza antes
-    // do AJAX nativo (update_order_review) atualizar a sessão no servidor.
-    if (isset($_POST['payment_method'])) {
-        $chosen_method = wc_clean(wp_unslash($_POST['payment_method']));
-    } else {
-        $chosen_method = WC()->session ? WC()->session->get('chosen_payment_method') : '';
-    }
-
-    if (!$chosen_method || stripos($chosen_method, 'pix') === false) return;
-
-    $discount = -1 * ($cart->get_subtotal() * 0.05);
-
-    $cart->add_fee(__('Desconto Pix (5%)', 'arterra'), $discount, false);
-});
-
-// Trava final de segurança: garante que o pedido só é criado com o desconto Pix
-// se o gateway de pagamento efetivamente escolhido no pedido for o Pix.
-add_action('woocommerce_checkout_create_order', function ($order) {
-    $payment_method = $order->get_payment_method();
-    $has_pix = $payment_method && stripos($payment_method, 'pix') !== false;
-
-    foreach ($order->get_items('fee') as $fee_item) {
-        if (strpos($fee_item->get_name(), 'Desconto Pix') === false) continue;
-
-        if (!$has_pix) {
-            $order->remove_item($fee_item->get_id());
-        }
-    }
-
-    $order->calculate_totals(false);
-}, 20, 1);
-
-// -----------------------------------------------------------------------------
 // Desliga o YITH WooCommerce Delivery Date no checkout
 // -----------------------------------------------------------------------------
 //
